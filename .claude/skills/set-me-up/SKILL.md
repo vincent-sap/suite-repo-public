@@ -200,9 +200,9 @@ If "Not yet": wait, then ask again. If "Skip for now": continue.
 
 ---
 
-## Step 7 — Set up README
+## Step 7 — Update README
 
-Ask:
+Ask the user for a short description:
 
 ```
 AskUserQuestion({
@@ -217,7 +217,17 @@ AskUserQuestion({
 })
 ```
 
-If the user types a description (via "Other"): update `README.md` with the description and the PAGES_URL where applicable.
+Whether or not the user adds a description, always update the README in the same commit — replace the placeholder link with the real Pages URL, and insert the description if provided:
+
+```bash
+sed -i '' "s|PAGES_URL_PLACEHOLDER|PAGES_URL|g" README.md
+# if description provided, also update the description line
+git add README.md
+git commit -m "Update README"
+git push origin main 2>&1
+```
+
+If "local only" was chosen: skip this step entirely.
 
 ---
 
