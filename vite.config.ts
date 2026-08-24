@@ -12,7 +12,7 @@ export default defineConfig({
       closeBundle() { fs.writeFileSync('docs/.nojekyll', '') },
     },
   ],
-  base: '/signavio-experience/suite-replica/',
+  base: '/signavio-experience/explorer-sunset/',
   build: {
     outDir: 'docs',
   },

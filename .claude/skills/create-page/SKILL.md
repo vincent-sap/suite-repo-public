@@ -54,6 +54,8 @@ Output the folders as a numbered list. Wait for the reply.
 
 If the user isn't sure, suggest the closest match based on the page name.
 
+If the user wants a **new domain** (none of the existing ones fit): ask for the new domain name, create the folder `src/domains/<new-domain>/`, and use that.
+
 If "Copy an existing page" was chosen in Step 1: ask them to name the page they want to copy, find it in `src/domains/`, and copy it to the chosen domain location with the new name. Then skip to Step 5.
 
 ## Step 4 — Create the file
