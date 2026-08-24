@@ -47,37 +47,10 @@ If "Skip", jump to Step 3.
 Download the latest Figma skills from the official Figma repository:
 
 ```bash
-SKILLS_DIR=".claude/skills"
-FIGMA_SKILLS="figma-design-to-code figma-use figma-generate-design figma-use-figjam figma-generate-diagram"
-BASE_URL="https://api.github.com/repos/figma/mcp-server-guide/contents/skills"
-
-for skill in $FIGMA_SKILLS; do
-  echo "Downloading $skill..."
-  # Recursively download skill files via GitHub API
-  python3 - <<PYEOF
-import urllib.request, json, os, pathlib
-
-def fetch(url):
-    req = urllib.request.Request(url, headers={"User-Agent": "curl/7.0"})
-    with urllib.request.urlopen(req) as r:
-        return json.loads(r.read())
-
-def download_dir(api_url, local_dir):
-    pathlib.Path(local_dir).mkdir(parents=True, exist_ok=True)
-    for item in fetch(api_url):
-        if item["type"] == "file" and item["download_url"]:
-            req = urllib.request.Request(item["download_url"], headers={"User-Agent": "curl/7.0"})
-            with urllib.request.urlopen(req) as r:
-                content = r.read()
-            with open(os.path.join(local_dir, item["name"]), "wb") as f:
-                f.write(content)
-        elif item["type"] == "dir":
-            download_dir(item["url"], os.path.join(local_dir, item["name"]))
-
-download_dir("$BASE_URL/$skill", "$SKILLS_DIR/$skill")
-print("  done")
-PYEOF
-done
+rm -rf /tmp/figma-mcp-guide
+git clone --depth 1 https://github.com/figma/mcp-server-guide.git /tmp/figma-mcp-guide 2>&1
+cp -r /tmp/figma-mcp-guide/skills/. .claude/skills/
+rm -rf /tmp/figma-mcp-guide
 ```
 
 If the download fails (network issue), tell the user they can skip this for now and re-run `/setup-mcps` later.

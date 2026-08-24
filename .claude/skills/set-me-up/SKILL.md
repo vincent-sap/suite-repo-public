@@ -77,20 +77,34 @@ If this fails with a 401/403 error, remind the user to complete the Artifactory 
 
 ## Step 4 — Install security guidelines
 
-Install the team's AI security skill directly from GitHub (never copied into this repo):
+Ask the user:
 
-```bash
-SKILL_DIR="$HOME/.claude/skills/security-guidelines"
-mkdir -p "$SKILL_DIR"
-curl -fsSL "https://raw.githubusercontent.tools.sap/signavio-experience/SKILL-security-guidelines/main/SKILL.md" \
-  -o "$SKILL_DIR/SKILL.md" \
-  -H "Authorization: token $(gh auth token --hostname github.tools.sap 2>/dev/null || echo '')" \
-  2>&1
+```
+AskUserQuestion({
+  questions: [{
+    question: "Install the SAP Signavio AI security guidelines?",
+    header: "Security",
+    multiSelect: false,
+    options: [
+      { label: "Yes, install them", description: "Recommended — teaches Claude what not to do with SAP data (no PII, no external APIs, SAP Artifactory only)" },
+      { label: "Skip for now", description: "You can install them later by running /install-security-guidelines" }
+    ]
+  }]
+})
 ```
 
-If the download fails, tell the user:
-> "I couldn't install the security guidelines automatically. You can do it manually later:
-> `gh api --hostname github.tools.sap repos/signavio-experience/SKILL-security-guidelines/contents/SKILL.md --jq '.content' | base64 -d > ~/.claude/skills/security-guidelines/SKILL.md`"
+If "Skip for now", continue to Step 5.
+
+Otherwise install the team's AI security skill directly from GitHub:
+
+```bash
+rm -rf "$HOME/.claude/skills/install-security-guidelines"
+GH_HOST=github.tools.sap gh repo clone signavio-experience/SKILL-security-guidelines "$HOME/.claude/skills/install-security-guidelines" 2>&1
+```
+
+If this fails, tell the user:
+> "I couldn't install the security guidelines automatically. You can do it manually later by running:
+> `GH_HOST=github.tools.sap gh repo clone signavio-experience/SKILL-security-guidelines ~/.claude/skills/install-security-guidelines`"
 
 Continue regardless.
 
@@ -106,9 +120,12 @@ git remote get-url origin 2>/dev/null || echo "no-remote"
 
 Extract **ORG**, **REPO**, **GITHUB_HOST** from the remote URL.
 Set **PAGES_URL** = `https://pages.GITHUB_HOST/ORG/REPO/`
+Set **VITE_BASE** = `/ORG/REPO/`
 
 Tell the user:
 > "Your repo is already on GitHub at: `https://GITHUB_HOST/ORG/REPO`"
+
+Update `vite.config.ts`: set `base` to **VITE_BASE** (keep `build.outDir: 'docs'`).
 
 Skip to Step 6 (GitHub Pages check).
 
