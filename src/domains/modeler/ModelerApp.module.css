@@ -1,0 +1,304 @@
+.root {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* ── Canvas fills full area ───────────────────────────────────────────────── */
+.canvasPlaceholder {
+  position: absolute;
+  inset: 0;
+  background: #f0f1f2;
+  overflow: hidden;
+}
+
+/* ── Dot grid ─────────────────────────────────────────────────────────────── */
+.canvasGrid {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, #c8cacc 1.2px, transparent 1.2px);
+  background-size: 20px 20px;
+}
+
+/* ── SVG BPMN canvas ─────────────────────────────────────────────────────── */
+.bpmnSvg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* ── Floating toolbar base ────────────────────────────────────────────────── */
+.floatingTopLeft,
+.floatingTopRight {
+  position: absolute;
+  top: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: var(--sapBaseColor);
+  border-radius: 10px;
+  padding: 0.25rem 0.5rem;
+  box-shadow: 0 0 2px rgba(34, 54, 73, 0.2), 0 2px 4px rgba(34, 54, 73, 0.2);
+  z-index: 10;
+}
+
+.floatingTopLeft {
+  left: 0.75rem;
+}
+
+.floatingTopRight {
+  right: 0.75rem;
+}
+
+/* ── Top-left elements ────────────────────────────────────────────────────── */
+.inlineEdit {
+  max-width: 280px;
+}
+
+.overflowBtn {
+  flex-shrink: 0;
+}
+
+/* ── Top-right elements ───────────────────────────────────────────────────── */
+.menuBtn {
+  min-width: unset;
+}
+
+.vDivider {
+  width: 1px;
+  height: 1.25rem;
+  background: var(--sapNeutralBorderColor);
+  margin: 0 0.125rem;
+  flex-shrink: 0;
+}
+
+/* ── Left action panel ────────────────────────────────────────────────────── */
+.leftToolbar {
+  position: absolute;
+  top: 50%;
+  left: 0.75rem;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  background: var(--sapBaseColor);
+  border-radius: 12px;
+  padding: 0.5rem;
+  box-shadow: 0 0 2px rgba(34, 54, 73, 0.2), 0 2px 4px rgba(34, 54, 73, 0.2);
+  z-index: 10;
+}
+
+.toolbarDivider {
+  height: 1px;
+  width: 2.25rem;
+  background: var(--sapNeutralBorderColor);
+  margin: 0 0;
+}
+
+.toolbarBtnActive {
+  background: var(--sapButton_Selected_Background, #dbeafe) !important;
+  color: var(--sapHighlightColor) !important;
+  border-radius: 8px;
+}
+
+/* ── Zoom controls ────────────────────────────────────────────────────────── */
+.zoomControls {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: var(--sapBaseColor);
+  border-radius: 12px;
+  padding: 0.5rem;
+  box-shadow: 0 0 2px rgba(34, 54, 73, 0.2), 0 2px 4px rgba(34, 54, 73, 0.2);
+  z-index: 10;
+}
+
+.zoomPercent {
+  font-size: var(--sapFontSmallSize);
+  font-weight: 600;
+  color: var(--sapHighlightColor);
+  min-width: 2.5rem;
+  text-align: center;
+  cursor: pointer;
+}
+
+/* ── Joule floating input ─────────────────────────────────────────────────── */
+.jouleContainer {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: clamp(300px, 45%, 560px);
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+  pointer-events: auto;
+  animation: jouleSlideIn 0.25s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.jouleContainerHiding {
+  animation: jouleSlideOut 0.22s cubic-bezier(0.4, 0, 1, 1) both;
+}
+
+@keyframes jouleSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@keyframes jouleSlideOut {
+  from {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-50%) translateY(10px);
+  }
+}
+
+.jouleResponseCard {
+  background: var(--sapBaseColor);
+  border-radius: 28px;
+  padding: 0.75rem 1rem calc(44px + 0.75rem);
+  outline: 1px solid var(--sapNeutralBorderColor);
+  box-shadow: 0 0 2px rgba(34,54,73,0.1), 0 4px 12px rgba(34,54,73,0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: -44px;
+  animation: jouleCardIn 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+  transform-origin: bottom center;
+}
+
+@keyframes jouleCardIn {
+  from {
+    opacity: 0;
+    transform: scaleY(0.85) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scaleY(1) translateY(0);
+  }
+}
+
+.jouleResponseCardHiding {
+  animation: jouleCardOut 0.18s cubic-bezier(0.4, 0, 1, 1) both;
+  pointer-events: none;
+}
+
+@keyframes jouleCardOut {
+  from {
+    opacity: 1;
+    transform: scaleY(1) translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: scaleY(0.88) translateY(6px);
+  }
+}
+
+.jouleInputWrapper {
+  position: relative;
+  z-index: 1;
+}
+
+.jouleResponseHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.jouleResponseActions {
+  display: flex;
+  gap: 0.25rem;
+}
+
+/* ── Empty state overlay ─────────────────────────────────────────────────── */
+.emptyState {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+  padding: 1.5rem;
+  animation: emptyFadeIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes emptyFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.emptyCard {
+  background: #f0f1f2;
+  border-radius: 20px;
+  padding: 2rem 2rem 8rem;
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  text-align: center;
+}
+
+.emptyInputArea {
+  width: 100%;
+  margin-top: 0.25rem;
+}
+
+.emptyStarters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.emptyStarterChip {
+  background: var(--sapButton_Lite_Background, transparent);
+  border: 1px solid var(--sapNeutralBorderColor);
+  border-radius: 2rem;
+  padding: 0.25rem 0.75rem;
+  font-size: var(--sapFontSmallSize);
+  font-family: var(--sapFontFamily);
+  color: var(--sapTextColor);
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+  white-space: nowrap;
+}
+
+.emptyStarterChip:hover {
+  background: var(--sapButton_Lite_Hover_Background, var(--sapList_Hover_Background));
+  border-color: var(--sapHighlightColor);
+  color: var(--sapHighlightColor);
+}
+
+.emptyFootnote {
+  font-size: var(--sapFontSmallSize);
+  color: var(--sapContent_LabelColor);
+  opacity: 0.75;
+  margin-top: 0.25rem;
+}

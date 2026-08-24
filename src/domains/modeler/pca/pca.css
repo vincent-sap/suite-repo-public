@@ -1,0 +1,214 @@
+/*
+ * All CSS needed by the Process Consulting Agent, scoped under .pca-scope.
+ * This replicates what SUITE-REPO-PCA's index.css provides via Tailwind base +
+ * the custom overrides it defines, without polluting the rest of the app.
+ */
+
+/* ── Keyframes (must be global) ──────────────────────────────────────────── */
+
+@keyframes pca-strip-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.pca-strip-in {
+  animation: pca-strip-in 0.2s ease-out forwards;
+}
+
+/* ── Sidebar transparent variant (homepage — blends with page background) ── */
+/* Strips the purple-tinted card background so the sidebar feels flush        */
+
+.pca-sidebar-transparent .pca-scope,
+.pca-sidebar-transparent {
+  background-color: var(--sapBackgroundColor, #f5f6f7) !important;
+}
+
+.pca-sidebar-transparent .flex.flex-col.flex-1 {
+  background-color: transparent !important;
+  border-radius: 0 !important;
+}
+
+/* ── CSS variables (Tailwind theme tokens + SAP token overrides) ─────────── */
+
+.pca-scope {
+  /* Tailwind color tokens used by PCA component classes */
+  --background: 0 0% 100%;
+  --foreground: 220 20% 10%;
+  --card: 0 0% 100%;
+  --card-foreground: 220 20% 10%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 220 20% 10%;
+  --primary: 221 83% 53%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 220 14% 96%;
+  --secondary-foreground: 220 20% 10%;
+  --muted: 220 14% 96%;
+  --muted-foreground: 220 9% 46%;
+  --accent: 220 14% 93%;
+  --accent-foreground: 220 20% 10%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 220 13% 91%;
+  --input: 220 13% 91%;
+  --ring: 221 83% 53%;
+  --radius: 0.75rem;
+
+  /* SAP token overrides that the PCA relies on */
+  --sapList_BorderColor: #e5e5e5;
+  --sapList_GroupHeaderBorderColor: #a8b3bd;
+  --sapList_GroupHeaderBackground: #fff;
+  --sapList_GroupHeaderTextColor: #1d2d3e;
+  --sapList_Background: #fff;
+  --sapList_SelectionBackgroundColor: #ebf8ff;
+  --sapList_Hover_Background: #eaecee;
+  --sapList_Hover_SelectionBackground: #dcf3ff;
+  --sapList_SelectionBorderColor: #0064d9;
+  --sapFontBoldFamily: bold;
+  --sapFontHeader6Size: 14px;
+  --sapButton_BorderWidth: 0.0625rem;
+  --sapButton_BorderColor: #bcc3ca;
+  --sapButton_BorderCornerRadius: 0.5rem;
+  --sapButton_Selected_BorderColor: #0064d9;
+
+  /* Base layout/color for the PCA area */
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: var(--sapFontFamily, '72', sans-serif);
+}
+
+/* ── Tailwind preflight equivalent, scoped ───────────────────────────────── */
+/*
+ * The PCA was built with @tailwind base which runs Tailwind's preflight reset.
+ * Key effect: sets border-width:0 on all elements (then the PCA's index.css
+ * restores it for UI5 components). We replicate that pattern here, scoped.
+ */
+
+.pca-scope *,
+.pca-scope *::before,
+.pca-scope *::after {
+  box-sizing: border-box;
+  border-width: 0;
+  border-style: solid;
+  border-color: hsl(var(--border));
+}
+
+.pca-scope p,
+.pca-scope h1,
+.pca-scope h2,
+.pca-scope h3,
+.pca-scope h4,
+.pca-scope h5,
+.pca-scope h6 {
+  margin: 0;
+}
+
+.pca-scope ol,
+.pca-scope ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── UI5 button border fixes ─────────────────────────────────────────────── */
+/*
+ * The border-width:0 reset above removes borders from UI5 host elements.
+ * These rules restore the correct sapButton border appearance.
+ */
+
+.pca-scope ui5-button {
+  border-width: var(--sapButton_BorderWidth, 0.0625rem);
+  border-style: solid;
+  border-color: var(--sapButton_BorderColor, #bcc3ca);
+}
+.pca-scope ui5-button:not([disabled]):hover {
+  border-color: var(--sapButton_Hover_BorderColor, #6a7888);
+}
+.pca-scope ui5-button[design="Transparent"] {
+  border-color: var(--sapButton_Lite_BorderColor, transparent);
+}
+.pca-scope ui5-button[design="Transparent"]:not([disabled]):hover {
+  border-color: var(--sapButton_Lite_Hover_BorderColor, #bcc3ca);
+}
+.pca-scope ui5-button[design="Emphasized"] {
+  border-color: var(--sapButton_Emphasized_BorderColor, #0064d9);
+}
+.pca-scope ui5-button[design="Emphasized"]:not([disabled]):hover {
+  border-color: var(--sapButton_Emphasized_Hover_BorderColor, #0058c0);
+}
+
+/* ── SegmentedButton ─────────────────────────────────────────────────────── */
+
+.pca-scope ui5-segmented-button {
+  width: auto !important;
+}
+.pca-scope ui5-segmented-button-item {
+  border-width: var(--sapButton_BorderWidth, 0.0625rem);
+  border-style: solid;
+  border-color: transparent;
+}
+.pca-scope ui5-segmented-button-item:not([disabled]):hover {
+  border-color: var(--sapButton_Hover_BorderColor, #bcc3ca);
+}
+.pca-scope ui5-segmented-button-item[selected] {
+  border-color: var(--sapButton_Selected_BorderColor, #0064d9);
+}
+.pca-scope ui5-segmented-button-item[selected]:not([disabled]):hover {
+  border-color: var(--sapButton_Selected_Hover_BorderColor, #0064d9);
+}
+
+/* ── List item backgrounds ───────────────────────────────────────────────── */
+
+.pca-scope ui5-li-group::part(header) {
+  font-weight: 700;
+  border-bottom: 1px solid #a8b3bd;
+}
+
+.pca-scope ui5-li-custom::part(native-li) {
+  background-color: var(--sapList_Background, #fff);
+}
+.pca-scope ui5-li-custom:not([type="Inactive"]):hover::part(native-li) {
+  background-color: var(--sapList_Hover_Background, #eaecee);
+}
+.pca-scope ui5-li-custom[selected]::part(native-li) {
+  background-color: var(--sapList_SelectionBackgroundColor, #ebf8ff);
+}
+.pca-scope ui5-li-custom[selected]:not([type="Inactive"]):hover::part(native-li) {
+  background-color: var(--sapList_Hover_SelectionBackground, #dcf3ff);
+}
+
+/* ── Miscellaneous UI5 overrides ─────────────────────────────────────────── */
+
+.pca-scope ui5-side-navigation-group {
+  --sapFontSize: var(--sapFontSmallSize);
+}
+
+.pca-scope .save-view-footer-bar::part(endContent) {
+  padding-inline-end: 0;
+}
+
+/* Counter the global App.css rule that removes padding from all ui5-dialog */
+.pca-scope ui5-dialog::part(content) {
+  padding: revert;
+}
+
+/* ── AnalyticalTable (InitiativeTable) ───────────────────────────────────── */
+
+.pca-scope .initiative-table [role="gridcell"],
+.pca-scope .initiative-table [role="columnheader"] {
+  border-inline-end: 1px solid var(--sapList_BorderColor, #e5e5e5) !important;
+}
+.pca-scope .initiative-table [role="columnheader"] {
+  border-block-end: 1px solid var(--sapList_GroupHeaderBorderColor, #a8b3bd) !important;
+}
+.pca-scope .initiative-table [role="row"] {
+  border-block-end: 1px solid var(--sapList_BorderColor, #e5e5e5) !important;
+}
+.pca-scope .initiative-table [role="row"][data-is-selected] {
+  border-block-end: 1px solid var(--sapList_SelectionBorderColor, #0064d9) !important;
+}
+.pca-scope .initiative-table [role="rowgroup"] {
+  overflow: visible !important;
+}
+.pca-scope .initiative-table [data-component="sig-table-wrapper"] {
+  border-radius: 8px;
+  overflow: hidden;
+}

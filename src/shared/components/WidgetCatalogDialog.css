@@ -1,0 +1,154 @@
+/* ── Widget Catalog Dialog ── */
+
+.widget-catalog-dialog {
+  --wcd-list-width: 360px;
+  /* Reduce UI5 Dialog header/footer horizontal padding from default 2rem (32px) to 1rem (16px) */
+  --_ui5_popup_header_footer_padding_m_l: 1rem;
+}
+
+/* The Bar inside the footer adds its own 1rem edge padding on top of the dialog's
+   footer wrapper padding — remove it to avoid doubling up. */
+.widget-catalog-dialog ui5-bar {
+  --_ui5_bar-end-container-padding-end: 0;
+  --_ui5_bar-start-container-padding-start: 0;
+}
+
+.widget-catalog-dialog::part(content) {
+  padding: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: 512px;
+  max-height: min(512px, calc(100dvh - 2rem - 88px));
+}
+
+.widget-catalog-dialog::part(dialog) {
+  /* On wide screens: 840px. On narrow screens: full width minus small margin. */
+  width: min(840px, calc(100vw - 2rem));
+  height: 600px;
+  max-height: min(600px, calc(100dvh - 2rem));
+  border-radius: 12px;
+}
+
+/* ── Two-column body ── */
+
+.wcd-body {
+  display: flex;
+  height: 512px;
+  overflow: hidden;
+  background: var(--sapGroup_ContentBackground, #fff);
+}
+
+/* ── Left: widget list ── */
+
+.wcd-list {
+  width: var(--wcd-list-width);
+  flex-shrink: 0;
+  border-right: 1px solid var(--sapGroup_ContentBorderColor, #d9d9d9);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  --_ui5_list_width: var(--wcd-list-width);
+  /* Focus ring 2px inset from the item edges (no public API for this) */
+  --_ui5_list_item_focus_offset: 2px;
+}
+
+.wcd-list-item {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.wcd-list-item__inner {
+  padding: 12px 0;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.wcd-list-item__icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.wcd-list-item__icon {
+  width: 1rem;
+  height: 1rem;
+  color: var(--sapContent_NonInteractiveIconColor, #758ca4);
+}
+
+.wcd-list-item__text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  justify-content: center;
+  min-height: 32px;
+}
+
+.wcd-list-item__title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 20px;
+}
+
+.wcd-list-item__title {
+  flex: 1;
+  font-family: var(--sapFontBoldFamily, var(--sapFontFamily));
+  font-size: var(--sapFontSize, 0.875rem);
+  font-weight: bold;
+  color: var(--sapList_TextColor, #131e29);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.wcd-list-item__description {
+  font-family: var(--sapFontFamily);
+  font-size: var(--sapFontSize, 0.875rem);
+  color: var(--sapContent_LabelColor, #556b82);
+  line-height: 1.4;
+}
+
+/* ── Right: preview pane ── */
+
+.wcd-preview {
+  /* Fixed width so the card never shrinks — gets cropped by overflow-x: hidden on content */
+  flex-shrink: 0;
+  width: calc(420px + 2 * 24px); /* card width + left/right padding */
+  background: var(--sapBackgroundColor, #f5f6f7);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  user-select: none;
+}
+
+.wcd-preview__card-wrap {
+  width: 420px;
+  height: 432px;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 16px;
+  pointer-events: none;
+  box-shadow: var(--sapContent_Shadow0);
+}
+
+.wcd-preview__placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 420px;
+  height: 432px;
+  background: var(--sapTile_Background, #fff);
+  border-radius: 16px;
+  box-shadow: var(--sapContent_Shadow0);
+  font-family: var(--sapFontFamily);
+  font-size: var(--sapFontSize, 0.875rem);
+  color: var(--sapContent_LabelColor, #556b82);
+}

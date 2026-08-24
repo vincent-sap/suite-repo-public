@@ -1,0 +1,55 @@
+.listContainer {
+  border: 0.0625rem solid #ccc;
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.listItem::part(native-li) {
+  align-items: flex-start;
+}
+
+.listItem::part(checkbox) {
+  padding-top: 0.4rem;
+}
+
+.listItem::part(content) {
+  justify-content: space-between;
+}
+
+.listItemSelectAll::part(title) {
+  font-weight: 700;
+}
+
+.listItemContentContainer {
+  gap: 0.5rem;
+  padding: 1rem 1rem 1rem 0;
+}
+
+.listItemTitle {
+  font-family: var(--sapFontFamily, 72);
+  font-size: var(--sapFontLargeSize, 1rem);
+  color: var(--sapList_TextColor);
+  font-weight: 700;
+}
+
+.listItemDescription {
+  font-family: var(--sapFontFamily, 72);
+  font-size: var(--sapFontSize, 0.875rem);
+  color: var(--sapList_TextColor);
+  margin: 0 !important;
+}
+
+.linkButton {
+  height: 1.625rem;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  flex-shrink: 0;
+}
+
+.listItem:hover .linkButton {
+  opacity: 1;
+}
+
+.chipsContainer {
+  gap: 1rem;
+}

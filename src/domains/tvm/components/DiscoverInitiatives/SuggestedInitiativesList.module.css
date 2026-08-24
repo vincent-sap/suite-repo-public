@@ -1,0 +1,39 @@
+.container {
+  height: 70vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  padding: 1rem;
+  border-bottom: var(--ui5-v2-12-0-listitem-border-bottom, 1px solid var(--sapList_BorderColor));
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.listItem {
+  padding: 1rem 0;
+  width: 100%;
+}
+
+.listItem::part(native-li) {
+  align-items: flex-start;
+}
+
+.listItem::part(checkbox) {
+  padding-top: 0.4rem;
+}
+
+.initiativeName {
+  font-size: var(--sapFontLargeSize, 1rem);
+}
+
+.initiativeName:hover {
+  cursor: pointer;
+}
+
+.chips {
+  row-gap: 0.25rem;
+}

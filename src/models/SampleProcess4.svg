@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+  width="100%"
+  height="100%"
+  viewBox="0 0 1200 500"
+  style="position: absolute; inset: 0"
+>
+
+  <!-- Arrow marker definitions -->
+  <defs>
+    <!-- Horizontal arrow -->
+    <marker 
+      id="arrowhead-horizontal" 
+      markerWidth="6" 
+      markerHeight="6" 
+      refX="6" 
+      refY="3" 
+      orient="auto"
+    >
+      <polygon points="0 0, 6 3, 0 6" fill="#758CA4" stroke="none" />
+    </marker>
+    
+    <!-- Vertical arrow - downward pointing polygon -->
+    <marker 
+      id="arrowhead-vertical" 
+      markerWidth="6" 
+      markerHeight="6" 
+      refX="3" 
+      refY="6"
+    >
+      <polygon points="0 0, 6 0, 3 6" fill="#758CA4" stroke="none" />
+    </marker>
+  </defs>
+
+  <!-- ARROWS LAYER - Draw all arrows first so they appear behind shapes -->
+  
+  <!-- Arrow from start to Evaluate CV - horizontal -->
+  <path d="M 95 150 L 149 150" stroke="#758CA4" stroke-width="2" fill="none" marker-end="url(#arrowhead-horizontal)" />
+  
+  <!-- Arrow to first gateway - horizontal -->
+  <path d="M 250 150 L 299 150" stroke="#758CA4" stroke-width="2" fill="none" marker-end="url(#arrowhead-horizontal)" />
+  
+  <!-- Yes path from first gateway - horizontal -->
+  <path d="M 330 150 L 379 150" stroke="#758CA4" stroke-width="2" fill="none" marker-end="url(#arrowhead-horizontal)" />
+  
+  <!-- No path from first gateway - down then right -->
+  <path d="M 315 165 L 315 250" stroke="#758CA4" stroke-width="2" fill="none" />
+  <path d="M 315 250 L 379 250" stroke="#758CA4" stroke-width="2" fill="none" marker-end="url(#arrowhead-horizontal)" />
+  
+  <!-- Arrow to Interview candidate - horizontal -->
+  <path d="M 480 150 L 529 150" stroke="#758CA4" stroke-width="2" fill="none" marker-end="url(#arrowhead-horizontal)" />
+  
+  <!-- Arrow to second gateway - horizontal -->
+  <path d="M 630 150 L 679 150" stroke="#758CA4" stroke-width="2" fill="none" marker-end="url(#arrowhead-horizontal)" />
+  
+  <!-- Yes path from second gateway - horizontal -->
+  <path d="M 710 150 L 759 150" stroke="#758CA4" stroke-width="2" fill="none" marker-end="url(#arrowhead-horizontal)" />
+  
+  <!-- No path from second gateway - down (vertical) -->
+  <path d="M 695 165 L 695 330" stroke="#758CA4" stroke-width="2" fill="none" marker-end="url(#arrowhead-vertical)" />
+  
+  <!-- Arrow to third gateway - horizontal -->
+  <path d="M 860 150 L 909 150" stroke="#758CA4" stroke-width="2" fill="none" marker-end="url(#arrowhead-horizontal)" />
+  
+  <!-- Yes path from third gateway - horizontal -->
+  <path d="M 940 150 L 989 150" stroke="#758CA4" stroke-width="2" fill="none" marker-end="url(#arrowhead-horizontal)" />
+  
+  <!-- No path from third gateway - bent arrow to rejection end event (ends horizontal) -->
+  <path d="M 925 165 L 925 250 L 1019 250" stroke="#758CA4" stroke-width="2" fill="none" marker-end="url(#arrowhead-horizontal)" />
+  
+  <!-- Arrow to final end event - horizontal -->
+  <path d="M 1090 150 L 1134 150" stroke="#758CA4" stroke-width="2" fill="none" marker-end="url(#arrowhead-horizontal)" />
+  
+  <!-- Arrow to first end event - horizontal -->
+  <path d="M 480 250 L 524 250" stroke="#758CA4" stroke-width="2" fill="none" marker-end="url(#arrowhead-horizontal)" />
+  
+  <!-- Arrow from second rejection to second end event - horizontal -->
+  <path d="M 745 355 L 789 355" stroke="#758CA4" stroke-width="2" fill="none" marker-end="url(#arrowhead-horizontal)" />
+
+  <!-- SHAPES AND TEXT LAYER - Draw all shapes and text on top -->
+
+  <!-- Start Event: Application received -->
+  <circle cx="80" cy="150" r="15" fill="white" stroke="black" stroke-width="2" />
+  <foreignObject x="30" y="180" width="100" height="30">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: center; justify-content: center; height: 100%; padding: 0 8px; text-align: center; font-size: 12px; color: #131E29; font-family: '72', sans-serif">
+      Start event
+    </div>
+  </foreignObject>
+  
+  <!-- Task: Evaluate CV -->
+  <rect x="150" y="125" width="100" height="50" rx="5" fill="white" stroke="black" stroke-width="2" />
+  <foreignObject x="150" y="125" width="100" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: center; justify-content: center; height: 100%; padding: 0 8px; text-align: center; font-size: 12px; color: #131E29; font-family: '72', sans-serif">
+      Amet Elit
+    </div>
+  </foreignObject>
+  
+  <!-- Gateway: Proceed with interview? -->
+  <rect 
+    x="300" 
+    y="135" 
+    width="30" 
+    height="30" 
+    rx="4" 
+    fill="white" 
+    stroke="black" 
+    stroke-width="2" 
+    transform="rotate(45, 315, 150)"
+  />
+  <foreignObject x="265" y="85" width="100" height="30">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: center; justify-content: center; height: 100%; padding: 0 8px; text-align: center; font-size: 12px; color: #131E29; font-family: '72', sans-serif">
+      Consectetur Adipiscing?
+    </div>
+  </foreignObject>
+  
+  <!-- Yes label - moved 6px up and 4px left -->
+  <foreignObject x="336" y="129" width="30" height="20">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: center; justify-content: center; height: 100%; padding: 0 8px; text-align: center; font-size: 12px; color: #131E29; font-family: '72', sans-serif">
+      Yes
+    </div>
+  </foreignObject>
+  
+  <!-- No label -->
+  <foreignObject x="320" y="170" width="30" height="20">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: center; justify-content: center; height: 100%; padding: 0 8px; text-align: center; font-size: 12px; color: #131E29; font-family: '72', sans-serif">
+      No
+    </div>
+  </foreignObject>
+  
+  <!-- Task: Plan interview -->
+  <rect x="380" y="125" width="100" height="50" rx="5" fill="white" stroke="black" stroke-width="2" />
+  <foreignObject x="380" y="125" width="100" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: center; justify-content: center; height: 100%; padding: 0 8px; text-align: center; font-size: 12px; color: #131E29; font-family: '72', sans-serif">
+      Sed Do Eiusmod
+    </div>
+  </foreignObject>
+  
+  <!-- Task: Interview candidate -->
+  <rect x="530" y="125" width="100" height="50" rx="5" fill="white" stroke="black" stroke-width="2" />
+  <foreignObject x="530" y="125" width="100" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: center; justify-content: center; height: 100%; padding: 0 8px; text-align: center; font-size: 12px; color: #131E29; font-family: '72', sans-serif">
+      Incididunt Labore Ut
+    </div>
+  </foreignObject>
+  
+  <!-- Gateway: Hire candidate? -->
+  <rect 
+    x="680" 
+    y="135" 
+    width="30" 
+    height="30" 
+    rx="4" 
+    fill="white" 
+    stroke="black" 
+    stroke-width="2" 
+    transform="rotate(45, 695, 150)"
+  />
+  <foreignObject x="645" y="85" width="100" height="30">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: center; justify-content: center; height: 100%; padding: 0 8px; text-align: center; font-size: 12px; color: #131E29; font-family: '72', sans-serif">
+      Aliqua Eiusmod?
+    </div>
+  </foreignObject>
+  
+  <!-- Yes label - moved 6px up and 4px left -->
+  <foreignObject x="716" y="129" width="30" height="20">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: center; justify-content: center; height: 100%; padding: 0 8px; text-align: center; font-size: 12px; color: #131E29; font-family: '72', sans-serif">
+      Yes
+    </div>
+  </foreignObject>
+  
+  <!-- No label -->
+  <foreignObject x="700" y="170" width="30" height="20">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: center; justify-content: center; height: 100%; padding: 0 8px; text-align: center; font-size: 12px; color: #131E29; font-family: '72', sans-serif">
+      No
+    </div>
+  </foreignObject>
+  
+  <!-- Task: Make offer -->
+  <rect x="760" y="125" width="100" height="50" rx="5" fill="white" stroke="black" stroke-width="2" />
+  <foreignObject x="760" y="125" width="100" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: center; justify-content: center; height: 100%; padding: 0 8px; text-align: center; font-size: 12px; color: #131E29; font-family: '72', sans-serif">
+      Amet Velit
+    </div>
+  </foreignObject>
+  
+  <!-- Gateway: Offer accepted? -->
+  <rect 
+    x="910" 
+    y="135" 
+    width="30" 
+    height="30" 
+    rx="4" 
+    fill="white" 
+    stroke="black" 
+    stroke-width="2" 
+    transform="rotate(45, 925, 150)"
+  />
+  <foreignObject x="875" y="85" width="100" height="30">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: center; justify-content: center; height: 100%; padding: 0 8px; text-align: center; font-size: 12px; color: #131E29; font-family: '72', sans-serif">
+      Ipsum Occaecat?
+    </div>
+  </foreignObject>
+  
+  <!-- Yes label - moved 6px up and 4px left -->
+  <foreignObject x="946" y="129" width="30" height="20">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: center; justify-content: center; height: 100%; padding: 0 8px; text-align: center; font-size: 12px; color: #131E29; font-family: '72', sans-serif">
+      Yes
+    </div>
+  </foreignObject>
+  
+  <!-- No label -->
+  <foreignObject x="930" y="170" width="30" height="20">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: center; justify-content: center; height: 100%; padding: 0 8px; text-align: center; font-size: 12px; color: #131E29; font-family: '72', sans-serif">
+      No
+    </div>
+  </foreignObject>
+  
+  <!-- Task: Onboard candidate -->
+  <rect x="990" y="125" width="100" height="50" rx="5" fill="white" stroke="black" stroke-width="2" />
+  <foreignObject x="990" y="125" width="100" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: center; justify-content: center; height: 100%; padding: 0 8px; text-align: center; font-size: 12px; color: #131E29; font-family: '72', sans-serif">
+      Nostrud Exercitat
+    </div>
+  </foreignObject>
+  
+  <!-- End Event: Candidate hired -->
+  <circle cx="1149" cy="150" r="15" fill="white" stroke="black" stroke-width="4" />
+  <foreignObject x="1099" y="180" width="100" height="30">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: center; justify-content: center; height: 100%; padding: 0 8px; text-align: center; font-size: 12px; color: #131E29; font-family: '72', sans-serif">
+      End event 1
+    </div>
+  </foreignObject>
+  
+  <!-- Task: Send rejection (first one) -->
+  <rect x="380" y="225" width="100" height="50" rx="5" fill="white" stroke="black" stroke-width="2" />
+  <foreignObject x="380" y="225" width="100" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: center; justify-content: center; height: 100%; padding: 0 8px; text-align: center; font-size: 12px; color: #131E29; font-family: '72', sans-serif">
+      Ullamco Laboris
+    </div>
+  </foreignObject>
+
+  <!-- End Event: Application rejected (first) -->
+  <circle cx="539" cy="250" r="15" fill="white" stroke="black" stroke-width="4" />
+  <foreignObject x="489" y="280" width="100" height="30">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: center; justify-content: center; height: 100%; padding: 0 8px; text-align: center; font-size: 12px; color: #131E29; font-family: '72', sans-serif">
+      End event 2
+    </div>
+  </foreignObject>
+
+  <!-- Task: Send rejection (second one) -->
+  <rect x="645" y="330" width="100" height="50" rx="5" fill="white" stroke="black" stroke-width="2" />
+  <foreignObject x="645" y="330" width="100" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: center; justify-content: center; height: 100%; padding: 0 8px; text-align: center; font-size: 12px; color: #131E29; font-family: '72', sans-serif">
+      Veniam Quis Est
+    </div>
+  </foreignObject>
+
+  <!-- End Event: Application rejected (second) -->
+  <circle cx="804" cy="355" r="15" fill="white" stroke="black" stroke-width="4" />
+  <foreignObject x="754" y="385" width="100" height="30">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: center; justify-content: center; height: 100%; padding: 0 8px; text-align: center; font-size: 12px; color: #131E29; font-family: '72', sans-serif">
+      End event 3
+    </div>
+  </foreignObject>
+
+  <!-- End Event: Candidate has rejected -->
+  <circle cx="1034" cy="250" r="15" fill="white" stroke="black" stroke-width="4" />
+  <foreignObject x="984" y="280" width="100" height="30">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: center; justify-content: center; height: 100%; padding: 0 8px; text-align: center; font-size: 12px; color: #131E29; font-family: '72', sans-serif">
+      End event 4
+    </div>
+  </foreignObject>
+</svg>

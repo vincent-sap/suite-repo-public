@@ -1,0 +1,76 @@
+/* Shared styles for SuiteContextPanel sub-panels */
+
+.groupHeader {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 0;
+  width: 100%;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+}
+
+.groupHeader:hover {
+  background: var(--sapList_Hover_Background);
+  border-radius: 4px;
+}
+
+.attrList {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 0 0 4px 0;
+}
+
+.attrRow {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--sapList_BorderColor);
+}
+
+.attrRow:last-child {
+  border-bottom: none;
+}
+
+/* ── Comments ─────────────────────────────────────────────────────────── */
+
+.commentBubble {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--sapList_BorderColor);
+}
+
+.commentBubble:last-child {
+  border-bottom: none;
+}
+
+.commentBubbleNested {
+  margin-left: 1.5rem;
+  padding-bottom: 0;
+  border-bottom: none;
+  padding-top: 8px;
+}
+
+.commentBubbleResolved {
+  opacity: 0.65;
+}
+
+.commentHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.commentMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  flex: 1;
+  min-width: 0;
+}

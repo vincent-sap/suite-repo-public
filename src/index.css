@@ -1,0 +1,10 @@
+/* Tailwind utilities only — NOT @tailwind base.
+   Preflight (base) would reset borders/margins on UI5 web components globally
+   and break the rest of the app. The PCA components need only utility classes
+   (flex, gap, rounded, px/py, etc.); their preflight-equivalent reset is
+   scoped locally in src/components/pca/pca.css under .pca-scope. */
+@tailwind components;
+@tailwind utilities;
+
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; font-family: var(--sapFontFamily, '72', sans-serif); }

@@ -1,0 +1,19 @@
+/* Hide the publishGroup groupBy column header and data cells.
+   The column must remain in the DOM for native AnalyticalTable grouping to work. */
+.newsfeed-table [data-column-id="publishGroup"] {
+  max-width: 0 !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  border: none !important;
+}
+
+.newsfeed-table [data-column-id-cell="publishGroup"] {
+  overflow: hidden !important;
+  border-right: none !important;
+}
+
+/* Group header rows: restore so the label + expand button are visible */
+.newsfeed-table [class*="_tableGroupHeader_"] [data-column-id-cell="publishGroup"] {
+  overflow: visible !important;
+  border-right: none !important;
+}

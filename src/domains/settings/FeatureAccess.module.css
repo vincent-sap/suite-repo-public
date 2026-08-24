@@ -1,0 +1,156 @@
+/* ─── Left column: DynamicPage + AnalyticalTable ─────────────────────────── */
+
+.leftDynamicPage {
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.leftDynamicPage::part(content) {
+  overflow: hidden;
+}
+
+.leftDynamicPageTitle {
+  justify-content: flex-end;
+  box-sizing: border-box;
+  min-height: 6.2rem;
+  padding-top: 0;
+}
+
+.userGroupsTable {
+  box-sizing: border-box;
+}
+
+.userGroupsTable :global([role='row']) {
+  cursor: pointer;
+}
+
+.userGroupsTable :global([role='row']:hover) {
+  background: var(--sapList_Hover_Background);
+}
+
+/* ─── Right column: DynamicPage + grouped Panels ─────────────────────────── */
+
+.rightDynamicPageTitle {
+  min-height: 6.2rem;
+  justify-content: flex-end;
+  box-sizing: border-box;
+}
+
+.rightHeading {
+  font-size: var(--sapObjectHeader_Title_SnappedFontSize);
+  padding-top: 0;
+}
+
+.dynamicPageSubHeading {
+  text-wrap: balance;
+  color: var(--sapContent_LabelColor);
+  line-height: 1.3;
+  margin: 0.25rem 0 0.35rem 0;
+}
+
+/* ─── Groups wrapper ─────────────────────────────────────────────────────── */
+
+.groupsWrapper {
+  box-sizing: border-box;
+  margin-bottom: 3.25rem; /* prevent footer overlap */
+}
+
+.groupPanel::part(content) {
+  padding: 0;
+}
+
+.groupPanelHeader {
+  display: flex;
+  align-items: center;
+  margin-left: -8px;
+}
+
+.groupPanelTitle {
+  padding: 0.5rem;
+}
+
+/* ─── Subgroup ───────────────────────────────────────────────────────────── */
+
+.subSection {
+  border-top: 1px solid var(--sapGroup_ContentBorderColor);
+}
+
+.subGroupHeaderIcon {
+  flex-shrink: 0;
+  color: var(--sapContent_IconColor);
+  margin-right: 5px;
+}
+
+.subGroupHeaderText {
+  font-weight: bold;
+  font-size: var(--sapFontSize);
+  white-space: nowrap;
+  margin-left: 0.5rem;
+}
+
+/* ─── List items ─────────────────────────────────────────────────────────── */
+
+.list {
+  width: 100%;
+}
+
+.listItem {
+  min-height: 3.25rem;
+}
+
+.listItem:not(.listItemSelected) {
+  border-bottom: 1px solid var(--sapList_Background);
+}
+
+.listItemSelected {
+  border-bottom: 1px solid var(--sapList_SelectionBackgroundColor);
+}
+
+.listItem:not(.listItemSelected):not(.listItemInactive):hover {
+  border-bottom: 1px solid var(--sapList_Hover_Background);
+}
+
+.listItem::part(checkbox) {
+  margin-left: 2.2rem;
+}
+
+.subSection .listItem::part(checkbox) {
+  margin-left: 70px;
+}
+
+.listItemContent {
+  width: 100%;
+  padding: 0.5rem 0 0.3rem 0.5rem;
+}
+
+.listItemContent:not(:has(.listItemDescription)) {
+  padding: 0 0 0 0.5rem;
+}
+
+.listItemName {
+  text-wrap: balance;
+  min-width: 0;
+  flex: 1;
+  line-height: 1.3;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.listItemDescription {
+  color: var(--sapContent_LabelColor);
+  font-size: var(--sapFontSmallSize);
+  line-height: 1.4;
+  text-wrap: balance;
+  cursor: pointer;
+}
+
+.listItemInactive .listItemName,
+.listItemInactive .listItemDescription {
+  cursor: default;
+  opacity: 0.4;
+}
+
+.chip {
+  margin-top: 4px;
+  flex-shrink: 0;
+}

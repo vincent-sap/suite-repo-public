@@ -1,0 +1,169 @@
+/* ── Templates Shell & Index UI ────────────────────────────────────────────
+   This file styles the prototype navigation chrome (top bars, index page).
+   It is NOT part of the template patterns — Claude can ignore this file. */
+
+.tpl-shell {
+  min-height: 100vh;
+  background: var(--sapBackgroundColor);
+  font-family: var(--sapFontFamily);
+}
+
+.tpl-shell-row1 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.125rem;
+  padding: 0 1rem;
+  height: 2.75rem;
+  background: #4a1f8a;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.tpl-shell-row2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.125rem;
+  padding: 0 1rem;
+  height: 2.75rem;
+  background: #3a1570;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tpl-shell-home {
+  font-weight: 600;
+  font-size: var(--sapFontSize);
+  cursor: pointer;
+  user-select: none;
+  margin-right: 0.25rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.25rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tpl-shell-separator {
+  width: 1px;
+  height: 1.25rem;
+  background: rgba(255, 255, 255, 0.3);
+  margin-inline: 0.5rem;
+  flex-shrink: 0;
+}
+
+.tpl-shell-btn {
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.25rem;
+  border: none;
+  cursor: pointer;
+  font-size: var(--sapFontSize);
+  font-family: var(--sapFontFamily);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tpl-shell-btn-sub {
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.25rem;
+  border: none;
+  cursor: pointer;
+  font-size: var(--sapFontSize);
+  font-family: var(--sapFontFamily);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tpl-shell-content {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+/* ── Index page ── */
+
+.tpl-index-wrap {
+  padding: 2.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.tpl-index-header {
+  margin-bottom: 1rem;
+}
+
+.tpl-index-title {
+  font-weight: 600;
+  font-size: var(--sapFontHeader4Size);
+  color: var(--sapTextColor);
+  margin-bottom: 0.25rem;
+}
+
+.tpl-index-subtitle {
+  font-size: var(--sapFontSize);
+  color: var(--sapContent_LabelColor);
+}
+
+.tpl-index-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: var(--sapGroup_ContentBackground);
+  border: 1px solid var(--sapGroup_ContentBorderColor);
+  border-radius: var(--sapElement_BorderCornerRadius);
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.tpl-index-card:hover {
+  background: var(--sapList_Hover_Background);
+}
+
+.tpl-index-card-body {
+  flex: 1;
+}
+
+.tpl-index-card-label {
+  font-weight: 600;
+  font-size: var(--sapFontSize);
+  color: var(--sapTextColor);
+}
+
+.tpl-index-card-desc {
+  font-size: var(--sapFontSmallSize);
+  color: var(--sapContent_LabelColor);
+  margin-top: 0.125rem;
+}
+
+.tpl-index-card-arrow {
+  font-size: var(--sapFontSize);
+  color: var(--sapContent_LabelColor);
+}
+
+.tpl-index-card--secondary {
+  text-decoration: none;
+  margin-top: 0.5rem;
+  background: #4a1f8a;
+  border-color: #6b35c0;
+  color: #fff;
+}
+
+.tpl-index-card--secondary .tpl-index-card-label {
+  color: #fff;
+}
+
+.tpl-index-card--secondary .tpl-index-card-desc {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.tpl-index-card--secondary .tpl-index-card-arrow {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.tpl-index-card--secondary:hover {
+  background: #5c28a8;
+}

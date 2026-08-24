@@ -1,0 +1,332 @@
+/* ── Widget card shell (shared by FavoritesWidget, RecentlyViewedWidget) ── */
+
+.widget-card {
+  background: var(--sapTile_Background, #fff);
+  border-radius: var(--_ui5_card_border-radius, var(--sapTile_BorderCornerRadius, 1rem));
+  box-shadow: var(--_ui5_card_box_shadow, var(--sapContent_Shadow0));
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  overflow: hidden;
+}
+
+/* Header doubles as drag handle via shared .card__header class from App.css */
+.widget-card__header {
+  padding: 16px 16px 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* SigInlineEdit title wrapper — flex child that constrains the component */
+.widget-card__title-wrap {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* In readonly mode SigInlineEdit renders plain text — inherit the drag cursor from .card__header. */
+.widget-card__title-wrap [data-testid="readonly-title"],
+.widget-card__title-wrap [data-testid="readonly-title"] * {
+  cursor: inherit;
+}
+
+/* SigInlineEdit injects a stylesheet that sets font-family to sapFontBlackFamily on ui5-title.
+   Override to use the standard bold family for widget card headings. */
+.widget-card__title-wrap ui5-title {
+  font-family: var(--sapFontBoldFamily) !important;
+}
+
+.widget-card__list {
+  flex: 1;
+  overflow-y: auto;
+  /* Inset focus ring — matches the Widget Catalog list */
+  --_ui5_list_item_focus_offset: 2px;
+}
+
+.widget-card__list--centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.widget-card__placeholder-label {
+  font-family: var(--sapFontFamily);
+  font-size: var(--sapFontLargeSize, 1rem);
+  color: var(--sapContent_LabelColor, #556b82);
+}
+
+.widget-card__footer {
+  padding: 12px 16px 16px;
+  flex-shrink: 0;
+  border-top: 1px solid var(--sapTile_SeparatorColor, #e0e0e0);
+}
+
+.widget-card__footer-link {
+  font-family: var(--sapFontFamily);
+  font-size: var(--sapFontSize, 0.875rem);
+  color: var(--sapLinkColor, #0064d9);
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.widget-card__footer-link:hover {
+  color: var(--sapLink_Hover_Color, #0854a0);
+  text-decoration: underline;
+}
+
+
+/* ── WidgetListItem ── */
+
+.widget-list-item {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.widget-list-item__inner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  /* Vertical padding only — UI5 CustomListItem provides horizontal padding */
+  padding: 8px 0;
+  width: 100%;
+}
+
+.widget-list-item__text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  justify-content: center;
+}
+
+.widget-list-item__title-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.widget-list-item__title {
+  font-family: var(--sapFontBoldFamily, var(--sapFontFamily));
+  font-size: var(--sapFontSize, 0.875rem);
+  font-weight: bold;
+  color: var(--sapList_TextColor, #1d2d3e);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.widget-list-item__favorite-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  color: #8396a8;
+}
+
+.widget-list-item__secondary {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--sapFontFamily);
+  font-size: var(--sapFontSize, 0.875rem);
+  color: var(--sapContent_LabelColor, #556b82);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.widget-list-item__dot {
+  flex-shrink: 0;
+}
+
+
+/* ── QuickLinksListItem ── */
+
+.ql-item {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.ql-item__inner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  width: 100%;
+}
+
+.ql-item__link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.ql-item__icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin-inline: 5px;
+  color: var(--sapContent_NonInteractiveIconColor, #758ca4);
+}
+
+.ql-item__text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  justify-content: center;
+}
+
+.ql-item__title {
+  font-family: var(--sapFontBoldFamily, var(--sapFontFamily));
+  font-size: var(--sapFontSize, 0.875rem);
+  font-weight: bold;
+  color: var(--sapList_TextColor, #1d2d3e);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ql-item__description {
+  font-family: var(--sapFontFamily);
+  font-size: var(--sapFontSize, 0.875rem);
+  color: var(--sapContent_LabelColor, #556b82);
+  cursor: inherit; /* override ui5-text text cursor; inherit pointer from list row */
+  -webkit-user-select: none;
+  user-select: none;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+
+/* ── TaskGroupItem (MyTasksWidget) ── */
+
+.task-group-item {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.task-group-item__inner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  width: 100%;
+}
+
+.task-group-item__icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  margin-inline: 5px;
+  color: var(--sapContent_NonInteractiveIconColor, #758ca4);
+}
+
+.task-group-item__body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  justify-content: center;
+}
+
+.task-group-item__title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.task-group-item__title {
+  flex: 1;
+  font-family: var(--sapFontBoldFamily, var(--sapFontFamily));
+  font-size: var(--sapFontSize, 0.875rem);
+  font-weight: bold;
+  color: var(--sapList_TextColor, #1d2d3e);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.task-group-item__description {
+  font-family: var(--sapFontFamily);
+  font-size: var(--sapFontSize, 0.875rem);
+  color: var(--sapContent_LabelColor, #556b82);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+/* ── widget-card clickable/hover state (PreviewWidget) ── */
+
+.widget-card--clickable {
+  cursor: pointer;
+  transition: box-shadow 0.1s ease, background 0.1s ease;
+}
+
+.widget-card--clickable:hover {
+  box-shadow: var(--_ui5_card_hover_box_shadow, var(--sapContent_Shadow2));
+}
+
+.widget-card--clickable:active {
+  box-shadow: var(--_ui5_card_active_box_shadow, var(--sapContent_Shadow0));
+}
+
+
+/* ── PreviewCard ── */
+
+.preview-card__title {
+  font-family: var(--sapFontBoldFamily);
+  font-size: var(--sapFontSize, 0.875rem);
+  color: var(--sapTile_TitleTextColor, #1d2d3e);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.preview-card__subheader {
+  font-family: var(--sapFontFamily);
+  font-size: var(--sapFontSize, 0.875rem);
+  color: var(--sapTile_TextColor, #556b82);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.preview-card__icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  color: var(--sapContent_NonInteractiveIconColor, #758ca4);
+}
+
+.preview-card__model {
+  flex: 1;
+  overflow: hidden;
+  padding: 0 16px 16px;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+}
+
+.preview-card__model img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  background: var(--sapBaseColor, #fff);
+}

@@ -1,0 +1,52 @@
+.layout {
+  display: flex;
+  flex-direction: row;
+  height: calc(100vh - 3.75rem);
+  width: 100%;
+}
+
+.layout > :first-child {
+  flex: 1;
+  min-width: 0;
+}
+
+.page {
+  height: 100%;
+}
+
+.sidePanel {
+  flex: 0 0 auto;
+  width: clamp(250px, 33vw, 550px) !important;
+  min-width: 250px;
+  max-width: 550px;
+  height: calc(100vh - 3.75rem) !important;
+}
+
+.createdSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.createdToolbar {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 1rem;
+}
+
+.tableRow {
+  cursor: pointer;
+}
+
+.panelSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.panelGrid {
+  display: grid;
+  grid-template-columns: 7rem 1fr;
+  gap: 0.375rem 1rem;
+  align-items: start;
+}

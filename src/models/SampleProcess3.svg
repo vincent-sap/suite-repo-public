@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+  width="100%"
+  height="100%"
+  viewBox="0 0 1500 470"
+  style="position: absolute; inset: 0"
+>
+  <!-- Arrow marker definitions -->
+  <defs>
+    <!-- Horizontal arrow -->
+    <marker 
+      id="arrowhead-horizontal-onemore" 
+      markerWidth="6" 
+      markerHeight="6" 
+      refX="6" 
+      refY="3" 
+      orient="auto"
+    >
+      <polygon points="0 0, 6 3, 0 6" fill="#758CA4" stroke="none" />
+    </marker>
+    
+    <!-- Vertical arrow - downward -->
+    <marker 
+      id="arrowhead-vertical-down-onemore" 
+      markerWidth="6" 
+      markerHeight="6" 
+      refX="3" 
+      refY="6"
+    >
+      <polygon points="0 0, 6 0, 3 6" fill="#758CA4" stroke="none" />
+    </marker>
+
+    <!-- Vertical arrow - upward -->
+    <marker 
+      id="arrowhead-vertical-up-onemore" 
+      markerWidth="6" 
+      markerHeight="6" 
+      refX="3" 
+      refY="0"
+    >
+      <polygon points="0 6, 6 6, 3 0" fill="#758CA4" stroke="none" />
+    </marker>
+  </defs>
+
+  <!-- ARROWS LAYER -->
+  
+  <!-- Start to Action 1 -->
+  <path d="M 95 205 L 149 205" stroke="#758CA4" stroke-width="2" fill="none" marker-end="url(#arrowhead-horizontal-onemore)" />
+  
+  <!-- Action 1 to Gateway 1 -->
+  <path d="M 250 205 L 294 205" stroke="#758CA4" stroke-width="2" fill="none" marker-end="url(#arrowhead-horizontal-onemore)" />
+  
+  <!-- Gateway 1 - Top flow (bent arrow: up then right) -->
+  <path d="M 315 184 L 315 100 L 379 100" stroke="#758CA4" stroke-width="2" fill="none" marker-end="url(#arrowhead-horizontal-onemore)" />
+  
+  <!-- Gateway 1 - Bottom flow (bent arrow: down then right to Action 2b) -->
+  <path d="M 315 226 L 315 310 L 379 310" stroke="#758CA4" stroke-width="2" fill="none" marker-end="url(#arrowhead-horizontal-onemore)" />
+  
+  <!-- Top: Action 2a to Gateway 2a -->
+  <path d="M 480 100 L 523 100" stroke="#758CA4" stroke-width="2" fill="none" marker-end="url(#arrowhead-horizontal-onemore)" />
+  
+  <!-- Top: Gateway 2a - Yes (up) -->
+  <path d="M 544 79 L 544 50 L 659 50" stroke="#758CA4" stroke-width="2" fill="none" marker-end="url(#arrowhead-horizontal-onemore)" />
+  
+  <!-- Top: Gateway 2a - No (down) -->
+  <path d="M 544 121 L 544 150 L 659 150" stroke="#758CA4" stroke-width="2" fill="none" marker-end="url(#arrowhead-horizontal-onemore)" />
+  
+  <!-- Top: Action 3a to Merge Gateway 1a (up arrow) -->
+  <path d="M 760 50 L 838 50 L 838 79" stroke="#758CA4" stroke-width="2" fill="none" marker-end="url(#arrowhead-vertical-down-onemore)" />
+  
+  <!-- Top: Action 4a to Merge Gateway 1a (down arrow) -->
+  <path d="M 760 150 L 838 150 L 838 121" stroke="#758CA4" stroke-width="2" fill="none" marker-end="url(#arrowhead-vertical-up-onemore)" />
+  
+  <!-- Top: Merge Gateway 1a to Action 5 -->
+  <path d="M 859 100 L 914 100" stroke="#758CA4" stroke-width="2" fill="none" marker-end="url(#arrowhead-horizontal-onemore)" />
+  
+  <!-- Top: Action 5 to Action 6 -->
+  <path d="M 1015 100 L 1064 100" stroke="#758CA4" stroke-width="2" fill="none" marker-end="url(#arrowhead-horizontal-onemore)" />
+  
+  <!-- Top: Action 6 to Action 7 -->
+  <path d="M 1165 100 L 1214 100" stroke="#758CA4" stroke-width="2" fill="none" marker-end="url(#arrowhead-horizontal-onemore)" />
+  
+  <!-- Top: Action 7 to Final Merge Gateway (bent arrow: right then down) -->
+  <path d="M 1315 100 L 1350 100 L 1350 184" stroke="#758CA4" stroke-width="2" fill="none" marker-end="url(#arrowhead-vertical-down-onemore)" />
+  
+  <!-- Bottom: Action 2b to Action 2c -->
+  <path d="M 480 310 L 529 310" stroke="#758CA4" stroke-width="2" fill="none" marker-end="url(#arrowhead-horizontal-onemore)" />
+  
+  <!-- Bottom: Action 2c to Gateway 2b -->
+  <path d="M 630 310 L 673 310" stroke="#758CA4" stroke-width="2" fill="none" marker-end="url(#arrowhead-horizontal-onemore)" />
+  
+  <!-- Bottom: Gateway 2b - Yes (up) -->
+  <path d="M 694 289 L 694 260 L 809 260" stroke="#758CA4" stroke-width="2" fill="none" marker-end="url(#arrowhead-horizontal-onemore)" />
+  
+  <!-- Bottom: Gateway 2b - No (down) -->
+  <path d="M 694 331 L 694 360 L 809 360" stroke="#758CA4" stroke-width="2" fill="none" marker-end="url(#arrowhead-horizontal-onemore)" />
+  
+  <!-- Bottom: Action 3b to Merge Gateway 1b (up arrow) -->
+  <path d="M 910 260 L 988 260 L 988 289" stroke="#758CA4" stroke-width="2" fill="none" marker-end="url(#arrowhead-vertical-down-onemore)" />
+  
+  <!-- Bottom: Action 4b to Merge Gateway 1b (down arrow) -->
+  <path d="M 910 360 L 988 360 L 988 331" stroke="#758CA4" stroke-width="2" fill="none" marker-end="url(#arrowhead-vertical-up-onemore)" />
+  
+  <!-- Bottom: Merge Gateway 1b to Final Merge Gateway (bent arrow: right then up) -->
+  <path d="M 1009 310 L 1350 310 L 1350 226" stroke="#758CA4" stroke-width="2" fill="none" marker-end="url(#arrowhead-vertical-up-onemore)" />
+  
+  <!-- Final Merge Gateway to End -->
+  <path d="M 1371 205 L 1415 205" stroke="#758CA4" stroke-width="2" fill="none" marker-end="url(#arrowhead-horizontal-onemore)" />
+
+  <!-- SHAPES AND TEXT LAYER -->
+
+  <!-- Start Event -->
+  <circle cx="80" cy="205" r="15" fill="white" stroke="black" stroke-width="2" />
+  <foreignObject x="30" y="235" width="100" height="40">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: center; justify-content: center; height: 100%; padding: 0 8px; text-align: center; font-size: 12px; color: #131E29; font-family: '72', sans-serif">
+      Lorem Ipsum
+    </div>
+  </foreignObject>
+  
+  <!-- Action 1 -->
+  <rect x="150" y="180" width="100" height="50" rx="5" fill="white" stroke="black" stroke-width="2" />
+  <foreignObject x="150" y="180" width="100" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: center; justify-content: center; height: 100%; padding: 0 8px; text-align: center; font-size: 9px; color: #131E29; font-family: '72', sans-serif">
+      Consectetur Adipiscing Elit
+    </div>
+  </foreignObject>
+  
+  <!-- Gateway 1 -->
+  <rect 
+    x="300" 
+    y="190" 
+    width="30" 
+    height="30" 
+    rx="4" 
+    fill="white" 
+    stroke="black" 
+    stroke-width="2" 
+    transform="rotate(45, 315, 205)"
+  />
+  <foreignObject x="341" y="195" width="60" height="20">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: center; justify-content: center; height: 100%; padding: 0 8px; text-align: center; font-size: 12px; color: #131E29; font-family: '72', sans-serif">
+      Dolor?
+    </div>
+  </foreignObject>
+  
+  <!-- Yes label (top flow) -->
+  <foreignObject x="320" y="80" width="30" height="20">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: center; justify-content: center; height: 100%; padding: 0 8px; text-align: center; font-size: 12px; color: #131E29; font-family: '72', sans-serif">
+      Yes
+    </div>
+  </foreignObject>
+  
+  <!-- No label (bottom flow) -->
+  <foreignObject x="320" y="290" width="30" height="20">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: center; justify-content: center; height: 100%; padding: 0 8px; text-align: center; font-size: 12px; color: #131E29; font-family: '72', sans-serif">
+      No
+    </div>
+  </foreignObject>
+  
+  <!-- Top Flow -->
+  
+  <!-- Action 2a -->
+  <rect x="380" y="75" width="100" height="50" rx="5" fill="white" stroke="black" stroke-width="2" />
+  <foreignObject x="380" y="75" width="100" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: center; justify-content: center; height: 100%; padding: 0 8px; text-align: center; font-size: 9px; color: #131E29; font-family: '72', sans-serif">
+      Incididunt Labore
+    </div>
+  </foreignObject>
+  
+  <!-- Gateway 2a -->
+  <rect 
+    x="529" 
+    y="85" 
+    width="30" 
+    height="30" 
+    rx="4" 
+    fill="white" 
+    stroke="black" 
+    stroke-width="2" 
+    transform="rotate(45, 544, 100)"
+  />
+  <foreignObject x="570" y="90" width="100" height="20">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: center; justify-content: center; height: 100%; padding: 0 8px; text-align: center; font-size: 12px; color: #131E29; font-family: '72', sans-serif">
+      Magna Aliqua?
+    </div>
+  </foreignObject>
+  
+  <!-- Yes label (up) -->
+  <foreignObject x="550" y="55" width="30" height="20">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: center; justify-content: center; height: 100%; padding: 0 8px; text-align: center; font-size: 12px; color: #131E29; font-family: '72', sans-serif">
+      Yes
+    </div>
+  </foreignObject>
+  
+  <!-- No label (down) -->
+  <foreignObject x="550" y="125" width="30" height="20">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: center; justify-content: center; height: 100%; padding: 0 8px; text-align: center; font-size: 12px; color: #131E29; font-family: '72', sans-serif">
+      No
+    </div>
+  </foreignObject>
+  
+  <!-- Action 3a -->
+  <rect x="660" y="25" width="100" height="50" rx="5" fill="white" stroke="black" stroke-width="2" />
+  <foreignObject x="660" y="25" width="100" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: center; justify-content: center; height: 100%; padding: 0 8px; text-align: center; font-size: 9px; color: #131E29; font-family: '72', sans-serif">
+      Enim Minim
+    </div>
+  </foreignObject>
+  
+  <!-- Action 4a -->
+  <rect x="660" y="125" width="100" height="50" rx="5" fill="white" stroke="black" stroke-width="2" />
+  <foreignObject x="660" y="125" width="100" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: center; justify-content: center; height: 100%; padding: 0 8px; text-align: center; font-size: 9px; color: #131E29; font-family: '72', sans-serif">
+      Veniam Quis
+    </div>
+  </foreignObject>
+  
+  <!-- Merge Gateway 1a -->
+  <rect 
+    x="823" 
+    y="85" 
+    width="30" 
+    height="30" 
+    rx="4" 
+    fill="white" 
+    stroke="black" 
+    stroke-width="2" 
+    transform="rotate(45, 838, 100)"
+  />
+  
+  <!-- Action 5 -->
+  <rect x="915" y="75" width="100" height="50" rx="5" fill="white" stroke="black" stroke-width="2" />
+  <foreignObject x="915" y="75" width="100" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: center; justify-content: center; height: 100%; padding: 0 8px; text-align: center; font-size: 9px; color: #131E29; font-family: '72', sans-serif">
+      Nostrud Exercitation
+    </div>
+  </foreignObject>
+  
+  <!-- Action 6 -->
+  <rect x="1065" y="75" width="100" height="50" rx="5" fill="white" stroke="black" stroke-width="2" />
+  <foreignObject x="1065" y="75" width="100" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: center; justify-content: center; height: 100%; padding: 0 8px; text-align: center; font-size: 9px; color: #131E29; font-family: '72', sans-serif">
+      Ullamco Laboris Nisi
+    </div>
+  </foreignObject>
+  
+  <!-- Action 7 -->
+  <rect x="1215" y="75" width="100" height="50" rx="5" fill="white" stroke="black" stroke-width="2" />
+  <foreignObject x="1215" y="75" width="100" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: center; justify-content: center; height: 100%; padding: 0 8px; text-align: center; font-size: 9px; color: #131E29; font-family: '72', sans-serif">
+      Aliquip Commodo
+    </div>
+  </foreignObject>
+  
+  <!-- Bottom Flow -->
+  
+  <!-- Action 2b (replacement for intermediate event) -->
+  <rect x="380" y="285" width="100" height="50" rx="5" fill="white" stroke="black" stroke-width="2" />
+  <foreignObject x="380" y="285" width="100" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: center; justify-content: center; height: 100%; padding: 0 8px; text-align: center; font-size: 9px; color: #131E29; font-family: '72', sans-serif">
+      Sed Do Eiusmod
+    </div>
+  </foreignObject>
+  
+  <!-- Action 2c -->
+  <rect x="530" y="285" width="100" height="50" rx="5" fill="white" stroke="black" stroke-width="2" />
+  <foreignObject x="530" y="285" width="100" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: center; justify-content: center; height: 100%; padding: 0 8px; text-align: center; font-size: 9px; color: #131E29; font-family: '72', sans-serif">
+      Tempor Incididunt
+    </div>
+  </foreignObject>
+  
+  <!-- Gateway 2b -->
+  <rect 
+    x="679" 
+    y="295" 
+    width="30" 
+    height="30" 
+    rx="4" 
+    fill="white" 
+    stroke="black" 
+    stroke-width="2" 
+    transform="rotate(45, 694, 310)"
+  />
+  <foreignObject x="720" y="300" width="130" height="20">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: center; justify-content: center; height: 100%; padding: 0 8px; text-align: center; font-size: 12px; color: #131E29; font-family: '72', sans-serif">
+      Tempor Incididunt?
+    </div>
+  </foreignObject>
+  
+  <!-- Yes label (up) -->
+  <foreignObject x="690" y="265" width="30" height="20">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: center; justify-content: center; height: 100%; padding: 0 8px; text-align: center; font-size: 12px; color: #131E29; font-family: '72', sans-serif">
+      Yes
+    </div>
+  </foreignObject>
+  
+  <!-- No label (down) -->
+  <foreignObject x="690" y="335" width="30" height="20">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: center; justify-content: center; height: 100%; padding: 0 8px; text-align: center; font-size: 12px; color: #131E29; font-family: '72', sans-serif">
+      No
+    </div>
+  </foreignObject>
+  
+  <!-- Action 3b -->
+  <rect x="810" y="235" width="100" height="50" rx="5" fill="white" stroke="black" stroke-width="2" />
+  <foreignObject x="810" y="235" width="100" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: center; justify-content: center; height: 100%; padding: 0 8px; text-align: center; font-size: 9px; color: #131E29; font-family: '72', sans-serif">
+      Ut Labore
+    </div>
+  </foreignObject>
+  
+  <!-- Action 4b -->
+  <rect x="810" y="335" width="100" height="50" rx="5" fill="white" stroke="black" stroke-width="2" />
+  <foreignObject x="810" y="335" width="100" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: center; justify-content: center; height: 100%; padding: 0 8px; text-align: center; font-size: 9px; color: #131E29; font-family: '72', sans-serif">
+      Dolore Magna
+    </div>
+  </foreignObject>
+  
+  <!-- Merge Gateway 1b -->
+  <rect 
+    x="973" 
+    y="295" 
+    width="30" 
+    height="30" 
+    rx="4" 
+    fill="white" 
+    stroke="black" 
+    stroke-width="2" 
+    transform="rotate(45, 988, 310)"
+  />
+  
+  <!-- Final Merge Gateway -->
+  <rect 
+    x="1335" 
+    y="190" 
+    width="30" 
+    height="30" 
+    rx="4" 
+    fill="white" 
+    stroke="black" 
+    stroke-width="2" 
+    transform="rotate(45, 1350, 205)"
+  />
+  
+  <!-- End Event -->
+  <circle cx="1430" cy="205" r="15" fill="white" stroke="black" stroke-width="4" />
+  <foreignObject x="1360" y="225" width="140" height="30">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: center; justify-content: center; height: 100%; padding: 0 8px; text-align: center; font-size: 9px; color: #131E29; font-family: '72', sans-serif">
+      Excepteur Sint Occaecat
+    </div>
+  </foreignObject>
+</svg>

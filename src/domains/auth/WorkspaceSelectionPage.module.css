@@ -1,0 +1,15 @@
+.listContainer {
+  flex: 1;
+  overflow-y: auto;
+  border: 1px solid var(--sapList_BorderColor, #d9d9d9);
+  border-radius: 4px;
+  max-height: 340px;
+}
+
+.wsFooterActions {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 4px;
+}

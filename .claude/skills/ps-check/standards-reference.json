@@ -1,0 +1,620 @@
+{
+  "ux_consistency": {
+    "category_name": "UX Consistency",
+    "total_requirements": 20,
+    "corporate_count": 0,
+    "risk_based_count": 20,
+    "requirements": [
+      {
+        "id": "UXC-010",
+        "title": "Colors",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/UXConsistency/UXC-010/",
+        "summary": "Using approved SAP color palette and theming tokens",
+        "check_type": "visual",
+        "context_needed": ["color_usage"]
+      },
+      {
+        "id": "UXC-011",
+        "title": "Theming Variables",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/UXConsistency/UXC-011/",
+        "summary": "Using theme variables instead of hardcoded colors",
+        "check_type": "code",
+        "context_needed": ["implementation"]
+      },
+      {
+        "id": "UXC-012",
+        "title": "Typography",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/UXConsistency/UXC-012/",
+        "summary": "Using SAP approved typefaces (SAP 72, SAP 72 Mono)",
+        "check_type": "visual",
+        "context_needed": ["fonts"]
+      },
+      {
+        "id": "UXC-013",
+        "title": "Iconography",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/UXConsistency/UXC-013/",
+        "summary": "Using SAP approved icon library (SAP Icons, TNT Icons)",
+        "check_type": "visual",
+        "context_needed": ["icons"]
+      },
+      {
+        "id": "UXC-014",
+        "title": "Action Placement",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/UXConsistency/UXC-014/",
+        "summary": "Primary actions right-aligned, secondary left-aligned",
+        "check_type": "visual",
+        "context_needed": ["buttons", "actions"]
+      },
+      {
+        "id": "UXC-015",
+        "title": "Terminology and Standard Formulations",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/UXConsistency/UXC-015/",
+        "summary": "Using approved SAP terminology",
+        "check_type": "content",
+        "context_needed": ["text_content"]
+      },
+      {
+        "id": "UXC-016",
+        "title": "Shell Bar",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/UXConsistency/UXC-016/",
+        "summary": "Standard SAP Fiori Shell Bar implementation",
+        "check_type": "visual",
+        "context_needed": ["shell_bar", "navigation"]
+      },
+      {
+        "id": "UXC-017",
+        "title": "User Settings",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/UXConsistency/UXC-017/",
+        "summary": "Settings follow standard patterns",
+        "check_type": "visual",
+        "context_needed": ["settings"]
+      },
+      {
+        "id": "UXC-019",
+        "title": "Icon Semantics",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/UXConsistency/UXC-019/",
+        "summary": "Icons follow established semantic meanings",
+        "check_type": "visual",
+        "context_needed": ["icons"]
+      },
+      {
+        "id": "UXC-020",
+        "title": "User Menu",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/UXConsistency/UXC-020/",
+        "summary": "Consistent user menu placement and content",
+        "check_type": "visual",
+        "context_needed": ["user_menu", "navigation"]
+      },
+      {
+        "id": "UXC-021",
+        "title": "Browser Integration",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/UXConsistency/UXC-021/",
+        "summary": "Proper page titles, favicons, browser behavior",
+        "check_type": "code",
+        "context_needed": ["browser"]
+      },
+      {
+        "id": "UXC-022",
+        "title": "Button",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/UXConsistency/UXC-022/",
+        "summary": "Using standard button types and styles",
+        "check_type": "visual",
+        "context_needed": ["buttons"]
+      },
+      {
+        "id": "UXC-023",
+        "title": "Message Handling",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/UXConsistency/UXC-023/",
+        "summary": "Consistent error, warning, success message patterns",
+        "check_type": "visual",
+        "context_needed": ["messages"]
+      },
+      {
+        "id": "UXC-024",
+        "title": "Notifications",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/UXConsistency/UXC-024/",
+        "summary": "Standard notification center implementation",
+        "check_type": "visual",
+        "context_needed": ["notifications"]
+      },
+      {
+        "id": "UXC-025",
+        "title": "Shell Search",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/UXConsistency/UXC-025/",
+        "summary": "Global search integrated in shell",
+        "check_type": "visual",
+        "context_needed": ["search", "shell_bar"]
+      },
+      {
+        "id": "UXC-026",
+        "title": "Side Navigation",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/UXConsistency/UXC-026/",
+        "summary": "Standard side navigation pattern",
+        "check_type": "visual",
+        "context_needed": ["navigation"]
+      },
+      {
+        "id": "UXC-027",
+        "title": "Illustrations",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/UXConsistency/UXC-027/",
+        "summary": "Using approved SAP illustration style",
+        "check_type": "visual",
+        "context_needed": ["illustrations"]
+      },
+      {
+        "id": "UXC-028",
+        "title": "Shadows",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/UXConsistency/UXC-028/",
+        "summary": "Using consistent elevation/shadow styles",
+        "check_type": "visual",
+        "context_needed": ["shadows"]
+      },
+      {
+        "id": "UXC-029",
+        "title": "Metrics",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/UXConsistency/UXC-029/",
+        "summary": "Using consistent metric display patterns",
+        "check_type": "visual",
+        "context_needed": ["metrics", "data_display"]
+      },
+      {
+        "id": "UXC-030",
+        "title": "Spacing",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/UXConsistency/UXC-030/",
+        "summary": "Using 8px grid system and consistent spacing",
+        "check_type": "visual",
+        "context_needed": ["spacing", "layout"]
+      }
+    ]
+  },
+  "user_assistance": {
+    "category_name": "User Assistance",
+    "total_requirements": 11,
+    "corporate_count": 4,
+    "risk_based_count": 7,
+    "requirements": [
+      {
+        "id": "UA-001",
+        "title": "User Assistance Staffing and Integration in the Product Team",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/UserAssistance/UA-001/",
+        "summary": "UA team integrated from project start",
+        "check_type": "process",
+        "context_needed": ["team", "process"]
+      },
+      {
+        "id": "UA-010",
+        "title": "User Assistance (Including Translation) Provided with the Software",
+        "obligation": "Corporate",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/UserAssistance/UA-010/",
+        "summary": "Complete user documentation delivered with product",
+        "check_type": "documentation",
+        "context_needed": ["documentation"]
+      },
+      {
+        "id": "UA-010-TASK",
+        "title": "User Assistance in English and Relevant Languages",
+        "obligation": "Corporate",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/UserAssistance/UA-010-TASK/",
+        "summary": "Documentation available in all required languages",
+        "check_type": "documentation",
+        "context_needed": ["languages", "documentation"]
+      },
+      {
+        "id": "UA-030",
+        "title": "Only Existing Features Described",
+        "obligation": "Corporate",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/UserAssistance/UA-030/",
+        "summary": "Documentation matches actual product functionality",
+        "check_type": "documentation",
+        "context_needed": ["documentation", "features"]
+      },
+      {
+        "id": "UA-040",
+        "title": "Infrastructure for User Assistance",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/UserAssistance/UA-040/",
+        "summary": "Help infrastructure available and accessible",
+        "check_type": "implementation",
+        "context_needed": ["help_system"]
+      },
+      {
+        "id": "UA-050",
+        "title": "Product Terminology",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/UserAssistance/UA-050/",
+        "summary": "Consistent terminology across UI and docs",
+        "check_type": "content",
+        "context_needed": ["terminology"]
+      },
+      {
+        "id": "UA-060",
+        "title": "Intuitive User Interface Text and Embedded Help",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/UserAssistance/UA-060/",
+        "summary": "Clear labels, tooltips, and in-app guidance",
+        "check_type": "visual",
+        "context_needed": ["labels", "tooltips"]
+      },
+      {
+        "id": "UA-070",
+        "title": "Documentation on SAP Help Portal",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/UserAssistance/UA-070/",
+        "summary": "Published on official SAP Help Portal",
+        "check_type": "documentation",
+        "context_needed": ["help_portal"]
+      },
+      {
+        "id": "UA-080",
+        "title": "What's New Provided",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/UserAssistance/UA-080/",
+        "summary": "Release notes and What's New documentation",
+        "check_type": "documentation",
+        "context_needed": ["release_notes"]
+      },
+      {
+        "id": "UA-090",
+        "title": "Public APIs Documented",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/UserAssistance/UA-090/",
+        "summary": "API documentation for extensibility",
+        "check_type": "documentation",
+        "context_needed": ["api", "extensibility"]
+      },
+      {
+        "id": "UA-FEATURE",
+        "title": "Feature-Level Requirement for User Assistance (Including Translation)",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/UserAssistance/UA-FEATURE/",
+        "summary": "Each feature has corresponding documentation",
+        "check_type": "documentation",
+        "context_needed": ["features", "documentation"]
+      }
+    ]
+  },
+  "accessibility": {
+    "category_name": "Accessibility",
+    "total_requirements": 35,
+    "corporate_count": 1,
+    "risk_based_count": 34,
+    "requirements": [
+      {
+        "id": "ACC-252",
+        "title": "Accessibility Status Document and Accessibility Test",
+        "obligation": "Corporate",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/Accessibility/ACC-252/",
+        "summary": "Accessibility testing completed, ASD document created",
+        "check_type": "process",
+        "context_needed": ["acc_testing", "documentation"]
+      },
+      {
+        "id": "ACC-253",
+        "title": "Labels",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/Accessibility/ACC-253/",
+        "summary": "All inputs/outputs clearly labeled, required fields indicated",
+        "check_type": "visual",
+        "context_needed": ["forms", "inputs"]
+      },
+      {
+        "id": "ACC-254",
+        "title": "Screen Titles and Headings",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/Accessibility/ACC-254/",
+        "summary": "Clear page titles and logical heading hierarchy",
+        "check_type": "visual_and_code",
+        "context_needed": ["headings", "titles"]
+      },
+      {
+        "id": "ACC-255",
+        "title": "Text Alternative for Non-Text Content",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/Accessibility/ACC-255/",
+        "summary": "Alt text for meaningful images, icons marked decorative",
+        "check_type": "code",
+        "context_needed": ["images", "icons", "media"]
+      },
+      {
+        "id": "ACC-256",
+        "title": "Two-Sensory Concept",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/Accessibility/ACC-256/",
+        "summary": "Color + shape/icon/text (not color alone) for information",
+        "check_type": "visual",
+        "context_needed": ["color_usage", "information_display"]
+      },
+      {
+        "id": "ACC-257",
+        "title": "Purpose and Target of a Reference",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/Accessibility/ACC-257/",
+        "summary": "Descriptive link text (not 'click here')",
+        "check_type": "content",
+        "context_needed": ["links"]
+      },
+      {
+        "id": "ACC-258",
+        "title": "Consistent Use of Identical UI Elements",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/Accessibility/ACC-258/",
+        "summary": "Same functions have consistent appearance/labels",
+        "check_type": "visual",
+        "context_needed": ["consistency", "patterns"]
+      },
+      {
+        "id": "ACC-259",
+        "title": "Accessible Alternatives",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/Accessibility/ACC-259/",
+        "summary": "Charts have data table alternatives, complex visualizations have text summaries",
+        "check_type": "visual_and_code",
+        "context_needed": ["charts", "visualizations"]
+      },
+      {
+        "id": "ACC-260",
+        "title": "Text Resizing up to 200 percent",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/Accessibility/ACC-260/",
+        "summary": "Layout doesn't break at 200% zoom, no clipped text",
+        "check_type": "implementation",
+        "context_needed": ["responsive"]
+      },
+      {
+        "id": "ACC-261",
+        "title": "Minimum Contrast",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/Accessibility/ACC-261/",
+        "summary": "Text/icons: 4.5:1 min (7:1 HC themes) | UI borders: 3:1 min (7:1 HC)",
+        "check_type": "visual",
+        "context_needed": ["colors", "contrast"]
+      },
+      {
+        "id": "ACC-262",
+        "title": "Color and Contrast Setting",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/Accessibility/ACC-262/",
+        "summary": "Supports default, HC Black, HC White themes",
+        "check_type": "implementation",
+        "context_needed": ["theming"]
+      },
+      {
+        "id": "ACC-263",
+        "title": "Information, Structures and Relationships",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/Accessibility/ACC-263/",
+        "summary": "Tables are real tables, groups/regions defined",
+        "check_type": "code",
+        "context_needed": ["tables", "structure"]
+      },
+      {
+        "id": "ACC-264",
+        "title": "Interoperability with Assistive Technologies",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/Accessibility/ACC-264/",
+        "summary": "Element names, states (selected, disabled), status messages accessible",
+        "check_type": "code",
+        "context_needed": ["aria", "assistive_tech"]
+      },
+      {
+        "id": "ACC-265",
+        "title": "Language Attributes",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/Accessibility/ACC-265/",
+        "summary": "Primary language set, mixed-language content flagged",
+        "check_type": "code",
+        "context_needed": ["language"]
+      },
+      {
+        "id": "ACC-266",
+        "title": "Correct Use of Markup Language",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/Accessibility/ACC-266/",
+        "summary": "Valid HTML/markup (auto-passes at design level)",
+        "check_type": "code",
+        "context_needed": ["markup"]
+      },
+      {
+        "id": "ACC-267",
+        "title": "Consistent Navigation and Help",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/Accessibility/ACC-267/",
+        "summary": "Navigation/help in same location across screens",
+        "check_type": "visual",
+        "context_needed": ["navigation"]
+      },
+      {
+        "id": "ACC-268",
+        "title": "Multiple Ways to Find Content",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/Accessibility/ACC-268/",
+        "summary": "Search + navigation menu or breadcrumbs",
+        "check_type": "visual",
+        "context_needed": ["navigation", "search"]
+      },
+      {
+        "id": "ACC-269",
+        "title": "Group Skipping",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/Accessibility/ACC-269/",
+        "summary": "Skip links or landmark regions for repeated content blocks",
+        "check_type": "code",
+        "context_needed": ["navigation", "landmarks"]
+      },
+      {
+        "id": "ACC-270",
+        "title": "Full Input Channel Support (Keyboard, Mouse, Touch)",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/Accessibility/ACC-270/",
+        "summary": "All functions accessible via keyboard, mouse, touch",
+        "check_type": "implementation",
+        "context_needed": ["interaction"]
+      },
+      {
+        "id": "ACC-271",
+        "title": "Visible Focus",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/Accessibility/ACC-271/",
+        "summary": "Focus styles defined with 3:1 contrast against adjacent colors",
+        "check_type": "visual",
+        "context_needed": ["focus_indicators"]
+      },
+      {
+        "id": "ACC-272",
+        "title": "Tab/Reading Order",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/Accessibility/ACC-272/",
+        "summary": "Logical left-to-right, top-to-bottom focus order",
+        "check_type": "implementation",
+        "context_needed": ["tab_order"]
+      },
+      {
+        "id": "ACC-273",
+        "title": "Robust Context",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/Accessibility/ACC-273/",
+        "summary": "No auto-navigation on selection change, no auto-submit",
+        "check_type": "implementation",
+        "context_needed": ["interaction"]
+      },
+      {
+        "id": "ACC-274",
+        "title": "Error Prevention",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/Accessibility/ACC-274/",
+        "summary": "Confirmation dialogs for destructive actions, review step, undo",
+        "check_type": "visual",
+        "context_needed": ["error_handling"]
+      },
+      {
+        "id": "ACC-275",
+        "title": "Correct Error Handling",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/Accessibility/ACC-275/",
+        "summary": "Error messages next to field, describe problem and fix",
+        "check_type": "visual",
+        "context_needed": ["error_handling"]
+      },
+      {
+        "id": "ACC-277",
+        "title": "Embedded or External Applications",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/Accessibility/ACC-277/",
+        "summary": "Third-party embeds have accessible alternatives",
+        "check_type": "implementation",
+        "context_needed": ["embeds"]
+      },
+      {
+        "id": "ACC-278",
+        "title": "Time Limits",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/Accessibility/ACC-278/",
+        "summary": "Session timeout warnings, form extension, auto-save",
+        "check_type": "implementation",
+        "context_needed": ["time_limits"]
+      },
+      {
+        "id": "ACC-279",
+        "title": "Animation, Audio and Video Control",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/Accessibility/ACC-279/",
+        "summary": "Auto-playing content has pause/stop controls",
+        "check_type": "visual",
+        "context_needed": ["media", "animation"]
+      },
+      {
+        "id": "ACC-280",
+        "title": "Avoidance of Flickering and Flashing Content",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/Accessibility/ACC-280/",
+        "summary": "No flashing elements >2 per second, smooth animations",
+        "check_type": "visual",
+        "context_needed": ["animation"]
+      },
+      {
+        "id": "ACC-281",
+        "title": "Display Orientation",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/Accessibility/ACC-281/",
+        "summary": "Works in both portrait and landscape",
+        "check_type": "implementation",
+        "context_needed": ["responsive"]
+      },
+      {
+        "id": "ACC-282",
+        "title": "Responsive Design",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/Accessibility/ACC-282/",
+        "summary": "Displays at 320px width without horizontal scroll",
+        "check_type": "implementation",
+        "context_needed": ["responsive"]
+      },
+      {
+        "id": "ACC-283",
+        "title": "Text Spacing",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/Accessibility/ACC-283/",
+        "summary": "Text containers accommodate 1.5x line height, 2x paragraph spacing",
+        "check_type": "implementation",
+        "context_needed": ["typography"]
+      },
+      {
+        "id": "ACC-284",
+        "title": "Content on Hover or Focus",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/Accessibility/ACC-284/",
+        "summary": "Tooltips persist when hovering over them, can be dismissed",
+        "check_type": "implementation",
+        "context_needed": ["tooltips"]
+      },
+      {
+        "id": "ACC-285",
+        "title": "Accessible Authentication",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/Accessibility/ACC-285/",
+        "summary": "No cognitive function tests (CAPTCHA has alternatives), password manager support",
+        "check_type": "visual_and_code",
+        "context_needed": ["authentication"]
+      },
+      {
+        "id": "ACC-286",
+        "title": "Avoidance of Redundant Entries",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/Accessibility/ACC-286/",
+        "summary": "Multi-step forms pre-fill from prior steps, no repeated data entry",
+        "check_type": "implementation",
+        "context_needed": ["forms"]
+      },
+      {
+        "id": "ACC-287",
+        "title": "Target Size",
+        "obligation": "Risk-Based",
+        "url": "https://pages.github.tools.sap/product-standards/portal/docs/requirements/Accessibility/ACC-287/",
+        "summary": "Interactive targets minimum 24px diameter circle",
+        "check_type": "visual",
+        "context_needed": ["touch_targets"]
+      }
+    ]
+  }
+}

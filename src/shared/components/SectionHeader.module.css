@@ -1,0 +1,19 @@
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-top: var(--sapContent_Space_M);
+  padding-bottom: var(--sapContent_Space_S);
+  width: 100%;
+}
+
+.section-header__spacer {
+  flex: 1;
+}
+
+.section-header__title {
+  font-family: var(--sapFontBoldFamily);
+  font-size: var(--sapFontHeader5Size);
+  color: var(--sapTextColor, #131e29);
+  white-space: nowrap;
+}

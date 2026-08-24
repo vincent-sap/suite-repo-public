@@ -1,0 +1,121 @@
+/* ── Shared page layout ── */
+
+.page {
+  height: 100%;
+}
+
+/* ── Settings stack ── */
+
+.stack {
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-bottom: 1rem;
+}
+
+.stackWide {
+  max-width: none;
+}
+
+@container (max-width: 600px) {
+  .stackFlush {
+    padding: 0;
+  }
+}
+
+/* ── Narrow content wrapper ── */
+
+.narrowContent {
+  max-width: 48rem;
+  margin: 0 auto;
+}
+
+/* ── Form fields ── */
+
+.fieldFull {
+  width: 100%;
+}
+
+.fieldDesc {
+  color: var(--sapContent_LabelColor);
+  font-size: var(--sapFontSize);
+}
+
+/* ── Checkbox row ── */
+
+.checkboxRow {
+  display: flex;
+  flex-direction: column;
+}
+
+.checkboxNegativeMargin {
+  margin-left: -0.5rem;
+}
+
+/* ── Table cells ── */
+
+.cellName {
+  font-weight: 600;
+}
+
+.cellCenter {
+  text-align: center;
+}
+
+/* ── Checkbox description subline ── */
+
+.checkboxDesc {
+  margin-top: 0.125rem;
+}
+
+/* ── Side Nav template ── */
+
+.sidenavLayout {
+  display: flex;
+  flex: 1;
+  gap: 1rem;
+}
+
+.sidenavRail {
+  width: 200px;
+  flex-shrink: 0;
+  border-radius: var(--sapElement_BorderCornerRadius);
+  background: var(--sapList_Background);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-self: flex-start;
+}
+
+.sidenavRailLabel {
+  padding: 0.5rem 1rem 0.25rem;
+  font-weight: 700;
+  font-size: var(--sapFontSize);
+  color: var(--sapTextColor);
+  user-select: none;
+}
+
+.sidenavContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.sidenavNavTitle {
+  padding: 0.5rem 1rem;
+}
+
+/* ── Two-Column template ── */
+
+.tableRowClickable {
+  cursor: pointer;
+}
+
+/* ── Side Panel sections ── */
+
+.panelSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}

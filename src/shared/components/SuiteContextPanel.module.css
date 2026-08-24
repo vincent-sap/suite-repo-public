@@ -1,0 +1,32 @@
+/* ── Panel content (inside SplitterElement, owns full width/height) ─────────── */
+.panelContent {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Navigation rail: fixed-width flex sibling outside SplitterLayout ────────── */
+/* dir="rtl" on the wrapper, z-index + overflow:visible so hover popups are unclipped */
+.rail {
+  flex-shrink: 0;
+  width: 64px;
+  height: 100%;
+  align-self: stretch;
+  border-left: 1px solid var(--sapList_BorderColor);
+  background: var(--sapBaseColor);
+  overflow: visible;
+  position: relative;
+  z-index: 10;
+}
+
+/* ── Placeholder for unimplemented panels ────────────────────────────────────── */
+.placeholderPanel {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  opacity: 0.4;
+}

@@ -1,0 +1,278 @@
+/* Full-page layout */
+.page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.body {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
+
+/* Left form panel */
+.formPanel {
+  width: 480px;
+  flex-shrink: 0;
+  background: var(--sapBaseColor, #fff);
+  display: flex;
+  flex-direction: column;
+}
+
+.formPanelInner {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 32px;
+  gap: 32px;
+  overflow-y: auto;
+}
+
+/* Right branding panel */
+.brandingPanel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 16px 16px 16px 0;
+  overflow: hidden;
+}
+
+.brandingImageWrapper {
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
+  border-radius: 24px;
+}
+
+.brandingImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Branding */
+.branding {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.brandLogo {
+  height: 30px;
+  width: auto;
+}
+
+/* SSO workspace card */
+.ssoCard {
+  background: var(--sapInformationBackground, #e8f3ff);
+  border: 1px solid var(--sapInformativeBorderColor, #a8c8f0);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.ssoCardContent {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+}
+
+.ssoTitle {
+  margin: 0;
+  font-family: var(--sapFontFamily, '72');
+  font-size: var(--sapFontLargeSize, 16px);
+  font-weight: 700;
+  color: var(--sapTextColor, #131e29);
+}
+
+.ssoDescription {
+  margin: 0;
+  font-size: var(--sapFontSize, 14px);
+  color: var(--sapContent_LabelColor, #6a7a8c);
+  line-height: 1.4;
+}
+
+.ssoButton {
+  align-self: stretch;
+  margin-top: 4px;
+}
+
+/* Form area */
+.formArea {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  animation: formEnter 0.22s ease-out both;
+}
+
+@keyframes formEnter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.formActions {
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 8px;
+  align-items: center;
+  padding-top: 4px;
+  flex-wrap: wrap;
+}
+
+.divider {
+  width: 100%;
+  border: none;
+  border-top: 1px solid var(--sapSeparatorColor, #d9d9d9);
+  margin: 8px 0;
+}
+
+.registerPrompt {
+  width: 100%;
+  text-align: left;
+  font-size: var(--sapFontSize, 14px);
+  color: var(--sapContent_LabelColor, #6a7a8c);
+  padding-bottom: 8px;
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cardTitle {
+  margin: 0;
+  font-family: var(--sapFontFamily, '72');
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--sapObjectHeader_Title_TextColor, #131e29);
+}
+
+.formBody {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 10px 0;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.fieldFull {
+  width: 100%;
+}
+
+.link {
+  color: var(--sapLinkColor, #0064d9);
+  font-size: var(--sapFontSize, 14px);
+  text-decoration: none;
+  align-self: flex-start;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+/* Loading dots */
+.busyArea {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 10px 0;
+}
+
+.dots {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  padding: 16px 0;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--sapButton_Emphasized_Background, #0070f2);
+  animation: dotPulse 1.2s ease-in-out infinite;
+  animation-delay: var(--delay, 0ms);
+}
+
+.dot:first-child { width: 4px; height: 4px; }
+.dot:last-child { width: 8px; height: 8px; }
+
+@keyframes dotPulse {
+  0%, 80%, 100% { opacity: 0.3; transform: scale(0.8); }
+  40% { opacity: 1; transform: scale(1.1); }
+}
+
+/* Forgot password / reset sent */
+.resetSentBody {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 0;
+}
+
+.resetEmail {
+  margin: 0;
+  font-size: var(--sapFontLargeSize, 16px);
+  font-weight: 600;
+  color: var(--sapTextColor, #131e29);
+}
+
+/* Skip login */
+.skipLogin {
+  display: flex;
+  justify-content: center;
+  padding: 0 1rem 1.5rem;
+  flex-shrink: 0;
+}
+
+.skipLoginLink {
+  color: var(--sapContent_LabelColor, #6a7a8c);
+  font-size: var(--sapFontSize, 14px);
+  text-decoration: none;
+}
+
+.skipLoginLink:hover {
+  text-decoration: underline;
+}
+
+/* Page footer — lives in the left panel */
+.pageFooter {
+  padding: 12px 32px 32px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 24px;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.footerLink {
+  color: var(--sapContent_LabelColor, #556b82);
+  font-size: 12px;
+  text-decoration: none;
+  padding: 2px 0;
+  white-space: nowrap;
+}
+
+.footerLink:hover {
+  text-decoration: underline;
+}

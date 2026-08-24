@@ -1,0 +1,51 @@
+.mainContainer {
+  width: 70%;
+  margin: 0 auto;
+  padding: 2rem 0;
+}
+
+.sectionContainer {
+  gap: 1rem;
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.sectionTitle {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.listItem {
+  padding: 1rem;
+}
+
+.listItem::part(content) {
+  display: block;
+}
+
+.listItemTitle {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.listItemContainer {
+  gap: 0.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.listChipsContainer {
+  gap: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.linkButton {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.listItem:hover .linkButton {
+  opacity: 1;
+}
