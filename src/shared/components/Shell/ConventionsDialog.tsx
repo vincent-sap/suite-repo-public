@@ -224,7 +224,7 @@ export default function ConventionsDialog({ open, onClose }: Props) {
       open={open}
       headerText="Modeling Conventions"
       onClose={onClose}
-      className="dialog-padding-s"
+      className="dialog-padding-s no-padding-dialog"
       style={{ width: '72rem', maxWidth: '95vw' }}
     >
       <div style={{ padding: '1rem' }}>

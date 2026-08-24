@@ -73,6 +73,7 @@ export default function ImportExcelDialog({ open, onClose }: { open: boolean; on
       open={open}
       headerText={step === 'results' ? 'Import Summary' : 'Import Excel'}
       style={{ width: '500px', maxWidth: '98vw' }}
+      className="no-padding-dialog"
       onClose={() => {
         if (step === 'results') messageViewRef.current?.navigateBack()
       }}

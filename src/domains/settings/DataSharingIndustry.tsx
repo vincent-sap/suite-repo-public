@@ -72,7 +72,7 @@ export default function DataSharingIndustry() {
         onClose={() => setEditOpen(false)}
         style={{ maxWidth: '30rem' } as React.CSSProperties}
       >
-        <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           <Text>
             By enabling this option, you allow the Digital Discovery Assessment to automatically preselect solution process flows (scope items) based on the solution process flows shown on your Cloud Transformation page.
           </Text>

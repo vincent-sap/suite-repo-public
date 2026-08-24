@@ -82,7 +82,7 @@ export default function HelpResources() {
       isDirty={isDirty}
     >
       <Dialog open={createOpen} headerText="Create Help Link" onClose={() => setCreateOpen(false)}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', padding: '1rem', minWidth: '26rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', minWidth: '26rem' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
             <Label for="create-label">Help Menu Text:</Label>
             <Input id="create-label" placeholder="Descriptive name for the link" value={createLabel}
@@ -101,7 +101,7 @@ export default function HelpResources() {
       </Dialog>
 
       <Dialog open={editLink !== null} headerText="Edit Help Link" onClose={() => setEditLink(null)}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', padding: '1rem', minWidth: '26rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', minWidth: '26rem' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
             <Label for="edit-label">Help Menu Text:</Label>
             <Input id="edit-label" value={editLabel}

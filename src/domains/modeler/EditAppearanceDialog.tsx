@@ -260,7 +260,7 @@ export default function EditAppearanceDialog({ open, itemId, itemLabel, initialV
   const handleRestore = () => { setValues(DEFAULT); onRestoreDefault() }
 
   return (
-    <Dialog open={open} onClose={() => { if (!paletteOpenRef.current) onClose() }} headerText="Edit Style" preventFocusRestore>
+    <Dialog open={open} onClose={() => { if (!paletteOpenRef.current) onClose() }} headerText="Edit Style" preventFocusRestore className="no-padding-dialog">
       {showCustomGraphics && (
         <div style={{ padding: '12px 32px 0' }}>
           <SegmentedButton key={`seg-${tab}-${itemId}`} onSelectionChange={(e: any) => setTab(e.detail.selectedItems[0]?.getAttribute('data-key'))}>

@@ -1293,7 +1293,7 @@ export default function ModelingConventions() {
         headerText={copyFromId ? 'Duplicate Convention' : 'Create Convention'}
         aria-labelledby={addDialogId}
       >
-        <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.75rem', minWidth: '28rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', minWidth: '28rem' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
             <Label required for="create-convention-name">Name</Label>
             <Input
@@ -1317,7 +1317,7 @@ export default function ModelingConventions() {
         onClose={() => setAddRuleDialogOpen(false)}
         headerText="Add New Custom Rule"
       >
-        <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.75rem', minWidth: 420 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', minWidth: 420 }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
             <Label for="new-rule-name">Rule Name:</Label>
             <Input
@@ -1352,7 +1352,7 @@ export default function ModelingConventions() {
         onClose={() => setDeleteDialogOpen(false)}
         headerText="Delete Convention"
       >
-        <div style={{ padding: '1rem', minWidth: 360 }}>
+        <div style={{ minWidth: 360 }}>
           <Text style={{ fontSize: 'var(--sapFontSize)', ...CF }}>
             Do you want to delete the convention <strong>{conv.name}</strong>?
           </Text>
@@ -1370,6 +1370,7 @@ export default function ModelingConventions() {
         headerText="Attribute mappings"
         preventFocusRestore
         initialFocus="attr-mapping-close"
+        className="no-padding-dialog"
         style={{ '--ui5-dialog-width': '600px' } as React.CSSProperties}
       >
         <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem', minWidth: 520 }}>
@@ -1494,7 +1495,7 @@ export default function ModelingConventions() {
         onClose={() => setEditRuleDialogOpen(false)}
         headerText="Edit Rule"
       >
-        <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.75rem', minWidth: 420 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', minWidth: 420 }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
             <Label for="edit-rule-name">Rule name:</Label>
             <Input
@@ -1529,7 +1530,7 @@ export default function ModelingConventions() {
         onClose={() => setDeleteRuleDialogOpen(false)}
         headerText="Delete Rule"
       >
-        <div style={{ padding: '1rem', minWidth: 360 }}>
+        <div style={{ minWidth: 360 }}>
           <Text style={{ fontSize: 'var(--sapFontSize)', ...CF }}>
             Do you want to delete this custom rule?
           </Text>

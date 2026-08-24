@@ -550,7 +550,7 @@ export default function Insights() {
       </SplitterLayout>
 
       <Dialog open={createOpen} headerText="Create Insight" style={{ width: '480px' }} onClose={() => setCreateOpen(false)}>
-        <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           <div>
             <Label required showColon>Title</Label>
             <Input value={newTitle} onInput={e => setNewTitle((e.target as unknown as HTMLInputElement).value)} placeholder="Insight title" style={{ width: '100%' }} />

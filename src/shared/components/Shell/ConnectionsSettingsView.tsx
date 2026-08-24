@@ -203,7 +203,7 @@ export function ConnectionsSettingsView() {
           </Bar>
         }
       >
-        <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
           <MessageStrip design="Critical" hideCloseButton>
             This action cannot be undone.
           </MessageStrip>

@@ -144,7 +144,7 @@ export function ShareDialog({ file, onClose, onManageAccess, onInvite }: ShareDi
   }
 
   return (
-    <Dialog open headerText={`Share ${file.name}`} onClose={onClose} style={{ width: '560px' }}>
+    <Dialog open headerText={`Share ${file.name}`} onClose={onClose} style={{ width: '560px' }} className="no-padding-dialog">
       <div style={{ width: '560px' }}>
         {/* Add users section */}
         <div style={{ padding: '16px 16px 4px' }}>
@@ -288,7 +288,7 @@ export function ManageAccessDialog({ file, accessLevels, onAccessLevelChange, on
   }
 
   return (
-    <Dialog open onClose={onClose} headerText={showBackButton ? undefined : `Manage Access for ${file.name}`}>
+    <Dialog open onClose={onClose} headerText={showBackButton ? undefined : `Manage Access for ${file.name}`} className="no-padding-dialog">
       {showBackButton && (
         <Bar design="Header" slot="header">
           <div slot="startContent" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>

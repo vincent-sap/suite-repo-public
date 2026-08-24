@@ -51,7 +51,7 @@ export function AttributeGroupDialog({ open, editName, onClose, onConfirm }: Pro
         />
       }
     >
-      <div style={{ padding: '1rem' }}>
+      <div>
         <Label for="attr-group-name" required>Group Name</Label>
         <Input
           id="attr-group-name"

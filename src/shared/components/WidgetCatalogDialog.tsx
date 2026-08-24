@@ -74,7 +74,7 @@ export function WidgetCatalogDialog({ open, activeWidgetTypes, onAdd, onConfigur
       open={open}
       onClose={onClose}
       headerText="Widget Catalog"
-      className="widget-catalog-dialog"
+      className="widget-catalog-dialog no-padding-dialog"
       footer={
         <Bar design="Footer" endContent={
           <>

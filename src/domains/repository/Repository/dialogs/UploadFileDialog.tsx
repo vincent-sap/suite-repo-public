@@ -196,7 +196,7 @@ export default function UploadFileDialog({ open, defaultFolderName = 'Current Fo
           />
         }
       >
-        <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           <MessageStrip design="Information" hideCloseButton>
             Storage used: 7.4 MB of 10240 MB.<br />Maximum upload size: 32 MB per file.
           </MessageStrip>
@@ -243,6 +243,7 @@ export default function UploadFileDialog({ open, defaultFolderName = 'Current Fo
           open
           style={{ width: '900px', height: '600px' }}
           headerText="Select Folder"
+          className="no-padding-dialog"
           footer={
             <Bar design="Footer"
               endContent={

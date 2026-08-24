@@ -775,7 +775,7 @@ const OverlayTabPanel = forwardRef<OverlayTabPanelHandle, { idPrefix: string; on
         <Dialog
           open={showMatrix}
           headerText="Manage Visibility"
-          className="dialog-padding-s"
+          className="dialog-padding-s no-padding-dialog"
           style={{ width: 'fit-content', maxWidth: '90vw', maxHeight: '80vh' } as React.CSSProperties}
           onClose={cancelMatrix}
         >
@@ -832,7 +832,7 @@ const OverlayTabPanel = forwardRef<OverlayTabPanelHandle, { idPrefix: string; on
           headerText="Create Overlay"
           onClose={() => setNewOverlayDialogOpen(false)}
         >
-          <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.25rem', minWidth: '22rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem', minWidth: '22rem' }}>
             <Label required for={`${p}-new-overlay-name`}>Name</Label>
             <Input
               id={`${p}-new-overlay-name`}
@@ -858,7 +858,7 @@ const OverlayTabPanel = forwardRef<OverlayTabPanelHandle, { idPrefix: string; on
           headerText="Rename Overlay"
           onClose={() => setRenameDialogOpen(false)}
         >
-          <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.25rem', minWidth: '22rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem', minWidth: '22rem' }}>
             <Label required for={`${p}-rename-overlay-name`}>Name</Label>
             <Input
               id={`${p}-rename-overlay-name`}
@@ -885,7 +885,7 @@ const OverlayTabPanel = forwardRef<OverlayTabPanelHandle, { idPrefix: string; on
           headerText="Rename"
           onClose={() => setRenameRuleDialogOpen(false)}
         >
-          <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.25rem', minWidth: '22rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem', minWidth: '22rem' }}>
             <Label required for={`${p}-rename-rule-name`}>Name</Label>
             <Input
               id={`${p}-rename-rule-name`}
@@ -915,7 +915,7 @@ const OverlayTabPanel = forwardRef<OverlayTabPanelHandle, { idPrefix: string; on
             headerText="Delete Overlay"
             onClose={() => setConfirmDeleteOpen(false)}
           >
-            <div style={{ padding: '1rem' }}>
+            <div>
               <p style={{ margin: 0, fontFamily: 'var(--sapFontFamily)', fontSize: 'var(--sapFontSize)', color: 'var(--sapTextColor)' }}>
                 Delete <strong>"{selectedCfgLayerData.name}"</strong>? This overlay and all its rules will be permanently removed and can no longer be used on diagrams.
               </p>

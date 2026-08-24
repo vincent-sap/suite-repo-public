@@ -884,6 +884,7 @@ const EnrichDialogAccordion = ({ open, onClose, initiative, onApply }: EnrichDia
       onClose={handleClose}
       headerText="Enrich Initiative"
       stretch
+      className="no-padding-dialog"
       footer={
         <Bar
           design="Footer"

@@ -433,7 +433,7 @@ function LimitAccessDialog({ open, folderName, items, preSelected, onLimit, onCl
   ], [allTypes, isDictionary])
 
   return (
-    <Dialog open={open} onClose={onClose} style={{ width: '800px' }} headerText={`Limit Access Rights for ${isFolder ? 'Folder ' : ''}${folderName}`}>
+    <Dialog open={open} onClose={onClose} style={{ width: '800px' }} headerText={`Limit Access Rights for ${isFolder ? 'Folder ' : ''}${folderName}`} className="no-padding-dialog">
       <div style={{ padding: '16px 16px 0', display: 'flex', flexDirection: 'column', gap: '8px' }}>
         <MessageStrip design="Information" hideCloseButton>
           Limiting allows you to remove the access right from {isFolder ? <>the folder <strong>{folderName}</strong></> : <strong>{folderName}</strong>} and limit access to the items selected below for the {entryIsGroup ? 'user group' : 'user'} <strong>{entryName}</strong>.
@@ -952,7 +952,7 @@ export default function ContentAccess() {
         }
       />
 
-      <Dialog open={addDialogOpen} headerText="Add Users" onClose={() => setAddDialogOpen(false)} style={{ width: '480px' }}>
+      <Dialog open={addDialogOpen} headerText="Add Users" onClose={() => setAddDialogOpen(false)} style={{ width: '480px' }} className="no-padding-dialog">
         <div style={{ padding: '1rem', display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
           <div style={{ flex: 1, position: 'relative' }}>
             <MultiInput

@@ -26,7 +26,7 @@ export function BpmnPreviewDialog({ open, onClose, title, bpmnXml }: Props) {
   return (
     <Dialog
       open={open}
-      className="dialog-padding-s"
+      className="dialog-padding-s no-padding-dialog"
       style={{ width: '80vw', height: '70vh' }}
       onClose={onClose}
     >

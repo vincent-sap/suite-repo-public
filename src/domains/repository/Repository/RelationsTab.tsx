@@ -232,7 +232,7 @@ export function RelationsTab({ variant = 'default', isEmpty = false, entryName }
           headerText={`Usage Graph for ${entryName ?? 'Dictionary Entry'}`}
           style={{ width: '600px', minHeight: '400px' }}
         >
-          <div style={{ padding: '1rem', minHeight: '300px' }} />
+          <div style={{ minHeight: '300px' }} />
           <Bar slot="footer" design="Footer">
             <Button slot="endContent" design="Transparent" onClick={() => setUsageGraphOpen(false)}>Close</Button>
           </Bar>

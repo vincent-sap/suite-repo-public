@@ -209,7 +209,7 @@ export default function DataCollectionConfig() {
       <Dialog
         open={activationDialogOpen}
         headerText="Change Default Activation Status for New Performance Indicators"
-        className="dialog-padding-s"
+        className="dialog-padding-s no-padding-dialog"
         onClose={() => setActivationDialogOpen(false)}
         style={{ width: '520px' }}
       >

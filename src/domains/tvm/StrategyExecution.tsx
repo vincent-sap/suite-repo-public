@@ -775,7 +775,7 @@ export default function StrategyExecution() {
         style={{ width: '480px' }}
         onClose={() => setCreateInitOpen(false)}
       >
-        <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
           <Label for="se-init-title" required>Title</Label>
           <Input
             id="se-init-title"

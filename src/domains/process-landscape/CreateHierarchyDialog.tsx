@@ -59,7 +59,7 @@ export default function CreateHierarchyDialog({ open, onCreated, onCancel }: Cre
         />
       }
     >
-      <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.75rem', minWidth: '24rem' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', minWidth: '24rem' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
           <Label required>Name:</Label>
           <Input

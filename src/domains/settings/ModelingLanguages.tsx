@@ -849,7 +849,7 @@ export default function ModelingLanguages() {
             </Text>
           </div>
         )}
-        <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem', minWidth: '28rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', minWidth: '28rem' }}>
           <Label for="element-set-name-input">Subset Name:</Label>
           <Input id="element-set-name-input" placeholder="Enter a name for the new subset" value={newElementSetName} onInput={(e: any) => setNewElementSetName(e.target.value)} style={{ width: '100%' }} />
         </div>
@@ -880,7 +880,7 @@ export default function ModelingLanguages() {
           <Icon name="alert" style={{ color: 'var(--sapCriticalElementColor)', width: '1.25rem', height: '1.25rem' }} />
           <Text style={{ fontWeight: '600', fontSize: 'var(--sapFontLargeSize)' }}>Delete</Text>
         </div>
-        <div style={{ padding: '1rem', minWidth: '24rem' }}>
+        <div style={{ minWidth: '24rem' }}>
           <Text>This modeling language will be permanently deleted.</Text>
         </div>
         <div slot="footer" style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem', width: '100%', padding: '0.5rem 0' }}>
@@ -899,7 +899,7 @@ export default function ModelingLanguages() {
       </Dialog>
 
       <Dialog open={renameLang !== null} onClose={() => setRenameLang(null)} headerText="Rename Modeling Language">
-        <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem', minWidth: '28rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', minWidth: '28rem' }}>
           <Label for="rename-input">New Name:</Label>
           <Input id="rename-input" value={renameName} onInput={(e: any) => setRenameName(e.target.value)} style={{ width: '100%' }} />
         </div>
@@ -914,7 +914,7 @@ export default function ModelingLanguages() {
       </Dialog>
 
       <Dialog open={duplicateLang !== null} onClose={() => setDuplicateLang(null)} headerText="Duplicate Modeling Language">
-        <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem', minWidth: '28rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', minWidth: '28rem' }}>
           <Label for="duplicate-name-input">New Modeling Language Name:</Label>
           <Input id="duplicate-name-input" value={duplicateName} onInput={(e: any) => setDuplicateName(e.target.value)} style={{ width: '100%' }} />
         </div>

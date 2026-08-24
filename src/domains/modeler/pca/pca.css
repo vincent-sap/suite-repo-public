@@ -75,7 +75,21 @@
   font-family: var(--sapFontFamily, '72', sans-serif);
 }
 
-/* ── Tailwind preflight equivalent, scoped ───────────────────────────────── */
+/* ── Browser default resets for native elements inside PCA ───────────────── */
+
+.pca-scope textarea,
+.pca-scope input,
+.pca-scope button {
+  outline: none;
+}
+
+.pca-scope textarea {
+  resize: none;
+  background: transparent;
+  border: none;
+  font-family: inherit;
+}
+
 /*
  * The PCA was built with @tailwind base which runs Tailwind's preflight reset.
  * Key effect: sets border-width:0 on all elements (then the PCA's index.css

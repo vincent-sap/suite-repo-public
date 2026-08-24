@@ -33,7 +33,7 @@ export default function AboutDialog({ open, onClose, additionalInfo, owner }: Pr
       className="dialog-padding-s"
       style={{ width: '26rem' }}
     >
-      <div style={{ padding: '1rem' }}>
+      <div>
 
         <div style={rowStyle}>
           <Text style={labelStyle}>Workspace ID</Text>

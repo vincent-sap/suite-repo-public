@@ -669,7 +669,7 @@ export function CreateAttributeDialog({ open, initialType, initialName, initialD
     return (
       <Dialog
         open={open}
-        className="dialog-padding-s"
+        className="dialog-padding-s no-padding-dialog"
         style={{ width: '50rem' }}
         onClose={onClose}
         header={
@@ -773,7 +773,7 @@ export function CreateAttributeDialog({ open, initialType, initialName, initialD
       <Dialog
         open={open}
         preventInitialFocus
-        className="dialog-padding-s"
+        className="dialog-padding-s no-padding-dialog"
         style={{ width: '52rem' }}
         onClose={onClose}
         header={
@@ -857,7 +857,7 @@ export function CreateAttributeDialog({ open, initialType, initialName, initialD
   return (
     <Dialog
       open={open}
-      className="dialog-padding-s"
+      className="dialog-padding-s no-padding-dialog"
       style={{ width: '52rem' }}
       onClose={onClose}
       header={

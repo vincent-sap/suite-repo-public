@@ -68,7 +68,7 @@ export function DuplicateSettingsDialog({ open, sourceAudience, onClose, onDupli
         />
       }
     >
-      <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <Text>
           Copying applies the audience settings from <strong>{sourceAudience}</strong> to other
           audiences. This is a one-time copy, later changes to {sourceAudience} won’t be applied.

@@ -976,7 +976,7 @@ export default function Initiatives() {
 
       {/* ── Create dialog ── */}
       <Dialog open={createOpen} headerText="Create Initiative" style={{ width: '480px' }} onClose={() => setCreateOpen(false)}>
-        <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           <div>
             <Label required showColon>Title</Label>
             <Input value={newTitle} onInput={(e: any) => setNewTitle((e.target as any).value ?? '')}

@@ -99,6 +99,7 @@ export function AddUserDialog({ open, availableLicenses, availableGroups, onClos
       open={open}
       headerText="Add Users"
       style={{ width: '30rem' }}
+      className="no-padding-dialog"
       onClose={onClose}
       footer={
         <Bar

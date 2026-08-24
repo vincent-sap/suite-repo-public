@@ -39,7 +39,7 @@ export default function EditFolderDialog({ open, folderName, folderDescription, 
       onClose={onClose}
       style={{ width: '512px' }}
     >
-      <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
         {/* Name section */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           <Text style={{ fontWeight: '700', fontSize: 'var(--sapFontSize)', color: 'var(--sapList_TextColor)' }}>

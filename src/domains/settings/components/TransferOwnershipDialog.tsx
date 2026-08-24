@@ -57,6 +57,7 @@ export function TransferOwnershipDialog({ open, currentOwnerId, onClose, onTrans
       open={open}
       headerText="Transfer Ownership"
       style={{ width: '34rem' }}
+      className="no-padding-dialog"
       onClose={onClose}
       footer={
         <Bar

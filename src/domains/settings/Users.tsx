@@ -467,7 +467,7 @@ function UserDetailPanel({ user, onClose, onRemoveUser, onUpdate, migrationState
 
       {/* ── Reset Password dialog ── */}
       <Dialog open={resetPwdOpen} headerText="Reset Password" onClose={() => setResetPwdOpen(false)}>
-        <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.75rem', minWidth: '400px', maxWidth: '480px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', minWidth: '400px', maxWidth: '480px' }}>
           <Text>Send a password reset email to <strong>{user.email}</strong>?</Text>
           <Text style={{ color: 'var(--sapContent_LabelColor)', fontSize: 'var(--sapFontSmallSize)' }}>The user will receive an email with a link to set a new password.</Text>
         </div>
@@ -479,7 +479,7 @@ function UserDetailPanel({ user, onClose, onRemoveUser, onUpdate, migrationState
 
       {/* ── Remove User / Delete User confirmation dialog ── */}
       <Dialog open={removeUserOpen} headerText="Delete User" state="Critical" onClose={() => setRemoveUserOpen(false)}>
-        <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.75rem', minWidth: '400px', maxWidth: '480px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', minWidth: '400px', maxWidth: '480px' }}>
           <Text>Do you want to delete <strong>{user.name}</strong> from this workspace?</Text>
           <Text>Their assigned licenses and group memberships will be revoked.</Text>
           <Text style={{ color: 'var(--sapCriticalColor)', fontSize: 'var(--sapFontSmallSize)' }}>This action cannot be undone.</Text>
@@ -492,7 +492,7 @@ function UserDetailPanel({ user, onClose, onRemoveUser, onUpdate, migrationState
 
       {/* ── Cancel Invitation confirmation dialog ── */}
       <Dialog open={cancelInviteOpen} headerText="Cancel Invitation" state="Critical" onClose={() => setCancelInviteOpen(false)}>
-        <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '1rem', minWidth: '400px', maxWidth: '480px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', minWidth: '400px', maxWidth: '480px' }}>
           <Text>
             {`Do you want to cancel the invitation for ${user.email}? They will no longer be able to join the workspace using the invitation link.`}
           </Text>

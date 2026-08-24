@@ -215,7 +215,7 @@ export default function SearchResults() {
         headerText="Save this Search"
         onClose={() => setDialogOpen(false)}
       >
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', width: '360px', padding: '1rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', width: '360px' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
             <Label for="sf-name" required>Name</Label>
             <Input

@@ -291,7 +291,7 @@ export default function ManageHierarchyModal({ open, hierarchy, onClose }: Manag
       <Dialog
         open={open}
         headerText={hierarchy ? `Manage: ${hierarchy.name}` : 'Manage Hierarchy'}
-        className="dialog-padding-s manage-hierarchy-dialog"
+        className="dialog-padding-s manage-hierarchy-dialog no-padding-dialog"
         footer={
           <Bar
             design="Footer"

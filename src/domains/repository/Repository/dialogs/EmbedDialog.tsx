@@ -21,6 +21,7 @@ export default function EmbedDialog({ file, onClose }: EmbedDialogProps) {
       open
       headerText="Embed Diagram"
       onClose={onClose}
+      className="no-padding-dialog"
       footer={
         <Bar endContent={<Button design="Transparent" onClick={onClose}>Close</Button>} />
       }

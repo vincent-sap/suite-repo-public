@@ -95,7 +95,7 @@ function AddGroupDialog({ open, onClose, onCreate }: {
 
   return (
     <Dialog open={open} headerText="Create Group" onClose={handleClose} style={{ width: '380px' }}>
-      <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
         <Label for="new-group-name" showColon>Group Name</Label>
         <Input id="new-group-name" value={name} placeholder="Enter group name" style={{ width: '100%' }} onInput={e => setName((e.target as unknown as HTMLInputElement).value)} />
       </div>
@@ -140,6 +140,7 @@ function CreateGroupDialog({ open, allUsers, onClose, onCreate }: {
       open={open}
       headerText="Create Group"
       style={{ width: '32rem' }}
+      className="no-padding-dialog"
       onClose={onClose}
       footer={
         <Bar
@@ -663,7 +664,7 @@ function GroupDetailPanel({ group, allUsers, allGroups, onClose, onUpdate, onDel
 
       {/* ── Delete Group confirmation ── */}
       <Dialog open={deleteOpen} headerText="Delete Group" state="Critical" onClose={() => setDeleteOpen(false)}>
-        <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.75rem', minWidth: '400px', maxWidth: '480px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', minWidth: '400px', maxWidth: '480px' }}>
           <Text>Do you want to delete the group <strong>"{group.name}"</strong>?</Text>
           <Text>Members of this group are not deleted, they remain in the workspace as individual users.</Text>
           <Text style={{ color: 'var(--sapCriticalColor)', fontSize: 'var(--sapFontSmallSize)' }}>This action cannot be undone.</Text>

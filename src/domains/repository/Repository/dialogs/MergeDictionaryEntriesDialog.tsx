@@ -205,6 +205,7 @@ export default function MergeDictionaryEntriesDialog({ open, entries: initialEnt
         open={open}
         headerText="Merge Dictionary Entries"
         style={{ width: '900px', maxWidth: '98vw' }}
+        className="no-padding-dialog"
         footer={
           <Bar design="Footer"
             endContent={

@@ -2952,7 +2952,7 @@ export default function Repository() {
               />
             }
           >
-            <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.75rem', minWidth: '420px', maxWidth: '540px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', minWidth: '420px', maxWidth: '540px' }}>
               <Text style={{ fontSize: 'var(--sapFontSize)', color: 'var(--sapTextColor)', lineHeight: '1.5' }}>
                 Select the dictionary entries you want to export to a spreadsheet. If you choose to export dictionary entries of more than one category, the entries for each category will be exported to different sheets.
               </Text>
@@ -3017,7 +3017,7 @@ export default function Repository() {
             />
           }
         >
-          <div style={{ padding: '2rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: '1rem', minWidth: '300px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: '1rem', minWidth: '300px' }}>
             <BusyIndicator active size="M" delay={0} />
             <Text style={{ fontSize: 'var(--sapFontSize)', color: 'var(--sapTextColor)' }}>Exporting...</Text>
           </div>
@@ -3100,7 +3100,7 @@ export default function Repository() {
             />
           }
         >
-          <div style={{ padding: '2rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: '1rem', minWidth: '300px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: '1rem', minWidth: '300px' }}>
             <BusyIndicator active size="M" delay={0} />
             <Text style={{ fontSize: 'var(--sapFontSize)', color: 'var(--sapTextColor)' }}>Merging...</Text>
           </div>

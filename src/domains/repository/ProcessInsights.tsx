@@ -77,7 +77,7 @@ function ConnectDialog({ open, onClose, onConnect }: { open: boolean; onClose: (
         />
       }
     >
-      <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
         <div>
           <Label for="pi-url" required>Enter Target URL of the Process Insights Tenant</Label>
           <Input
@@ -219,7 +219,7 @@ export default function ProcessInsights() {
           />
         }
       >
-        <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
           <Text>
             Do you want to disconnect <strong>{disconnectTarget?.name}</strong>? Users will no longer be able
             to view process flows from the connected SAP Signavio Process Insights tenant.

@@ -45,6 +45,7 @@ export function ExportTranslationsDialog({ open, onClose, smartFolders: _smartFo
       open
       headerText="Export Diagram Translations"
       onClose={onClose}
+      className="no-padding-dialog"
       footer={
         <Bar design="Footer" endContent={
           <>
@@ -132,7 +133,7 @@ export function ImportTranslationsDialog({ open, onClose }: ImportTranslationsDi
         } />
       }
     >
-      <div style={{ width: '440px', display: 'flex', flexDirection: 'column', gap: '1rem', padding: '1rem' }}>
+      <div style={{ width: '440px', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <Text>Select the PO files you want to import. You can import a maximum of 100 diagrams.</Text>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <Icon name="globe" style={{ fontSize: '1rem', color: 'var(--sapContent_IconColor)', flexShrink: 0 }} />

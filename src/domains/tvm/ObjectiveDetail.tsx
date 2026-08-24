@@ -513,7 +513,7 @@ export default function ObjectiveDetail() {
         style={{ width: '520px' }}
         onClose={() => setLinkOpen(false)}
       >
-        <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
           <Input
             placeholder="Search initiatives…"
             value={linkSearch}

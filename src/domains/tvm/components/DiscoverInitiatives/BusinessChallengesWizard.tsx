@@ -61,6 +61,7 @@ export default function BusinessChallengesWizard({ open, onClose }: Props) {
       open={open}
       headerText="AI-Assisted Initiatives"
       style={{ width: 'min(90vw, 80rem)', height: 'min(90vh, 56rem)' }}
+      className="no-padding-dialog"
       onClose={handleClose}
       footer={footerContent()}
     >

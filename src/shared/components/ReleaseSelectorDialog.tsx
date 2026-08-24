@@ -30,7 +30,7 @@ export default function ReleaseSelectorDialog({ open, onClose }: Props) {
       onClose={onClose}
       style={{ width: '22rem' }}
     >
-      <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
         <Text style={{ color: 'var(--sapContent_LabelColor)' }}>
           Select the release scope to preview features available up to and including that release.
         </Text>

@@ -263,7 +263,7 @@ export function QuickLinksEditDialog({ open, mode, initialItems, initialTitle, o
         id={dialogId}
         open={open}
         headerText="Edit Quick Links"
-        className="widget-catalog-dialog qled-dialog"
+        className="widget-catalog-dialog qled-dialog no-padding-dialog"
         footer={
           <Bar
             design="Footer"

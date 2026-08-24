@@ -126,7 +126,7 @@ export function EditAttributeSelectionDialog({ open, initialData, onClose, onSav
         />
       }
     >
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', padding: '1rem' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
 
         {/* Attribute Type */}
         <div>

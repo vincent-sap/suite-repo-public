@@ -25,6 +25,7 @@ export default function DiscoverInitiativesDialog({ open, onClose, initialSubFlo
           open={open}
           headerText="Discover Initiatives"
           style={{ width: '640px' }}
+          className="no-padding-dialog"
           onClose={handleClose}
           footer={<Bar endContent={<Button design="Transparent" onClick={handleClose}>Cancel</Button>} />}
         >

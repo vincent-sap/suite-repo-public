@@ -1995,7 +1995,7 @@ function AssetDialog({
       style={{ width: '28rem' }}
       onClose={onClose}
     >
-      <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
         <div>
           <Label required showColon>URL</Label>
           <Input

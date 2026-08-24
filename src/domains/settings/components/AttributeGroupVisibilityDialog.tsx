@@ -68,7 +68,7 @@ export function AttributeGroupVisibilityDialog({ open, groupName, initialVisibil
         />
       }
     >
-      <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
         <div>
           <RadioButton
             text="Apply to All Audiences"

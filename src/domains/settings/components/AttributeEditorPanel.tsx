@@ -1036,6 +1036,7 @@ export default function AttributeEditorPanel({ attrGroups, setAttrGroups, markDi
             onClose={() => { setAssignDialogGroupId(null); setAssignPendingIds(new Set()) }}
             headerText={`Assign Attributes to ${targetGroup?.name ?? ''}`}
             style={{ width: '560px' }}
+            className="no-padding-dialog"
           >
             <div style={{ padding: '12px', borderBottom: '1px solid var(--sapList_BorderColor)' }}>
               <Input

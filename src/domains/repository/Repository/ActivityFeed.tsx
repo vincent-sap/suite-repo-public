@@ -321,6 +321,7 @@ function RevisionCard({ group, isPublished, showRestoreButton, restoreDisabled, 
       <Dialog open={previewOpen} onClose={() => { setPreviewOpen(false); setCompareMode(false) }}
         style={{ width: compareMode ? '95vw' : '90vw', maxWidth: compareMode ? '1800px' : '1400px' }}
         headerText={compareMode ? 'Compare Revisions' : (assetName ?? entryName ?? 'Revision Preview')}
+        className="no-padding-dialog"
       >
         {compareMode ? (
           <div style={{ display: 'flex', flexDirection: 'column', height: '75vh', minHeight: '500px' }}>

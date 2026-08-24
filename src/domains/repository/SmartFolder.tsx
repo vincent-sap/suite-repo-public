@@ -64,7 +64,7 @@ export default function SmartFolderPage({ folder: folderProp, onDeleted, onUpdat
         headerText="Edit Pinned View"
         onClose={() => setEditOpen(false)}
       >
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', width: '360px', padding: '1rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', width: '360px' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
             <Label for="sf-edit-name" required>Name</Label>
             <Input

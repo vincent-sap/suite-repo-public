@@ -569,7 +569,7 @@ export default function ApprovalWorkflows() {
 
     {/* Delete dialog */}
     <Dialog open={!!deleteTargetId} onClose={() => setDeleteTargetId(null)} headerText="Delete State" state="Critical">
-      <div style={{ padding: '1rem', minWidth: 360 }}>
+      <div style={{ minWidth: 360 }}>
         <Text>Delete state <strong>{deleteTarget?.name}</strong>? This action cannot be undone.</Text>
       </div>
       <Bar slot="footer" design="Footer">

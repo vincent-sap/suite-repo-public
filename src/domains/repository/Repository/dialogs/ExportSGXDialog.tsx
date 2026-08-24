@@ -48,6 +48,7 @@ export default function ExportSGXDialog({ open, onClose, smartFolders }: ExportS
       open
       headerText="Export SAP Signavio Archive (SGX)"
       onClose={onClose}
+      className="no-padding-dialog"
       footer={
         <Bar design="Footer" endContent={
           <>

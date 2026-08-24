@@ -26,7 +26,7 @@ export default function ApprovalWorkflowsDialog({ open, onClose }: ApprovalWorkf
         <Bar design="Footer" endContent={<Button design="Emphasized" onClick={onClose}>OK</Button>} />
       }
     >
-      <div style={{ width: '420px', display: 'flex', flexDirection: 'column', gap: '0.75rem', padding: '1rem' }}>
+      <div style={{ width: '420px', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
         <Text>Started approval workflows for diagrams in directory "Shared documents"</Text>
         <CheckBox checked={showCompleted} onChange={() => setShowCompleted(v => !v)} text="Show completed approval workflows" />
         <div style={{ border: '1px solid var(--sapList_BorderColor)', borderRadius: 'var(--sapElement_BorderCornerRadius)', background: 'var(--sapList_Background)', maxHeight: '360px', overflowY: 'auto' }}>

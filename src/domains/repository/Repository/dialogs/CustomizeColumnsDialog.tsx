@@ -85,6 +85,7 @@ export default function CustomizeColumnsDialog({ open, columns, onSave, onClose,
       open={open}
       headerText="Customize Columns"
       onClose={onClose}
+      className="no-padding-dialog"
     >
       <div style={{ width: '460px', display: 'flex', flexDirection: 'column', gap: '0.5rem', padding: '0.75rem 1rem 0' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>

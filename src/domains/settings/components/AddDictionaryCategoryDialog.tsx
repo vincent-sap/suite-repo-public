@@ -105,7 +105,7 @@ export function AddDictionaryCategoryDialog({ open, categories, editCategory, in
     <Dialog
       open={open}
       headerText={isEditing ? 'Edit Dictionary Category' : 'Create Dictionary Category'}
-      className="ui5-content-density-compact"
+      className="ui5-content-density-compact no-padding-dialog"
       style={{ width: '34rem' }}
       onClose={onClose}
       footer={
