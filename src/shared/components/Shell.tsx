@@ -40,7 +40,6 @@ import {
   Toast,
   ToolbarItem,
   Popover,
-  RadioButton,
   Icon,
   IllustratedMessage,
   MessageBox,
@@ -52,7 +51,6 @@ import { useWorkspace, USER_CONTEXT_DEFAULTS } from '../../contexts/WorkspaceCon
 import { usePCA } from '../../contexts/PCAContext'
 import { useRelease } from '../../contexts/ReleaseContext'
 import { useAuth } from '../../contexts/AuthContext'
-import { RELEASES } from '../../releases'
 import SearchDropdown from './SearchDropdown'
 import WelcomeModal from './WelcomeModal'
 import HotspotTooltip from './HotspotTooltip'
@@ -163,7 +161,7 @@ export default function Shell() {
   const [searchParams, setSearchParams] = useSearchParams()
   const { additionalInfo, helpLinks, smartFolders, workspaceName, ownerId, contentLanguages, contextDimensions, userContextValues, setUserContextValues } = useWorkspace()
   const { getActiveConversation } = usePCA()
-  const { currentRelease, setCurrentRelease } = useRelease()
+  const { currentRelease } = useRelease()
   const auth = useAuth()
   useNavigationLog()
   const dirtyState = useDirtyState()
@@ -216,7 +214,6 @@ export default function Shell() {
   const [helpMenuOpen, setHelpMenuOpen] = useState(false)
   const [wipBannerVisible, setWipBannerVisible] = useState(true)
   const [errorStateEnabled, setErrorStateEnabled] = useState(false)
-  const [releaseSelectorOpen, setReleaseSelectorOpen] = useState(false)
   const [contextOpen, setContextOpen] = useState(false)
   const [hotspotVisible, setHotspotVisible] = useState(
     () => localStorage.getItem('sig-consolidated-settings-tooltip-dismissed') !== 'true'
@@ -462,14 +459,7 @@ export default function Shell() {
             position: 'relative',
           }}>
             <Text style={{ color: 'var(--sapHighlightTextColor)', textAlign: 'center', fontSize: 'var(--sapFontSmallSize)' }}>
-              This prototype reflects the Signavio suite after the{' '}
-              <a
-                href="https://app.mural.co/t/sapsignavio0592/m/sapsignavio0592/1783153659017/72282da78a3a0f35288890e240b49c491943e1de?sender=u66157a715d6c8ae5349d8165"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: 'var(--sapHighlightTextColor)', fontWeight: 'bold' }}
-              >Explorer Migration</a>
-              {' '}— Ready for implementation.
+              Suite Replica — a non-production prototype for exploring, testing, and building ideas.
             </Text>
             <div style={{ position: 'absolute', right: '3rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <Text style={{ color: 'var(--sapHighlightTextColor)', fontSize: 'var(--sapFontSmallSize)', whiteSpace: 'nowrap' }}>
@@ -524,14 +514,6 @@ export default function Shell() {
             value={workspaceName}
             design="none"
             className="shellbar-chip--transparent"
-          />
-          <SigChipV2
-            id="release-chip"
-            value={RELEASES.find(r => r.id === currentRelease)?.label ?? currentRelease}
-            design="none"
-            className="shellbar-chip--outline"
-            trailingIcon="slim-arrow-down"
-            onClick={() => setReleaseSelectorOpen(true)}
           />
           <SigChipV2
             id="context-chip"
@@ -967,37 +949,6 @@ export default function Shell() {
       <ConventionsDialog open={conventionsOpen} onClose={() => setConventionsOpen(false)} />
 
       <AboutDialog open={aboutOpen} onClose={() => setAboutOpen(false)} additionalInfo={additionalInfo} owner={ADMIN_USERS.find(u => u.id === ownerId)} />
-
-      <Popover
-        opener="release-chip"
-        open={releaseSelectorOpen}
-        onClose={() => setReleaseSelectorOpen(false)}
-        placement="Bottom"
-        horizontalAlign="Start"
-        className="no-padding-popover"
-      >
-        <div style={{ padding: '0.5rem 0', minWidth: '14rem' }}>
-          {RELEASES.map(r => (
-            <div
-              key={r.id}
-              style={{ padding: '0.5rem 1rem', cursor: 'pointer' }}
-              onClick={() => { setCurrentRelease(r.id); setReleaseSelectorOpen(false) }}
-            >
-              <RadioButton
-                name="releaseScopePopover"
-                text={r.label}
-                checked={currentRelease === r.id}
-                onChange={() => { setCurrentRelease(r.id); setReleaseSelectorOpen(false) }}
-              />
-              <div>
-                <Text style={{ color: 'var(--sapContent_LabelColor)', fontSize: 'var(--sapFontSmallSize)' }}>
-                  {r.description}
-                </Text>
-              </div>
-            </div>
-          ))}
-        </div>
-      </Popover>
 
       <Popover
         opener="context-chip"
