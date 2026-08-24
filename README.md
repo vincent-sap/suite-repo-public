@@ -6,7 +6,7 @@ Built with [UI5 Web Components for React](https://sap.github.io/ui5-webcomponent
 
 <div align="center">
   <br>
-  <a href="PAGES_URL_PLACEHOLDER" target="_blank">
+  <a href="https://pages.github.tools.sap/signavio-experience/suite-replica" target="_blank">
     <img src="https://img.shields.io/badge/Open%20Prototype-%E2%86%92-0070f3?style=for-the-badge&labelColor=0070f3&color=0054a6&logoColor=white" alt="Open Prototype" />
   </a>
   <br><br>
