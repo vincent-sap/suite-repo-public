@@ -224,11 +224,12 @@ Ask the user for a short description:
 ```
 AskUserQuestion({
   questions: [{
-    question: "Give this prototype a short description for the README?",
+    question: "Give this prototype a short description for the README? (shown under the title)",
     header: "README",
     multiSelect: false,
     options: [
-      { label: "Skip for now", description: "I'll update the README later" }
+      { label: "Skip for now", description: "I'll update the README later" },
+      { label: "Other", description: "Type a custom description" }
     ]
   }]
 })
