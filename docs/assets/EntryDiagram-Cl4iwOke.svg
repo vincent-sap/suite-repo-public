@@ -1,0 +1,293 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+  width="100%"
+  height="100%"
+  viewBox="0 0 1600 696"
+  style="position: absolute; inset: 0"
+>
+  <style>
+    .section-title {
+      font-size: 15px;
+      font-weight: bold;
+      fill: #1D2D3E;
+      font-family: '72', sans-serif;
+    }
+    .lane-title {
+      font-size: 13px;
+      font-weight: bold;
+      fill: #1D2D3E;
+      font-family: '72', sans-serif;
+    }
+    .chevron {
+      fill: #1B748A;
+      stroke: white;
+      stroke-width: 2;
+    }
+    .label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      padding: 0 10px;
+      text-align: center;
+      font-size: 11px;
+      color: white;
+      font-family: '72', sans-serif;
+    }
+    .box-card {
+      fill: white;
+      stroke: #D8DCE0;
+      stroke-width: 1;
+    }
+    .box-title {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      padding: 0 6px;
+      text-align: center;
+      font-size: 11px;
+      font-weight: bold;
+      color: white;
+      font-family: '72', sans-serif;
+    }
+    .box-items {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      padding: 0;
+      text-align: center;
+      font-size: 10.5px;
+      font-family: '72', sans-serif;
+    }
+    .box-items span {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 8px;
+      height: 27px;
+      flex-shrink: 0;
+      border-bottom: 1px solid #E8EAED;
+    }
+  </style>
+
+  <!--
+    Chevron geometry: W=220, H=50, P=20, step=200, H/2=25
+    First chevron  (flat left):  x,y  x+200,y  x+220,y+25  x+200,y+50  x,y+50
+    Subsequent (notched left):   x,y  x+200,y  x+220,y+25  x+200,y+50  x,y+50  x+20,y+25
+    Lane label sits 7px above each chevron row.
+    Lanes (label y / chevron y): 30/37 · 122/129 · 214/221 · 306/313 · 398/405
+  -->
+
+  <!-- ══ Lane 1 — Market to Demand  (y=37) ══ -->
+  <text x="20" y="30" class="lane-title">Market to Demand</text>
+  <polygon class="chevron" points="20,37 220,37 240,62 220,87 20,87"/>
+  <foreignObject x="24" y="37" width="191" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="label">Strategy and Planning</div>
+  </foreignObject>
+  <polygon class="chevron" points="220,37 420,37 440,62 420,87 220,87 240,62"/>
+  <foreignObject x="242" y="37" width="172" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="label">Product Marketing</div>
+  </foreignObject>
+  <polygon class="chevron" points="420,37 620,37 640,62 620,87 420,87 440,62"/>
+  <foreignObject x="442" y="37" width="172" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="label">Campaign Management</div>
+  </foreignObject>
+
+  <!-- ══ Lane 2 — Idea to Launch  (y=129) ══ -->
+  <text x="20" y="122" class="lane-title">Idea to Launch</text>
+  <polygon class="chevron" points="20,129 220,129 240,154 220,179 20,179"/>
+  <foreignObject x="24" y="129" width="191" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="label">Strategy and Portfolio Management</div>
+  </foreignObject>
+  <polygon class="chevron" points="220,129 420,129 440,154 420,179 220,179 240,154"/>
+  <foreignObject x="242" y="129" width="172" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="label">Product Design and Development</div>
+  </foreignObject>
+  <polygon class="chevron" points="420,129 620,129 640,154 620,179 420,179 440,154"/>
+  <foreignObject x="442" y="129" width="172" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="label">Product Introduction</div>
+  </foreignObject>
+  <polygon class="chevron" points="620,129 820,129 840,154 820,179 620,179 640,154"/>
+  <foreignObject x="642" y="129" width="172" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="label">Packaging and Pricing</div>
+  </foreignObject>
+
+  <!-- ══ Lane 3 — Lead to Order  (y=221) ══ -->
+  <text x="20" y="214" class="lane-title">Lead to Order</text>
+  <polygon class="chevron" points="20,221 220,221 240,246 220,271 20,271"/>
+  <foreignObject x="24" y="221" width="191" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="label">Lead and Opp Management</div>
+  </foreignObject>
+  <polygon class="chevron" points="220,221 420,221 440,246 420,271 220,271 240,246"/>
+  <foreignObject x="242" y="221" width="172" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="label">Deal Management</div>
+  </foreignObject>
+  <polygon class="chevron" points="420,221 620,221 640,246 620,271 420,271 440,246"/>
+  <foreignObject x="442" y="221" width="172" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="label">Digital Sales</div>
+  </foreignObject>
+  <polygon class="chevron" points="620,221 820,221 840,246 820,271 620,271 640,246"/>
+  <foreignObject x="642" y="221" width="172" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="label">Quotes and Prices</div>
+  </foreignObject>
+
+  <!-- ══ Lane 4 — Order to Cash  (y=313) ══ -->
+  <text x="20" y="306" class="lane-title">Order to Cash</text>
+  <polygon class="chevron" points="20,313 220,313 240,338 220,363 20,363"/>
+  <foreignObject x="24" y="313" width="191" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="label">Order Management</div>
+  </foreignObject>
+  <polygon class="chevron" points="220,313 420,313 440,338 420,363 220,363 240,338"/>
+  <foreignObject x="242" y="313" width="172" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="label">Credit Management</div>
+  </foreignObject>
+  <polygon class="chevron" points="420,313 620,313 640,338 620,363 420,363 440,338"/>
+  <foreignObject x="442" y="313" width="172" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="label">Order Fulfillment</div>
+  </foreignObject>
+  <polygon class="chevron" points="620,313 820,313 840,338 820,363 620,363 640,338"/>
+  <foreignObject x="642" y="313" width="172" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="label">Product Shipping</div>
+  </foreignObject>
+  <polygon class="chevron" points="820,313 1020,313 1040,338 1020,363 820,363 840,338"/>
+  <foreignObject x="842" y="313" width="172" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="label">Invoicing</div>
+  </foreignObject>
+  <polygon class="chevron" points="1020,313 1220,313 1240,338 1220,363 1020,363 1040,338"/>
+  <foreignObject x="1042" y="313" width="172" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="label">Accounts Receivables</div>
+  </foreignObject>
+  <polygon class="chevron" points="1220,313 1420,313 1440,338 1420,363 1220,363 1240,338"/>
+  <foreignObject x="1242" y="313" width="172" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="label">Collection Management</div>
+  </foreignObject>
+
+  <!-- ══ Lane 5 — Adoption to Retention  (y=405) ══ -->
+  <text x="20" y="398" class="lane-title">Adoption to Retention</text>
+  <polygon class="chevron" points="20,405 220,405 240,430 220,455 20,455"/>
+  <foreignObject x="24" y="405" width="191" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="label">Customer Analytics</div>
+  </foreignObject>
+  <polygon class="chevron" points="220,405 420,405 440,430 420,455 220,455 240,430"/>
+  <foreignObject x="242" y="405" width="172" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="label">Customer Success</div>
+  </foreignObject>
+  <polygon class="chevron" points="420,405 620,405 640,430 620,455 420,455 440,430"/>
+  <foreignObject x="442" y="405" width="172" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="label">Customer Experience Management</div>
+  </foreignObject>
+
+  <!-- ══════════════════════════════════════════════════════
+       Section 2 — Enterprise Management  (boxes y=535)
+       Box layout: 7 boxes × 210px wide, 10px gap, x start=20
+       Box positions: 20 · 240 · 460 · 680 · 900 · 1120 · 1340
+       Box height: 140px  Header height: 30px
+       ══════════════════════════════════════════════════════ -->
+
+  <text x="20" y="523" class="section-title">Enterprise Management</text>
+
+  <!-- ── Sales  x=20  color=#1CC8C4 ── -->
+  <rect class="box-card" x="20" y="535" width="210" height="140" rx="4"/>
+  <rect x="20" y="535" width="210" height="30" rx="4" fill="#1CC8C4"/>
+  <rect x="20" y="550" width="210" height="15" fill="#1CC8C4"/>
+  <foreignObject x="20" y="535" width="210" height="30">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="box-title">Sales</div>
+  </foreignObject>
+  <foreignObject x="20" y="565" width="210" height="110">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="box-items" style="color:#1CC8C4">
+      <span>GTM Strategy</span>
+      <span>Sales Strategy</span>
+      <span>Sales Enablement</span>
+    </div>
+  </foreignObject>
+
+  <!-- ── Channel Management  x=240  color=#3B96D4 ── -->
+  <rect class="box-card" x="240" y="535" width="210" height="140" rx="4"/>
+  <rect x="240" y="535" width="210" height="30" rx="4" fill="#3B96D4"/>
+  <rect x="240" y="550" width="210" height="15" fill="#3B96D4"/>
+  <foreignObject x="240" y="535" width="210" height="30">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="box-title">Channel Management</div>
+  </foreignObject>
+  <foreignObject x="240" y="565" width="210" height="110">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="box-items" style="color:#3B96D4">
+      <span>Partner Program</span>
+      <span>Ecosystem Management</span>
+    </div>
+  </foreignObject>
+
+  <!-- ── Procure to Pay  x=460  color=#2860B8 ── -->
+  <rect class="box-card" x="460" y="535" width="210" height="140" rx="4"/>
+  <rect x="460" y="535" width="210" height="30" rx="4" fill="#2860B8"/>
+  <rect x="460" y="550" width="210" height="15" fill="#2860B8"/>
+  <foreignObject x="460" y="535" width="210" height="30">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="box-title">Procure to Pay</div>
+  </foreignObject>
+  <foreignObject x="460" y="565" width="210" height="110">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="box-items" style="color:#2860B8">
+      <span>Requirement Management</span>
+      <span>Purchasing</span>
+      <span>Invoicing</span>
+      <span style="border-bottom:none">Payment</span>
+    </div>
+  </foreignObject>
+
+  <!-- ── Finance  x=680  color=#4858C8 ── -->
+  <rect class="box-card" x="680" y="535" width="210" height="140" rx="4"/>
+  <rect x="680" y="535" width="210" height="30" rx="4" fill="#4858C8"/>
+  <rect x="680" y="550" width="210" height="15" fill="#4858C8"/>
+  <foreignObject x="680" y="535" width="210" height="30">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="box-title">Finance</div>
+  </foreignObject>
+  <foreignObject x="680" y="565" width="210" height="110">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="box-items" style="color:#4858C8">
+      <span>Accounting &amp; Periode-end Closing</span>
+      <span>Finance Operations</span>
+      <span>Treasury Management</span>
+      <span style="border-bottom:none">Real Estate Management</span>
+    </div>
+  </foreignObject>
+
+  <!-- ── Legal  x=900  color=#6040B0 ── -->
+  <rect class="box-card" x="900" y="535" width="210" height="140" rx="4"/>
+  <rect x="900" y="535" width="210" height="30" rx="4" fill="#6040B0"/>
+  <rect x="900" y="550" width="210" height="15" fill="#6040B0"/>
+  <foreignObject x="900" y="535" width="210" height="30">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="box-title">Legal</div>
+  </foreignObject>
+  <foreignObject x="900" y="565" width="210" height="110">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="box-items" style="color:#6040B0">
+      <span>Contract Management</span>
+      <span>Compliance</span>
+    </div>
+  </foreignObject>
+
+  <!-- ── Hire to Retire  x=1120  color=#7830A8 ── -->
+  <rect class="box-card" x="1120" y="535" width="210" height="140" rx="4"/>
+  <rect x="1120" y="535" width="210" height="30" rx="4" fill="#7830A8"/>
+  <rect x="1120" y="550" width="210" height="15" fill="#7830A8"/>
+  <foreignObject x="1120" y="535" width="210" height="30">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="box-title">Hire to Retire</div>
+  </foreignObject>
+  <foreignObject x="1120" y="565" width="210" height="110">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="box-items" style="color:#7830A8">
+      <span>Talent Acquisition</span>
+      <span>Contract Management</span>
+      <span>Culture</span>
+    </div>
+  </foreignObject>
+
+  <!-- ── Issue to Resolution  x=1340  color=#3C2C44 ── -->
+  <rect class="box-card" x="1340" y="535" width="210" height="140" rx="4"/>
+  <rect x="1340" y="535" width="210" height="30" rx="4" fill="#3C2C44"/>
+  <rect x="1340" y="550" width="210" height="15" fill="#3C2C44"/>
+  <foreignObject x="1340" y="535" width="210" height="30">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="box-title">Issue to Resolution</div>
+  </foreignObject>
+  <foreignObject x="1340" y="565" width="210" height="110">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="box-items" style="color:#3C2C44">
+      <span>Customer Care</span>
+      <span>Tech Support</span>
+    </div>
+  </foreignObject>
+
+</svg>
