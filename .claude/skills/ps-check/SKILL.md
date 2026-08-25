@@ -25,7 +25,7 @@ Ask the user for two things:
 {
   "questions": [
     {
-      "question": "⚠️ Experimental: This skill may miss issues, flag false positives, or misinterpret requirements. Always review findings critically before acting on them.\n\nWhich Product Standards categories should I check?",
+      "question": "⚠️ This is not an official compliance check. It's a design aid to help spot potential issues — findings may be incomplete, incorrect, or miss context. Always review critically and consult the official SAP Product Standards documentation before drawing conclusions.\n\nWhich Product Standards categories should I check?",
       "header": "Categories",
       "multiSelect": false,
       "options": [
