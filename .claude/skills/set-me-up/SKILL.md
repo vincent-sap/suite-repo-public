@@ -54,7 +54,7 @@ AskUserQuestion({
 
 ## Step 2 — Package registry (Artifactory) login (if needed)
 
-If the user is not logged in or unsure, tell them to run these commands in a **new terminal tab** (not inside Claude Code), then come back:
+If the user is not logged in or unsure, tell them to run **all three commands** in a **new terminal tab** (not inside Claude Code), then come back. Make sure they run both `npm login` commands — each logs in to a different registry:
 
 ```
 npm login --registry=https://common.repositories.cloud.sap/artifactory/api/npm/signavio-npm-releases/ --scope=@signavio
