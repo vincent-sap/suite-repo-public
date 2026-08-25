@@ -26,7 +26,29 @@ Tell the user:
 
 ## Step 2 — Install Figma skills
 
-Ask first:
+First, check if Figma skills are already installed:
+
+```bash
+ls .claude/skills/figma-use 2>/dev/null && echo "installed" || echo "missing"
+```
+
+If already installed, ask:
+
+```
+AskUserQuestion({
+  questions: [{
+    question: "Figma skills are already installed. Update them to the latest version?",
+    header: "Figma skills",
+    multiSelect: false,
+    options: [
+      { label: "Yes, update", description: "Pull the latest version from Figma" },
+      { label: "Skip", description: "Keep the current version" }
+    ]
+  }]
+})
+```
+
+If not installed, ask:
 
 ```
 AskUserQuestion({
@@ -134,21 +156,36 @@ If "Skip for now", jump to Step 6.
 
 ---
 
-## Step 5b — UI5 MCP: Install the MCP server
+## Step 5b — UI5 MCP: Install via plugin
 
-Run this to add the UI5 MCP to your user-level Claude config (token stays private, never in the repo):
+Tell the user:
 
-```bash
-claude mcp add ui5 \
-  --scope user \
-  -e MCP_UI5_GITHUB_TOKEN=$MCP_UI5_GITHUB_TOKEN \
-  -- npx -y @sap-signavio/sap-ui5-webcomponents-mcp@latest 2>&1
+> Now we'll install the UI5 MCP. This gives Claude direct access to UI5 and Signavio component docs — so it always uses the right APIs when building your prototype.
+>
+> Open a terminal, type `claude`, and enter these two commands one by one:
+>
+> ```
+> /plugin marketplace add https://github.tools.sap/SAP-Signavio-T-A/signavio-plugin.git
+> ```
+> ```
+> /plugin install ui5-webcomponents
+> ```
+
+Ask:
+
 ```
-
-If this fails:
-- With `MCP_UI5_GITHUB_TOKEN is not set` → the token wasn't exported correctly. Ask the user to open a new terminal tab, run `source ~/.zshrc`, then restart Claude Code.
-- With a 401/403 error → the token may not have `repo` scope. Ask them to create a new token with `repo` access.
-- With any other error → show the error and suggest they try again after restarting Claude Code.
+AskUserQuestion({
+  questions: [{
+    question: "Done installing the UI5 MCP?",
+    header: "UI5 MCP",
+    multiSelect: false,
+    options: [
+      { label: "Yes, done", description: "Continue" },
+      { label: "Skip for now", description: "I'll set it up later" }
+    ]
+  }]
+})
+```
 
 ---
 
