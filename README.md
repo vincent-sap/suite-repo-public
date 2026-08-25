@@ -6,7 +6,7 @@ Built with [UI5 Web Components for React](https://sap.github.io/ui5-webcomponent
 
 <div align="center">
   <br>
-  <a href="https://pages.github.tools.sap/signavio-experience/suite-replica" target="_blank">
+  <a href="PAGES_URL_PLACEHOLDER" target="_blank">
     <img src="https://img.shields.io/badge/Open%20Prototype-%E2%86%92-0070f3?style=for-the-badge&labelColor=0070f3&color=0054a6&logoColor=white" alt="Open Prototype" />
   </a>
   <br><br>
@@ -40,10 +40,6 @@ Make sure you have the following CAM profiles before setting up. Request them at
 2. Open VSCode and press **"Clone Git Repository"** — paste your fork URL and choose a folder
    - Alternatively: create an empty folder, open a terminal in it and run `gh repo clone github.tools.sap/<your-forked-repo> .`
 3. Open the cloned folder in [Claude Code](https://claude.ai/code)
-4. Run `/set-me-up` — Claude walks you through Artifactory login, dependencies, and GitHub Pages
-5. Run `/setup-mcps` — install the Figma MCP and UI5 MCP
-6. Run `/start-prototype` — start the local dev server
-
 4. Run `/set-me-up` — Claude walks you through Artifactory login, dependencies, and GitHub Pages
 5. Run `/setup-mcps` — install the Figma MCP and UI5 MCP
 6. Run `/start-prototype` — start the local dev server
