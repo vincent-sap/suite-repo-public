@@ -18,8 +18,8 @@ temp/
 # Playwright MCP session files
 .playwright-mcp/
 
-# Playwright screenshots
-*.png
+# Playwright screenshots (land in repo root)
+/*.png
 
 # Editor directories and files
 .vscode/*

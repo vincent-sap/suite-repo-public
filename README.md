@@ -24,13 +24,28 @@ Built with [UI5 Web Components for React](https://sap.github.io/ui5-webcomponent
 - **Suite shell** — ShellBar, side navigation, workspace selector
 - **Templates** — 9 reusable page layouts at `/#/templates`
 
+## Before you start — required access
+
+Make sure you have the following CAM profiles before setting up. Request them at [cam.int.sap/cam/ui/admin?item=request](https://cam.int.sap/cam/ui/admin?item=request)
+
+| CAM profile | Why |
+|---|---|
+| `CAM_PROD_ARTIFACTORY_INT` | Install packages from SAP's package registry |
+| `CAM_PROD_ARTIFACTORY` | Install packages from SAP's package registry |
+| `BPI Signavio Github Process Manager Developer` | Access UIxtension components in the UI5 MCP |
+
 ## Getting started
 
 1. Fork this repo on [github.tools.sap](https://github.tools.sap/signavio-experience/suite-replica)
-2. Clone your fork and open it in [Claude Code](https://claude.ai/code)
-3. Run `/set-me-up` — Claude walks you through Artifactory login, dependencies, and GitHub Pages
-4. Run `/setup-mcps` — install the Figma MCP and UI5 MCP
-5. Run `/start-prototype` — start the local dev server
+2. Create an empty folder on your computer
+3. Open the folder in [Claude Code](https://claude.ai/code) — then tell Claude:
+   > "Clone `github.tools.sap/<your-forked-repo>` directly into this folder, not into a subfolder"
+
+   Alternatively, open the folder in a terminal and run `claude`, then give Claude the same instruction.
+
+4. Run `/set-me-up` — Claude walks you through Artifactory login, dependencies, and GitHub Pages
+5. Run `/setup-mcps` — install the Figma MCP and UI5 MCP
+6. Run `/start-prototype` — start the local dev server
 
 ## Skills
 
@@ -55,3 +70,30 @@ git push origin main
 ```
 
 GitHub Pages serves from the `docs/` folder on `main`. Always build before pushing.
+
+---
+
+## Initial setup
+
+New to Claude Code? Do this once before anything else.
+
+**Install these apps:**
+
+- [VSCode](https://code.visualstudio.com/download) — code editor
+- [Python](https://www.python.org/downloads/) — helps Claude Code make script-based changes
+- [Node.js](https://nodejs.org/en/download) — includes npm, which installs packages
+- [Homebrew](https://brew.sh/) (Mac only) — package manager, needed to install Git
+- [Git](https://git-scm.com/install/) — version control
+- [Hyperspace AI](https://ai-docs.portal.hyperspace.tools.sap/llm-proxy/installation/desktop-app/) — SAP's AI proxy (see Getting Started in the linked docs)
+- [Claude Code](https://code.claude.com/docs/en/setup#native-install-recommended) — AI coding assistant
+
+**Log in to Git:**
+
+Open a terminal and run:
+```
+gh auth login --hostname github.tools.sap
+```
+
+**Start the Hyperspace AI app** before using Claude Code.
+
+**Set up your Claude environment** following the [Hyperspace AI + Claude guide](https://ai-docs.portal.hyperspace.tools.sap/llm-proxy/recipes/claude/).

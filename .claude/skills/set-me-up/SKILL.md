@@ -14,6 +14,23 @@ Be encouraging and non-technical. This prototype is used by designers and produc
 Greet the user:
 
 > Welcome! I'll get this prototype ready to run in a few minutes.
+>
+> Before we start — please check the **"Before you start"** section in the README and make sure you have all the required CAM profiles. Without them, some steps may fail.
+> https://github.tools.sap/signavio-experience/suite-replica#before-you-start--required-access
+
+```
+AskUserQuestion({
+  questions: [{
+    question: "Have you requested the required CAM profiles from the README?",
+    header: "CAM profiles",
+    multiSelect: false,
+    options: [
+      { label: "Yes, all done", description: "Continue with setup" },
+      { label: "Skip for now", description: "Some things might not work without them" }
+    ]
+  }]
+})
+```
 
 Then ask:
 
@@ -21,12 +38,12 @@ Then ask:
 AskUserQuestion({
   questions: [
     {
-      question: "Have you already logged in to SAP Artifactory? (Required to install packages)",
-      header: "Artifactory",
+      question: "Have you already set up access to SAP's package registry (Artifactory)? That's where UI components and design packages are hosted.",
+      header: "Package registry",
       multiSelect: false,
       options: [
         { label: "Yes, I'm logged in", description: "Go straight to install" },
-        { label: "No, I need to log in", description: "I'll show you the commands" }
+        { label: "No / Not sure", description: "No problem — we'll just log in again" }
       ]
     }
   ]
@@ -35,9 +52,9 @@ AskUserQuestion({
 
 ---
 
-## Step 2 — Artifactory login (if needed)
+## Step 2 — Package registry (Artifactory) login (if needed)
 
-If the user is not logged in, tell them to run these commands in a **new terminal tab** (not inside Claude Code), then come back:
+If the user is not logged in or unsure, tell them to run these commands in a **new terminal tab** (not inside Claude Code), then come back:
 
 ```
 npm login --registry=https://common.repositories.cloud.sap/artifactory/api/npm/signavio-npm-releases/ --scope=@signavio
@@ -50,8 +67,8 @@ Ask them to confirm when done:
 ```
 AskUserQuestion({
   questions: [{
-    question: "Done logging in to Artifactory?",
-    header: "Artifactory",
+    question: "Done? Then we're ready to install.",
+    header: "Package registry",
     multiSelect: false,
     options: [
       { label: "Yes, I'm logged in now", description: "Continue with setup" },
@@ -65,17 +82,7 @@ If "I'll do it later", stop.
 
 ---
 
-## Step 3 — Install dependencies
-
-```bash
-npm install
-```
-
-If this fails with a 401/403 error, remind the user to complete the Artifactory login from Step 2.
-
----
-
-## Step 4 — Install security guidelines
+## Step 3 — Install security guidelines
 
 Ask the user:
 
@@ -93,7 +100,7 @@ AskUserQuestion({
 })
 ```
 
-If "Skip for now", continue to Step 5.
+If "Skip for now", continue to Step 4.
 
 Otherwise install the team's AI security skill directly from GitHub:
 
@@ -107,6 +114,16 @@ If this fails, tell the user:
 > `GH_HOST=github.tools.sap gh repo clone signavio-experience/SKILL-security-guidelines ~/.claude/skills/install-security-guidelines`"
 
 Continue regardless.
+
+---
+
+## Step 4 — Install dependencies
+
+```bash
+npm install
+```
+
+If this fails with a 401/403 error, remind the user to complete the Artifactory login from Step 2.
 
 ---
 
