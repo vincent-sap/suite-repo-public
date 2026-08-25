@@ -37,11 +37,12 @@ Make sure you have the following CAM profiles before setting up. Request them at
 ## Getting started
 
 1. Fork this repo on [github.tools.sap](https://github.tools.sap/signavio-experience/suite-replica)
-2. Create an empty folder on your computer
-3. Open the folder in [Claude Code](https://claude.ai/code) — then tell Claude:
-   > "Clone `github.tools.sap/<your-forked-repo>` directly into this folder, not into a subfolder"
-
-   Alternatively, open the folder in a terminal and run `claude`, then give Claude the same instruction.
+2. Open VSCode and press **"Clone Git Repository"** — paste your fork URL and choose a folder
+   - Alternatively: create an empty folder, open a terminal in it and run `gh repo clone github.tools.sap/<your-forked-repo> .`
+3. Open the cloned folder in [Claude Code](https://claude.ai/code)
+4. Run `/set-me-up` — Claude walks you through Artifactory login, dependencies, and GitHub Pages
+5. Run `/setup-mcps` — install the Figma MCP and UI5 MCP
+6. Run `/start-prototype` — start the local dev server
 
 4. Run `/set-me-up` — Claude walks you through Artifactory login, dependencies, and GitHub Pages
 5. Run `/setup-mcps` — install the Figma MCP and UI5 MCP
