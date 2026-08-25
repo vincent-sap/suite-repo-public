@@ -25,6 +25,7 @@ Output the following list as plain text — do NOT use AskUserQuestion here:
 8. **Side nav** — page with its own secondary left navigation
 9. **Side nav wide** — same but wider content area
 10. **Copy an existing page** — start from a page already in this prototype
+11. **Contribute to an existing page** — add content to a page that already exists
 
 You can preview all templates at `/#/templates` in the running prototype.
 
@@ -57,6 +58,8 @@ If the user isn't sure, suggest the closest match based on the page name.
 If the user wants a **new domain** (none of the existing ones fit): ask for the new domain name, create the folder `src/domains/<new-domain>/`, and use that.
 
 If "Copy an existing page" was chosen in Step 1: ask them to name the page they want to copy, find it in `src/domains/`, and copy it to the chosen domain location with the new name. Then skip to Step 5.
+
+If "Contribute to an existing page" was chosen in Step 1: ask which page they want to contribute to, find it in `src/domains/`, open it, and ask what they'd like to add or change. Make the requested changes and skip Steps 2–5 (no new file or route needed).
 
 ## Step 4 — Create the file
 
