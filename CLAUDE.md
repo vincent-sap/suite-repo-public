@@ -25,7 +25,14 @@ This outputs to `/docs/`. **Always build before pushing** — commit the `/docs/
 
 **NEVER guess prop names or event signatures.** Always query them first via the UI5 MCP tools (`ui5wc_get_component_info`, `ui5wc_get_guidelines`, `get_component_api`, etc.).
 
-Only use components from the installed packages: `@ui5/webcomponents-react` and `@signavio/sap-signavio-uixtension`.
+**NEVER build custom base components** (buttons, inputs, modals, tooltips, badges, etc.) — if it's a common UI pattern, a UI5 or UIxtension component exists for it. Use that instead.
+
+Only use components from the installed packages. Approved packages:
+- `@ui5/webcomponents-react` and `@signavio/sap-signavio-uixtension` — primary UI components
+- `@xyflow/react` — for flow/graph diagrams
+- `recharts` — for charts and data visualisation
+- `lucide-react` — for icons not available in `@signavio/icons`
+- `tailwindcss` — for utility styling where UI5 CSS vars don't cover the need
 
 ## Dependencies
 
