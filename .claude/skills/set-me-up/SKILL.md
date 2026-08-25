@@ -255,7 +255,7 @@ AskUserQuestion({
 Whether or not the user adds a description, always update the README in the same commit — replace the placeholder link with the real Pages URL, and insert the description if provided:
 
 ```bash
-sed -i '' "s|PAGES_URL_PLACEHOLDER|PAGES_URL|g" README.md
+sed -i '' "s|https://pages.github.tools.sap/signavio-experience/suite-replica|PAGES_URL|g" README.md
 # if description provided, also update the description line
 git add README.md
 git commit -m "Update README"
