@@ -19,6 +19,14 @@ npm run build
 
 This outputs to `/docs/`. **Always build before pushing** — commit the `/docs/` folder together with your source changes so GitHub Pages stays in sync.
 
+## Component library
+
+**Avoid raw HTML elements (`<div>`, `<span>`, `<section>`, `<p>`, `<ul>`, `<button>`, etc.) for layout or UI structure.** When a UI5 or UIxtension component exists for the use case, use it instead. Plain `<div>` is acceptable only when no suitable component exists.
+
+**NEVER guess prop names or event signatures.** Always query them first via the UI5 MCP tools (`ui5wc_get_component_info`, `ui5wc_get_guidelines`, `get_component_api`, etc.).
+
+Only use components from the installed packages: `@ui5/webcomponents-react` and `@signavio/sap-signavio-uixtension`.
+
 ## Dependencies
 
 ### @signavio/sap-signavio-uixtension minimum version
