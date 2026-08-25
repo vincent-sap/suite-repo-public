@@ -21,6 +21,9 @@ temp/
 # Playwright screenshots (land in repo root)
 /*.png
 
+# Figma skills (downloaded fresh via /setup-mcps)
+.claude/skills/figma-*/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

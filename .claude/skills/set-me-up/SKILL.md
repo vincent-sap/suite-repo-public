@@ -268,10 +268,15 @@ If "local only" was chosen: skip this step entirely.
 
 ## Step 8 — Done
 
+If the security guidelines were installed in Step 3, tell the user:
+
+> **One last thing:** Restart Claude Code, then run `/install-security-guidelines` to apply the security settings.
+
 **If on GitHub:**
 
 > **You're all set!**
 >
+> - `/install-security-guidelines` — apply security settings (restart Claude first)
 > - `/setup-mcps` — set up Figma and UI5 MCP servers (recommended next step)
 > - `/start-prototype` — start the dev server and begin building
 > - `/create-page` — add a new page to the prototype
@@ -281,6 +286,7 @@ If "local only" was chosen: skip this step entirely.
 
 > **You're all set!**
 >
+> - `/install-security-guidelines` — apply security settings (restart Claude first)
 > - `/setup-mcps` — set up Figma and UI5 MCP servers (recommended next step)
 > - `/start-prototype` — start the dev server and begin building
 > - `/create-page` — add a new page to the prototype
