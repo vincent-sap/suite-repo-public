@@ -49,7 +49,6 @@ import '@ui5/webcomponents-fiori/dist/illustrations/UnableToLoad.js'
 import { SigChipV2, SigDomainObject, SigTableWrapper } from '@signavio/sap-signavio-uixtension'
 import { useWorkspace, USER_CONTEXT_DEFAULTS } from '../../contexts/WorkspaceContext'
 import { usePCA } from '../../contexts/PCAContext'
-import { useRelease } from '../../contexts/ReleaseContext'
 import { useAuth } from '../../contexts/AuthContext'
 import SearchDropdown from './SearchDropdown'
 import WelcomeModal from './WelcomeModal'
@@ -77,73 +76,73 @@ const SETTINGS_NAV = [
   {
     title: 'Users and Access',
     items: [
-      { text: 'Users', path: '/users' },
-      { text: 'Groups', path: '/groups' },
-      { text: 'Audiences', path: '/audience' },
-      { text: 'Resource Access', path: '/resource-access' },
-      { text: 'Feature Access', path: '/feature-access' },
+      { text: 'Users', path: '/settings/users' },
+      { text: 'Groups', path: '/settings/groups' },
+      { text: 'Audiences', path: '/settings/audience' },
+      { text: 'Resource Access', path: '/settings/resource-access' },
+      { text: 'Feature Access', path: '/settings/feature-access' },
     ],
   },
   {
     title: 'Workspace',
     items: [
-      { text: 'Workspace Details', path: '/general-settings' },
-      { text: 'Process Landscape', path: '/process-landscape-settings' },
-      { text: 'Theming', path: '/theme' },
-      { text: 'Navigation', path: '/navigation' },
-      { text: 'Collaboration', path: '/collaboration' },
-      { text: 'Help Resources', path: '/help-resources' },
+      { text: 'Workspace Details', path: '/settings/general-settings' },
+      { text: 'Process Landscape', path: '/settings/process-landscape-settings' },
+      { text: 'Theming', path: '/settings/theme' },
+      { text: 'Navigation', path: '/settings/navigation' },
+      { text: 'Collaboration', path: '/settings/collaboration' },
+      { text: 'Help Resources', path: '/settings/help-resources' },
     ],
   },
   {
     title: 'Page Layout',
     items: [
-      { text: 'Home Page', path: '/home-page' },
-      { text: 'Model Page', path: '/diagram-page' },
-      { text: 'Fact Sheet', path: '/fact-sheet' },
+      { text: 'Home Page', path: '/settings/home-page' },
+      { text: 'Model Page', path: '/settings/diagram-page' },
+      { text: 'Fact Sheet', path: '/settings/fact-sheet' },
     ],
   },
   {
     title: 'Assets and Attributes',
     items: [
-      { text: 'Asset Types', path: '/asset-types' },
-      { text: 'Dictionary Categories', path: '/dictionary-categories' },
-      { text: 'Attribute Definitions', path: '/attribute-definitions' },
+      { text: 'Asset Types', path: '/settings/asset-types' },
+      { text: 'Dictionary Categories', path: '/settings/dictionary-categories' },
+      { text: 'Attribute Definitions', path: '/settings/attribute-definitions' },
     ],
   },
   {
     title: 'Modeling and Governance',
     items: [
-      { text: 'Modeling Preferences', path: '/modeling-preferences' },
-      { text: 'Modeling Languages and Elements', path: '/modeling-languages' },
-      { text: 'Modeling Conventions', path: '/modeling-conventions' },
-      { text: 'Attribute Overlays', path: '/attribute-visualization' },
-      { text: 'Approval Workflows', path: '/journey-model-approval' },
-      { text: 'Process Rating', path: '/process-rating' },
+      { text: 'Modeling Preferences', path: '/settings/modeling-preferences' },
+      { text: 'Modeling Languages and Elements', path: '/settings/modeling-languages' },
+      { text: 'Modeling Conventions', path: '/settings/modeling-conventions' },
+      { text: 'Attribute Overlays', path: '/settings/attribute-visualization' },
+      { text: 'Approval Workflows', path: '/settings/journey-model-approval' },
+      { text: 'Process Rating', path: '/settings/process-rating' },
     ],
   },
   {
     title: 'SAP-Defined Business Content',
     items: [
-      { text: 'Data Sharing and Industry', path: '/data-sharing-industry' },
-      { text: 'Data Collection Configuration', path: '/data-collection-config' },
-      { text: 'Access Configuration', path: '/access-configuration' },
-      { text: 'Data Privacy Management', path: '/data-privacy-management' },
+      { text: 'Data Sharing and Industry', path: '/settings/data-sharing-industry' },
+      { text: 'Data Collection Configuration', path: '/settings/data-collection-config' },
+      { text: 'Access Configuration', path: '/settings/access-configuration' },
+      { text: 'Data Privacy Management', path: '/settings/data-privacy-management' },
     ],
   },
   {
     title: 'Integrations',
     items: [
-      { text: 'SAP Signavio Process Insights', path: '/process-insights' },
-      { text: 'SAP Cloud ALM', path: '/cloud-alm' },
-      { text: 'WalkMe Digital Adoption Platform', path: '/walkme' },
+      { text: 'SAP Signavio Process Insights', path: '/settings/process-insights' },
+      { text: 'SAP Cloud ALM', path: '/settings/cloud-alm' },
+      { text: 'WalkMe Digital Adoption Platform', path: '/settings/walkme' },
     ],
   },
   {
     title: 'Security',
     items: [
-      { text: 'Authentication', path: '/authentication' },
-      { text: 'Network and Privacy', path: '/network-privacy' },
+      { text: 'Authentication', path: '/settings/authentication' },
+      { text: 'Network and Privacy', path: '/settings/network-privacy' },
     ],
   },
 ]
@@ -161,7 +160,6 @@ export default function Shell() {
   const [searchParams, setSearchParams] = useSearchParams()
   const { additionalInfo, helpLinks, smartFolders, workspaceName, ownerId, contentLanguages, contextDimensions, userContextValues, setUserContextValues } = useWorkspace()
   const { getActiveConversation } = usePCA()
-  const { currentRelease } = useRelease()
   const auth = useAuth()
   useNavigationLog()
   const dirtyState = useDirtyState()
@@ -350,7 +348,7 @@ export default function Shell() {
       guardedNavigate('/process-landscape')
       setNavExpanded(false)
     } else if (text === 'Workspace Settings') {
-      guardedNavigate('/users')
+      guardedNavigate('/settings/users')
       setNavExpanded(false)
     } else if (text === 'Modeler') {
       guardedNavigate('/modeler')
@@ -414,16 +412,12 @@ export default function Shell() {
   }, [])
 
   const isRepository = location.pathname === '/repository'
-  const isSearch = location.pathname === '/search'
   const isReporting = location.pathname === '/reporting'
   const isHome = location.pathname === '/home' && !getActiveConversation()?.messages.length
-  const isPCA = location.pathname === '/process-consulting-agent'
   const isProcessLandscape = location.pathname === '/process-landscape'
   const isNewsfeed = location.pathname === '/newsfeed'
   const isRecent = location.pathname === '/recent'
   const isFavorites = location.pathname === '/favorites'
-  const isObjectives = location.pathname === '/objectives'
-  const isInitiatives = /^\/initiatives/.test(location.pathname)
   const isStrategyExecution = location.pathname === '/strategy-execution'
   const isInsights = location.pathname === '/insights'
   const isValueAccelerator = location.pathname === '/value-accelerator'
@@ -433,7 +427,7 @@ export default function Shell() {
   const isCloudTransformation = /^\/cloud-transformation/.test(location.pathname)
   const isBenchmarkingAnalytics = /^\/benchmarking-analytics/.test(location.pathname)
   const isModeler = /^\/modeler/.test(location.pathname)
-  const isModelingAssetType = /^\/asset-types\/(bpmn|dmn|value-chain|nav-map)/.test(location.pathname)
+  const isSettings = location.pathname.startsWith('/settings')
 
   const handleHelpMenuItemClick = (e: CustomEvent) => {
     const text = (e.detail?.item as any)?.text as string
@@ -1002,28 +996,20 @@ export default function Shell() {
         <SideNavigationItem icon="task" text="Tasks" />
         <SideNavigationGroup text="Browse and Manage" expanded>
           <SideNavigationItem icon="folder-blank" text="Repository" selected={isRepository} />
-          {currentRelease !== 'NS2' && <SideNavigationItem icon="SAP-icons-v4/navigation-map" text="Process Landscape" selected={isProcessLandscape} />}
-          {currentRelease !== 'NS2' && <SideNavigationItem icon="SAP-icons-v4/company-memory" text="Company Memory" />}
-          {currentRelease !== 'NS2' && <SideNavigationItem icon="SAP-icons-v4/rocket" text="Value Accelerator Library" selected={isValueAccelerator} />}
+          <SideNavigationItem icon="SAP-icons-v4/navigation-map" text="Process Landscape" selected={isProcessLandscape} />
+          <SideNavigationItem icon="SAP-icons-v4/company-memory" text="Company Memory" />
+          <SideNavigationItem icon="SAP-icons-v4/rocket" text="Value Accelerator Library" selected={isValueAccelerator} />
         </SideNavigationGroup>
-        {currentRelease !== 'NS2' && (
-          <SideNavigationGroup text="Transform and Realize Value" expanded>
-            {currentRelease !== 'R27Q1' && <SideNavigationItem icon="explorer" text="Discover" selected={isDiscover} />}
-            {currentRelease !== 'R27Q1'
-              ? audience === 'administrators' && <SideNavigationItem icon="overview-chart" text="Strategy Execution" selected={isStrategyExecution} />
-              : <>
-                  {audience === 'administrators' && <SideNavigationItem icon="target-group" text="Objectives" selected={isObjectives} />}
-                  {audience === 'administrators' && <SideNavigationItem icon="overview-chart" text="Initiatives" selected={isInitiatives} />}
-                </>
-            }
-            {audience === 'administrators' && <SideNavigationItem icon="compare-2" text="Benchmarking Analytics" selected={isBenchmarkingAnalytics} />}
-            <SideNavigationItem icon="lightbulb" text="Insights" selected={isInsights} />
-            {audience === 'administrators' && <SideNavigationItem icon="money-bills" text="Improvement Opportunities" selected={isImprovementOpportunities} />}
-            {audience === 'administrators' && <SideNavigationItem icon="accept" text="Recommendations" selected={isRecommendations} />}
-            {audience === 'administrators' && <SideNavigationItem icon="cloud" text="Cloud Transformation" selected={isCloudTransformation} />}
-          </SideNavigationGroup>
-        )}
-        {currentRelease !== 'NS2' && audience === 'administrators' && (
+        <SideNavigationGroup text="Transform and Realize Value" expanded>
+          <SideNavigationItem icon="explorer" text="Discover" selected={isDiscover} />
+          {audience === 'administrators' && <SideNavigationItem icon="overview-chart" text="Strategy Execution" selected={isStrategyExecution} />}
+          {audience === 'administrators' && <SideNavigationItem icon="compare-2" text="Benchmarking Analytics" selected={isBenchmarkingAnalytics} />}
+          <SideNavigationItem icon="lightbulb" text="Insights" selected={isInsights} />
+          {audience === 'administrators' && <SideNavigationItem icon="money-bills" text="Improvement Opportunities" selected={isImprovementOpportunities} />}
+          {audience === 'administrators' && <SideNavigationItem icon="accept" text="Recommendations" selected={isRecommendations} />}
+          {audience === 'administrators' && <SideNavigationItem icon="cloud" text="Cloud Transformation" selected={isCloudTransformation} />}
+        </SideNavigationGroup>
+        {audience === 'administrators' && (
           <SideNavigationGroup text="Mine and Analyze" expanded>
             <SideNavigationItem icon="provision" text="Data Management" />
             <SideNavigationItem icon="developer-settings" text="Analysis Configuration" />
@@ -1032,23 +1018,19 @@ export default function Shell() {
           </SideNavigationGroup>
         )}
         <SideNavigationGroup text="Model and Govern" expanded>
-          {currentRelease !== 'NS2' && <SideNavigationItem icon="SAP-icons-v4/process-manager" text="Process Manager" />}
+          <SideNavigationItem icon="SAP-icons-v4/process-manager" text="Process Manager" />
           <SideNavigationItem icon="write-new" text="Modeler" selected={isModeler}>
             <Tag slot="tag" design="Set2" colorScheme="5" hideStateIcon>Beta</Tag>
           </SideNavigationItem>
-          {currentRelease !== 'NS2' && <SideNavigationItem icon="SAP-icons-v4/customer-journey" text="Journey Models" />}
-          {currentRelease !== 'NS2' && <SideNavigationItem icon="SAP-icons-v4/bpmn-type-service" text="Governance Workflows" />}
+          <SideNavigationItem icon="SAP-icons-v4/customer-journey" text="Journey Models" />
+          <SideNavigationItem icon="SAP-icons-v4/bpmn-type-service" text="Governance Workflows" />
         </SideNavigationGroup>
-        {currentRelease !== 'NS2' && <SideNavigationItem slot="fixedItems" icon="lab" text="Lab Space" />}
+        <SideNavigationItem slot="fixedItems" icon="lab" text="Lab Space" />
         {audience === 'administrators' && <SideNavigationItem slot="fixedItems" icon="SAP-icons-v4/report" text="Reporting" selected={isReporting} />}
-        {audience === 'administrators' && <SideNavigationItem slot="fixedItems" icon="action-settings" text="Workspace Settings" selected={!isRepository && !isSearch && !isReporting && !isHome && !isPCA && !isProcessLandscape && !isRecent && !isFavorites && !isNewsfeed && !isObjectives && !isInitiatives && !isStrategyExecution && !isInsights && !isValueAccelerator && !isDiscover && !isRecommendations && !isImprovementOpportunities && !isCloudTransformation && !isBenchmarkingAnalytics} />}
+        {audience === 'administrators' && <SideNavigationItem slot="fixedItems" icon="action-settings" text="Workspace Settings" selected={isSettings} />}
       </SideNavigation>
 
-      {isRepository || isSearch || isReporting || isHome || isPCA || isModeler || isModelingAssetType || isProcessLandscape || isRecent || isFavorites || isNewsfeed || isObjectives || isInitiatives || isStrategyExecution || isInsights || isValueAccelerator || isDiscover || isRecommendations || isImprovementOpportunities || isCloudTransformation || isBenchmarkingAnalytics || (location.pathname === '/home' && !!getActiveConversation()?.messages.length) ? (
-        <div style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden', position: 'relative' }}>
-          <Outlet />
-        </div>
-      ) : (
+      {isSettings ? (
         <div style={{ display: 'flex', height: '100%', overflow: 'hidden' }}>
           <div style={{ width: '17rem', flexShrink: 0, borderRight: '1px solid var(--sapList_BorderColor)', display: 'flex', flexDirection: 'column', overflow: 'hidden', background: 'var(--sapGroup_ContentBackground)' }}>
             <div style={{ padding: '1.25rem 1rem 1rem 1.5rem', flexShrink: 0, background: 'var(--sapGroup_TitleBackground)', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
@@ -1066,22 +1048,14 @@ export default function Shell() {
               {(() => {
                 const matchedPaths = searchSettings(settingsSearchQuery)
                 const isFiltered = settingsSearchQuery.trim().length > 0
-                const releaseNav = SETTINGS_NAV
-                  .map(group => ({
-                    ...group,
-                    items: group.items.filter(item =>
-                      item.path !== '/process-landscape-settings' || currentRelease !== 'NS2'
-                    ),
-                  }))
-                  .filter(group => group.items.length > 0)
                 const filteredNav = isFiltered
-                  ? releaseNav
+                  ? SETTINGS_NAV
                       .map(group => ({
                         ...group,
                         items: group.items.filter(item => matchedPaths.has(item.path)),
                       }))
                       .filter(group => group.items.length > 0)
-                  : releaseNav
+                  : SETTINGS_NAV
 
                 return filteredNav.length === 0 ? (
                   <div style={{ padding: '1rem 1.5rem' }}>
@@ -1122,6 +1096,10 @@ export default function Shell() {
               <Outlet />
             )}
           </div>
+        </div>
+      ) : (
+        <div style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden', position: 'relative' }}>
+          <Outlet />
         </div>
       )}
     </NavigationLayout>

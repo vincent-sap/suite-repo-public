@@ -225,7 +225,7 @@ export default function DictionaryCategories() {
           onItemClick={(e: any) => {
             if (menuOpenId || Date.now() - menuClosedAtRef.current < 300) return
             const id: string | undefined = e.detail.item.dataset.id
-            if (id) navigate(`/dictionary-categories/${id}`)
+            if (id) navigate(`/settings/dictionary-categories/${id}`)
           }}
           onMoveOver={(e: any) => e.preventDefault()}
           onMove={(e: any) => {

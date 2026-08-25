@@ -143,7 +143,7 @@ export function TransferOwnershipDialog({ open, currentOwnerId, onClose, onTrans
                   {!eligible && (
                     <span style={{ fontSize: 'var(--sapFontSmallSize)', color: 'var(--sapCriticalElementColor)', marginTop: '0.125rem' }}>
                       Not an administrator —{' '}
-                      <Link onClick={e => { e.stopPropagation(); onClose(); navigate(`/users?userId=${user.id}`) }}>
+                      <Link onClick={e => { e.stopPropagation(); onClose(); navigate(`/settings/users?userId=${user.id}`) }}>
                         Edit user
                       </Link>
                     </span>

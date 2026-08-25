@@ -8,31 +8,13 @@ export interface SettingsSearchEntry {
 }
 
 export const SETTINGS_SEARCH_INDEX: SettingsSearchEntry[] = [
-  // Users and Access
+  { path: '/settings/audience', keywords: ['audience', 'administrators', 'modelers', 'roles', 'user types', 'segments'] },
+  { path: '/settings/users', keywords: ['users', 'user management', 'invite', 'members', 'accounts', 'user list', 'add user', 'remove user', 'license'] },
+  { path: '/settings/groups', keywords: ['groups', 'group management', 'auto-add', 'members', 'user groups', 'team', 'organize users'] },
+  { path: '/settings/resource-access', keywords: ['content access', 'resource access', 'permissions', 'folder access', 'model access', 'visibility', 'who can see'] },
+  { path: '/settings/feature-access', keywords: ['feature access', 'feature permissions', 'feature flags', 'enable features', 'disable features'] },
   {
-    path: '/audience',
-    keywords: ['audience', 'administrators', 'modelers', 'roles', 'user types', 'segments'],
-  },
-  {
-    path: '/users',
-    keywords: ['users', 'user management', 'invite', 'members', 'accounts', 'user list', 'add user', 'remove user', 'license'],
-  },
-  {
-    path: '/groups',
-    keywords: ['groups', 'group management', 'auto-add', 'members', 'user groups', 'team', 'organize users'],
-  },
-  {
-    path: '/resource-access',
-    keywords: ['content access', 'resource access', 'permissions', 'folder access', 'model access', 'visibility', 'who can see'],
-  },
-  {
-    path: '/feature-access',
-    keywords: ['feature access', 'feature permissions', 'feature flags', 'enable features', 'disable features'],
-  },
-
-  // Workspace
-  {
-    path: '/general-settings',
+    path: '/settings/general-settings',
     keywords: [
       'workspace details', 'workspace name', 'identity', 'logo', 'branding',
       'private folder', 'my documents', 'upload documents', 'upload pictures', 'file upload',
@@ -42,18 +24,15 @@ export const SETTINGS_SEARCH_INDEX: SettingsSearchEntry[] = [
     ],
   },
   {
-    path: '/process-landscape-settings',
+    path: '/settings/process-landscape-settings',
     keywords: [
       'process landscape', 'hierarchy', 'level names', 'nomenclature', 'category',
       'process group', 'process', 'activity', 'task', 'navigation maps', 'metro map',
     ],
   },
+  { path: '/settings/theme', keywords: ['theming', 'theme', 'colors', 'branding', 'logo', 'custom colors', 'appearance', 'design'] },
   {
-    path: '/theme',
-    keywords: ['theming', 'theme', 'colors', 'branding', 'logo', 'custom colors', 'appearance', 'design'],
-  },
-  {
-    path: '/navigation',
+    path: '/settings/navigation',
     keywords: [
       'navigation', 'navigation panel', 'sidebar', 'menu', 'newsfeed', 'insights',
       'value accelerator', 'lab space', 'reports', 'improvement opportunities',
@@ -62,151 +41,130 @@ export const SETTINGS_SEARCH_INDEX: SettingsSearchEntry[] = [
     ],
   },
   {
-    path: '/collaboration',
+    path: '/settings/collaboration',
     keywords: [
       'collaboration', 'commenting', 'comments', 'read confirmation',
       'process rating', 'rating', 'star rating', 'permissions', 'criteria',
     ],
   },
+  { path: '/settings/help-resources', keywords: ['help resources', 'help links', 'help menu', 'support links', 'custom links', 'help portal'] },
   {
-    path: '/help-resources',
-    keywords: ['help resources', 'help links', 'help menu', 'support links', 'custom links', 'help portal'],
-  },
-
-  // Page Layout
-  {
-    path: '/home-page',
+    path: '/settings/home-page',
     keywords: [
       'home page', 'home', 'widgets', 'dashboard', 'quick access', 'create items',
       'recently viewed', 'favorites', 'my tasks', 'quick links', 'newsfeed widget',
     ],
   },
   {
-    path: '/diagram-page',
+    path: '/settings/diagram-page',
     keywords: [
       'model page', 'diagram page', 'header attributes', 'model attributes', 'diagram header',
       'attributes on model', 'show on model',
     ],
   },
   {
-    path: '/fact-sheet',
+    path: '/settings/fact-sheet',
     keywords: [
       'fact sheet', 'factsheet', 'default view', 'fact sheet sections', 'enable fact sheet',
       'show on page',
     ],
   },
-
-  // Assets and Meta Data
+  { path: '/settings/asset-types', keywords: ['asset types', 'asset', 'asset configuration', 'asset settings', 'custom assets'] },
+  { path: '/settings/dictionary-categories', keywords: ['dictionary', 'dictionary categories', 'categories', 'glossary', 'taxonomy', 'business terms'] },
   {
-    path: '/asset-types',
-    keywords: ['asset types', 'asset', 'asset configuration', 'asset settings', 'custom assets'],
-  },
-  {
-    path: '/dictionary-categories',
-    keywords: ['dictionary', 'dictionary categories', 'categories', 'glossary', 'taxonomy', 'business terms'],
-  },
-  {
-    path: '/attribute-definitions',
+    path: '/settings/attribute-definitions',
     keywords: [
       'attribute definitions', 'attributes', 'custom attributes', 'attribute types',
       'metadata', 'meta data', 'fields',
     ],
   },
-
-  // Modeling and Governance
   {
-    path: '/modeling-preferences',
+    path: '/settings/modeling-preferences',
     keywords: [
       'modeling preferences', 'modeling', 'colors', 'model colors', 'dictionary item types',
       'enforce dictionary', 'matching types',
     ],
   },
   {
-    path: '/modeling-languages',
+    path: '/settings/modeling-languages',
     keywords: [
       'modeling languages', 'languages', 'elements', 'bpmn', 'archiMate', 'epc', 'dmn',
       'quick model', 'org chart', 'journey model', 'enable language', 'disable language',
     ],
   },
   {
-    path: '/modeling-conventions',
+    path: '/settings/modeling-conventions',
     keywords: [
       'modeling conventions', 'conventions', 'quality rules', 'naming rules', 'validation',
       'process quality', 'guidelines', 'standards', 'compliance rules',
     ],
   },
   {
-    path: '/attribute-visualization',
+    path: '/settings/attribute-visualization',
     keywords: [
       'attribute overlays', 'overlays', 'attribute visualization', 'visual display',
       'appearance', 'rules', 'visibility', 'diagram elements', 'color overlay',
     ],
   },
   {
-    path: '/journey-model-approval',
+    path: '/settings/journey-model-approval',
     keywords: [
       'approval workflows', 'approval', 'workflow', 'diagram states', 'participants',
       'approval expiration', 'access permissions', 'governance', 'process governance',
       'sign-off', 'review process', 'workflow access',
     ],
   },
-
-  // SAP-Defined Business Content
   {
-    path: '/data-sharing-industry',
+    path: '/settings/data-sharing-industry',
     keywords: [
       'data sharing', 'industry', 'industry benchmarking', 'sap business content',
       'sharing settings', 'anonymized data',
     ],
   },
   {
-    path: '/data-collection-config',
+    path: '/settings/data-collection-config',
     keywords: [
       'data collection', 'data collection configuration', 'source systems', 'performance indicators',
       'kpi', 'pi', 'system connections', 'process mining data',
     ],
   },
   {
-    path: '/access-configuration',
+    path: '/settings/access-configuration',
     keywords: [
       'access configuration', 'access configurations', 'sap data access',
       'business content access', 'content access', 'configure access',
     ],
   },
   {
-    path: '/data-privacy-management',
+    path: '/settings/data-privacy-management',
     keywords: [
       'data privacy', 'privacy management', 'gdpr', 'privacy', 'personal data',
       'anonymization', 'data protection',
     ],
   },
-
-  // Integrations
   {
-    path: '/process-insights',
+    path: '/settings/process-insights',
     keywords: [
       'process insights', 'sap signavio process insights', 'system connections',
       'integration', 'pi integration', 'connect systems',
     ],
   },
   {
-    path: '/cloud-alm',
+    path: '/settings/cloud-alm',
     keywords: [
       'cloud alm', 'sap cloud alm', 'alm synchronization', 'alm integration',
       'application lifecycle management', 'project management integration',
     ],
   },
   {
-    path: '/walkme',
+    path: '/settings/walkme',
     keywords: [
       'walkme', 'walk me', 'digital adoption', 'digital adoption platform',
       'in-app guidance', 'onboarding integration',
     ],
   },
-
-  // Security
   {
-    path: '/authentication',
+    path: '/settings/authentication',
     keywords: [
       'authentication', 'saml', 'saml 2.0', 'sso', 'single sign-on', 'login',
       'service provider', 'identity provider', 'idp', 'auto-provision', 'user provisioning',
@@ -214,7 +172,7 @@ export const SETTINGS_SEARCH_INDEX: SettingsSearchEntry[] = [
     ],
   },
   {
-    path: '/network-privacy',
+    path: '/settings/network-privacy',
     keywords: [
       'network', 'privacy', 'ip filtering', 'ip filter', 'whitelist', 'allowlist',
       'network access', 'restrict access', 'ip addresses', 'firewall',

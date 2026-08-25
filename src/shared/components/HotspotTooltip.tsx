@@ -21,7 +21,7 @@ export default function HotspotTooltip({ onDismiss }: HotspotTooltipProps) {
   const navigate = useNavigate()
 
   const handleShowMe = () => {
-    navigate('/users')
+    navigate('/settings/users')
     onDismiss()
   }
 

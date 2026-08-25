@@ -84,7 +84,7 @@ export default function Audience() {
     <PageHeader title="Audiences" subtitle="Create and manage audiences to tailor the workspace experience for each user group." isDirty={isDirty} onSave={handleSave} onReset={handleReset}>
       <SettingsPageLayout flush>
         <MessageStrip design="Information" hideCloseButton>
-          You can create audiences based on the <Link onClick={() => navigate('/groups')}>user groups</Link> available in your workspace.
+          You can create audiences based on the <Link onClick={() => navigate('/settings/groups')}>user groups</Link> available in your workspace.
         </MessageStrip>
         <SigTableWrapper
           businessActionsSlot={

@@ -76,7 +76,7 @@ function PermissionsSection({ groups }: { groups: string[] }) {
     return (
       <div style={{ border: '1px solid var(--sapList_BorderColor)', borderRadius: 'var(--sapElement_BorderCornerRadius)', overflow: 'hidden' }}>
         <List separators="Inner"
-          onItemClick={() => navigate('/feature-access')}
+          onItemClick={() => navigate('/settings/feature-access')}
         >
           {items.length === 0
             ? <ListItemStandard type="Inactive" text="None via current group membership." />
@@ -361,7 +361,7 @@ function UserDetailPanel({ user, onClose, onRemoveUser, onUpdate, migrationState
                 separators="Inner"
                 onItemClick={e => {
                   const groupName = (e.detail.item as HTMLElement).dataset.key
-                  if (groupName) navigate(`/groups`)
+                  if (groupName) navigate(`/settings/groups`)
                 }}
               >
                 {userGroups.map(g => (

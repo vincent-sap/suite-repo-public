@@ -335,7 +335,7 @@ export default function ModelerLobby() {
               <MenuItem
                 text="Modeling Settings"
                 icon="action-settings"
-                onClick={() => navigate('/modeling-preferences')}
+                onClick={() => navigate('/settings/modeling-preferences')}
               />
             </Menu>
           </Toolbar>

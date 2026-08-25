@@ -177,7 +177,7 @@ export default function DiagramPage() {
                             style={{ maxWidth: '28rem', width: '100%' }}
                           />
                           <InfoPopover id="featured-attrs-info" header="Featured Attributes">
-                            <Text>Create <a href="#/asset-types">attribute groups</a> in Asset Types &gt; Modeling to enable the usage of Featured Attributes.</Text>
+                            <Text>Create <a href="#/settings/asset-types">attribute groups</a> in Asset Types &gt; Modeling to enable the usage of Featured Attributes.</Text>
                           </InfoPopover>
                         </div>
                       </div>

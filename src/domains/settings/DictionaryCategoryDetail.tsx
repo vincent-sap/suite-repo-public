@@ -64,7 +64,7 @@ export default function DictionaryCategoryDetail() {
     return (
       <div style={{ padding: '2rem' }}>
         <Text>Category not found</Text>
-        <Button design="Transparent" onClick={() => navigate('/dictionary-categories')}>Back to Dictionary Categories</Button>
+        <Button design="Transparent" onClick={() => navigate('/settings/dictionary-categories')}>Back to Dictionary Categories</Button>
       </div>
     )
   }
@@ -81,11 +81,11 @@ export default function DictionaryCategoryDetail() {
         titleArea={
         <DynamicPageTitle>
           <Breadcrumbs slot="breadcrumbs">
-            <BreadcrumbsItem onClick={() => navigate('/dictionary-categories')} style={{ cursor: 'pointer' }}>
+            <BreadcrumbsItem onClick={() => navigate('/settings/dictionary-categories')} style={{ cursor: 'pointer' }}>
               Dictionary Categories
             </BreadcrumbsItem>
             {parent && (
-              <BreadcrumbsItem onClick={() => navigate(`/dictionary-categories/${parent.id}`)} style={{ cursor: 'pointer' }}>
+              <BreadcrumbsItem onClick={() => navigate(`/settings/dictionary-categories/${parent.id}`)} style={{ cursor: 'pointer' }}>
                 {parent.name}
               </BreadcrumbsItem>
             )}
@@ -175,7 +175,7 @@ export default function DictionaryCategoryDetail() {
         onAdd={(name, parentId, color, type) => {
           const newId = addDictCategory({ name, parentId, color: color ?? '#3B6CC7', enabled: true, type: type ?? 'Others', createdAt: '', changedAt: '' })
           setCreateSubOpen(false)
-          navigate(`/dictionary-categories/${newId}`, { state: { toast: 'Dictionary category added' } })
+          navigate(`/settings/dictionary-categories/${newId}`, { state: { toast: 'Dictionary category added' } })
         }}
         onEdit={() => {}}
       />
@@ -186,12 +186,12 @@ export default function DictionaryCategoryDetail() {
         onDelete={() => {
           deleteDictCategory(id)
           setDeleteDialogOpen(false)
-          navigate('/dictionary-categories', { state: { toast: 'Dictionary category deleted' } })
+          navigate('/settings/dictionary-categories', { state: { toast: 'Dictionary category deleted' } })
         }}
         onMove={() => {
           deleteDictCategoryMoveChildren(id)
           setDeleteDialogOpen(false)
-          navigate('/dictionary-categories', { state: { toast: 'Dictionary category deleted' } })
+          navigate('/settings/dictionary-categories', { state: { toast: 'Dictionary category deleted' } })
         }}
         onCancel={() => setDeleteDialogOpen(false)}
       />

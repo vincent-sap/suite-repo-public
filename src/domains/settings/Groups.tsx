@@ -431,14 +431,14 @@ function GroupDetailPanel({ group, allUsers, allGroups, onClose, onUpdate, onDel
           </Text>
           <div style={{ border: '1px solid var(--sapList_BorderColor)', borderRadius: 'var(--sapElement_BorderCornerRadius)', overflow: 'hidden' }}>
             <List separators="Inner">
-              <ListItemCustom type="Active" onClick={() => navigate(`/feature-access?group=${encodeURIComponent(group.name)}`)}>
+              <ListItemCustom type="Active" onClick={() => navigate(`/settings/feature-access?group=${encodeURIComponent(group.name)}`)}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', width: '100%' }}>
                   <Icon name="action-settings" />
                   <Text style={{ flex: 1, fontSize: 'var(--sapFontSize)' }}>Feature Access</Text>
                   <Icon name="SAP-icons-v4/link" />
                 </div>
               </ListItemCustom>
-              <ListItemCustom type="Active" onClick={() => navigate(`/resource-access?group=${encodeURIComponent(group.name)}`)}>
+              <ListItemCustom type="Active" onClick={() => navigate(`/settings/resource-access?group=${encodeURIComponent(group.name)}`)}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', width: '100%' }}>
                   <Icon name="folder" />
                   <Text style={{ flex: 1, fontSize: 'var(--sapFontSize)' }}>Resource Access</Text>
@@ -550,7 +550,7 @@ function GroupDetailPanel({ group, allUsers, allGroups, onClose, onUpdate, onDel
                 style={{ width: '100%' }}
                 onRowClick={migrationState === 'post' ? (e: any) => {
                   const userId = e.detail?.row?.original?.id
-                  if (userId) navigate(`/users?userId=${userId}`)
+                  if (userId) navigate(`/settings/users?userId=${userId}`)
                 } : undefined}
               />
             )}

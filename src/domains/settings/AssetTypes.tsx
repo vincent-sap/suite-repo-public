@@ -55,7 +55,7 @@ export default function AssetTypes() {
                 <ListItemCustom
                   key={t.id}
                   type="Active"
-                  onClick={() => navigate(`/asset-types/${t.id}`)}
+                  onClick={() => navigate(`/settings/asset-types/${t.id}`)}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.5rem 0' }}>
                     {t.id === 'process-semantic-view' ? (

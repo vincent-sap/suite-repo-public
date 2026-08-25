@@ -90,7 +90,7 @@ export default function ModelingLanguageAppearance() {
             <Button
               icon="slim-arrow-left"
               design="Transparent"
-              onClick={() => navigate('/modeling-languages')}
+              onClick={() => navigate('/settings/modeling-languages')}
               accessibleName="Back"
             />
             <Text style={{ fontWeight: '600', fontSize: 'var(--sapFontHeader4Size)', color: 'var(--sapTextColor)' }}>

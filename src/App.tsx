@@ -116,43 +116,47 @@ function AuthGate() {
         </Route>
         <Route path="/" element={<PCAProvider><Shell /></PCAProvider>}>
           <Route index element={<Navigate to="/home" replace />} />
-          <Route path="audience" element={<Audience />} />
-          <Route path="users" element={<Users />} />
-          <Route path="groups" element={<Groups />} />
-          <Route path="resource-access" element={<ContentAccess />} />
-          <Route path="feature-access" element={<FeatureAccess />} />
-          <Route path="home-page" element={<HomePage />} />
-          <Route path="general-settings" element={<WorkspaceDetails />} />
-          <Route path="process-landscape-settings" element={<ProcessLandscapeSettings />} />
-          <Route path="navigation" element={<Navigation />} />
-          <Route path="theme" element={<Theme />} />
-          <Route path="diagram-page" element={<DiagramPage />} />
-          <Route path="fact-sheet" element={<FactSheet />} />
-          <Route path="help-resources" element={<HelpResources />} />
-          <Route path="attribute-visualization" element={<AttributeVisualization />} />
-          <Route path="collaboration" element={<Collaboration />} />
-          <Route path="journey-model-approval" element={<ApprovalWorkflows />} />
-          <Route path="process-rating" element={<ProcessRating />} />
-          <Route path="walkme" element={<WalkMe />} />
-          <Route path="access-configuration" element={<AccessConfiguration />} />
-          <Route path="data-sharing-industry" element={<DataSharingIndustry />} />
-          <Route path="data-collection-config" element={<DataCollectionConfig />} />
-          <Route path="data-privacy-management" element={<DataPrivacyManagement />} />
-          <Route path="process-insights" element={<ProcessInsights />} />
-          <Route path="cloud-alm" element={<CloudALM />} />
-          <Route path="modeling-preferences" element={<ModelingPreferences />} />
-          <Route path="modeling-languages" element={<ModelingLanguages />} />
-          <Route path="modeling-languages/:langId" element={<ModelingLanguageAppearance />} />
-          <Route path="authentication" element={<Authentication />} />
-          <Route path="network-privacy" element={<NetworkPrivacy />} />
+          <Route path="settings">
+            <Route path="audience" element={<Audience />} />
+            <Route path="users" element={<Users />} />
+            <Route path="groups" element={<Groups />} />
+            <Route path="resource-access" element={<ContentAccess />} />
+            <Route path="feature-access" element={<FeatureAccess />} />
+            <Route path="home-page" element={<HomePage />} />
+            <Route path="general-settings" element={<WorkspaceDetails />} />
+            <Route path="process-landscape-settings" element={<ProcessLandscapeSettings />} />
+            <Route path="navigation" element={<Navigation />} />
+            <Route path="theme" element={<Theme />} />
+            <Route path="diagram-page" element={<DiagramPage />} />
+            <Route path="fact-sheet" element={<FactSheet />} />
+            <Route path="help-resources" element={<HelpResources />} />
+            <Route path="attribute-visualization" element={<AttributeVisualization />} />
+            <Route path="collaboration" element={<Collaboration />} />
+            <Route path="journey-model-approval" element={<ApprovalWorkflows />} />
+            <Route path="process-rating" element={<ProcessRating />} />
+            <Route path="walkme" element={<WalkMe />} />
+            <Route path="access-configuration" element={<AccessConfiguration />} />
+            <Route path="data-sharing-industry" element={<DataSharingIndustry />} />
+            <Route path="data-collection-config" element={<DataCollectionConfig />} />
+            <Route path="data-privacy-management" element={<DataPrivacyManagement />} />
+            <Route path="process-insights" element={<ProcessInsights />} />
+            <Route path="cloud-alm" element={<CloudALM />} />
+            <Route path="modeling-preferences" element={<ModelingPreferences />} />
+            <Route path="modeling-languages" element={<ModelingLanguages />} />
+            <Route path="modeling-languages/:langId" element={<ModelingLanguageAppearance />} />
+            <Route path="authentication" element={<Authentication />} />
+            <Route path="network-privacy" element={<NetworkPrivacy />} />
+            <Route path="asset-types" element={<AssetTypes />} />
+            <Route path="asset-types/:id" element={<AssetTypeDetail />} />
+            <Route path="dictionary-categories" element={<DictionaryCategories />} />
+            <Route path="dictionary-categories/:id" element={<DictionaryCategoryDetail />} />
+            <Route path="attribute-definitions" element={<AttributeDefinitions />} />
+            <Route path="variant-management" element={<VariantManagement />} />
+            <Route path="modeling-conventions" element={<ModelingConventions />} />
+          </Route>
           <Route path="repository" element={<Repository />} />
           <Route path="search" element={<SearchResults />} />
           <Route path="reporting" element={<Reporting />} />
-          <Route path="asset-types" element={<AssetTypes />} />
-          <Route path="asset-types/:id" element={<AssetTypeDetail />} />
-          <Route path="dictionary-categories" element={<DictionaryCategories />} />
-          <Route path="dictionary-categories/:id" element={<DictionaryCategoryDetail />} />
-          <Route path="attribute-definitions" element={<AttributeDefinitions />} />
           <Route path="home" element={<HomeDashboard />} />
           <Route path="all-resources" element={<AllResources />} />
           <Route path="recent" element={<Recent />} />
@@ -160,8 +164,6 @@ function AuthGate() {
           <Route path="newsfeed" element={<Newsfeed />} />
           <Route path="smart-folder" element={<SmartFolder />} />
           <Route path="trash" element={<TrashPage />} />
-          <Route path="variant-management" element={<VariantManagement />} />
-          <Route path="modeling-conventions" element={<ModelingConventions />} />
           <Route path="process-consulting-agent" element={<ProcessConsultingAgent />} />
           <Route path="process-landscape" element={<ProcessLandscape />} />
           <Route path="objectives" element={<ObjectivesReleasePage />} />

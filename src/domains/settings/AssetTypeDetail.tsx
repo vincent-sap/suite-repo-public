@@ -171,7 +171,7 @@ export default function AssetTypeDetail() {
     return (
       <div style={{ padding: '2rem' }}>
         <Text>Asset type not found</Text>
-        <Button design="Transparent" onClick={() => navigate('/asset-types')}>Back to Asset Types</Button>
+        <Button design="Transparent" onClick={() => navigate('/settings/asset-types')}>Back to Asset Types</Button>
       </div>
     )
   }
@@ -330,10 +330,10 @@ export default function AssetTypeDetail() {
 
   const breadcrumbs = (
     <Breadcrumbs slot="breadcrumbs">
-      <BreadcrumbsItem onClick={() => navigate('/users')} style={{ cursor: 'pointer' }}>
+      <BreadcrumbsItem onClick={() => navigate('/settings/users')} style={{ cursor: 'pointer' }}>
         Workspace Settings
       </BreadcrumbsItem>
-      <BreadcrumbsItem onClick={() => navigate('/asset-types')} style={{ cursor: 'pointer' }}>
+      <BreadcrumbsItem onClick={() => navigate('/settings/asset-types')} style={{ cursor: 'pointer' }}>
         Asset Types
       </BreadcrumbsItem>
       <BreadcrumbsItem>{assetType.name}</BreadcrumbsItem>
