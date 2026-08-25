@@ -30,9 +30,9 @@ Make sure you have the following CAM profiles before setting up. Request them at
 
 | CAM profile | Why |
 |---|---|
-| `CAM_PROD_ARTIFACTORY_INT` | Install packages from SAP's package registry |
-| `CAM_PROD_ARTIFACTORY` | Install packages from SAP's package registry |
-| `BPI Signavio Github Process Manager Developer` | Access UIxtension components in the UI5 MCP |
+| [`CAM_PROD_ARTIFACTORY_INT`](https://cam.int.sap/cam/ui/admin?item=request&profile_uuid=FA163E0449A61EDFB5FE99B36CAF6FDC) | Install packages from SAP's package registry |
+| [`CAM_PROD_ARTIFACTORY`](https://cam.int.sap/cam/ui/admin?item=request&profile_uuid=00163EB4A6991EEBB59DD3147B2A57E4) | Install packages from SAP's package registry |
+| [`BPI Signavio Github Process Manager Developer`](https://cam.int.sap/cam/ui/admin?item=request&profile_uuid=FA163EF13B451EEFBED2AE491C91D327) | Access UIxtension components in the UI5 MCP |
 
 ## Getting started
 
