@@ -23,7 +23,6 @@ import {
   ImprovementOpportunitiesPage, ImprovementOpportunityDetailPage,
   CloudTransformationPage, CloudTransformationFlowsPage, CloudTransformationCorrectionsPage,
   BenchmarkingAnalyticsPage, BenchmarkingDetailPage,
-  TestPage,
 } from './domains/tvm'
 import {
   ConventionsStandalone,
@@ -133,7 +132,6 @@ function AuthGate() {
         <Route path="cloud-transformation" element={<CloudTransformationPage />} />
         <Route path="cloud-transformation/flows" element={<CloudTransformationFlowsPage />} />
         <Route path="cloud-transformation/corrections" element={<CloudTransformationCorrectionsPage />} />
-        <Route path="test-page" element={<TestPage />} />
         <Route path="benchmarking-analytics" element={<BenchmarkingAnalyticsPage />} />
         <Route path="benchmarking-analytics/:process" element={<BenchmarkingDetailPage />} />
         <Route path="modeler" element={<ModelerLobby />} />

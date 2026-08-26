@@ -14,4 +14,3 @@ export { default as CloudTransformationFlowsPage } from './CloudTransformationFl
 export { default as CloudTransformationCorrectionsPage } from './CloudTransformationCorrections'
 export { default as BenchmarkingAnalyticsPage } from './BenchmarkingAnalytics'
 export { default as BenchmarkingDetailPage } from './BenchmarkingDetail'
-export { default as TestPage } from './TestPage'

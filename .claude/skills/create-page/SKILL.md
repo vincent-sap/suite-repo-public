@@ -57,15 +57,13 @@ If the user isn't sure, suggest the closest match based on the page name.
 
 If the user wants a **new domain** (none of the existing ones fit): ask for the new domain name, create the folder `src/domains/<new-domain>/`, and use that.
 
-If "Copy an existing page" was chosen in Step 1: ask them to name the page they want to copy, find it in `src/domains/`, and copy it to the chosen domain location with the new name. Then skip to Step 5.
+If "Copy an existing page" was chosen in Step 1: ask them to name the page they want to copy, find it in `src/domains/`, and copy it to the chosen domain location with the new name. Then continue to Steps 4b–6 to wire it up.
 
-If "Contribute to an existing page" was chosen in Step 1: ask which page they want to contribute to, find it in `src/domains/`, open it, and ask what they'd like to add or change. Make the requested changes and skip Steps 2–5 (no new file or route needed).
+If "Contribute to an existing page" was chosen in Step 1: ask which page they want to contribute to, find it in `src/domains/`, open it, and ask what they'd like to add or change. Make the requested changes and skip the remaining steps (no new file, route, or nav needed).
 
 ## Step 4 — Create the file
 
 Create `src/domains/<domain>/<PageName>.tsx` based on the chosen template.
-
-Use the corresponding file in `src/templates/pages/` as the reference — copy its structure but replace placeholder content with empty sections and a meaningful title.
 
 Template file mapping:
 - 1 → `src/templates/pages/TemplateSettingsPage.tsx`
@@ -78,30 +76,61 @@ Template file mapping:
 - 8 → `src/templates/pages/TemplateSideNavPage.tsx`
 - 9 → `src/templates/pages/TemplateSideNavPageWide.tsx`
 
-Read the template file first, then create the new page based on its structure. Replace the component name, title, and any placeholder content — keep the layout and imports intact.
+Read the template file first, then create the new page based on its structure. Replace the component name, title, and any placeholder content — keep the layout and imports intact. Template imports use `../../templates/pages/...` relative paths; adjust them to match the new file's depth under `src/domains/<domain>/`.
+
+## Step 4b — Export from the domain index
+
+Add the component to `src/domains/<domain>/index.ts` so `App.tsx` can import it from the domain barrel:
+
+```ts
+export { default as <PageName> } from './<PageName>'
+```
+
+If the domain has no `index.ts` yet (e.g. a brand-new domain), create one with just this line.
 
 ## Step 5 — Add the route
 
-Open `src/App.tsx`. Add the import and route:
+There are TWO cases. Decide based on whether this is a Workspace Settings page.
 
-```tsx
-import <PageName> from './domains/<domain>/<PageName>'
-// inside <Routes>:
-<Route path="<page-name>" element={<<PageName> />} />
-```
+### Case A — Regular page (most pages)
 
-## Step 6 — Add to navigation (optional)
+In `src/App.tsx`:
+1. Add to the matching domain import block near the top, e.g. `import { ..., <PageName> } from './domains/<domain>'`
+2. Add the route inside `<Route path="/" element={<PCAProvider><Shell /></PCAProvider>}>`, alongside the other top-level routes (NOT inside the `settings` block):
+   ```tsx
+   <Route path="<page-name>" element={<<PageName> />} />
+   ```
 
-Ask (plain text):
+### Case B — Workspace Settings page (templates 1–4, or clearly a settings screen)
 
-> **Add this page to the sidebar navigation?** Reply with **yes** or **no**.
+1. Import as in Case A.
+2. Add the route INSIDE the `<Route path="settings">` block in `App.tsx` (note: no `settings/` prefix on the child path):
+   ```tsx
+   <Route path="<page-name>" element={<<PageName> />} />
+   ```
+   The full URL becomes `/settings/<page-name>`.
+3. Register it in the settings registry `src/data/settingsPages.ts` — add one entry to `SETTINGS_PAGES`:
+   ```ts
+   { path: '/settings/<page-name>', text: '<Nav Label>', group: '<Group Title>', keywords: ['...', '...'] },
+   ```
+   Use an existing `group` title (e.g. 'Workspace', 'Security') so it lands in the right sidebar section. The settings sidebar nav AND the settings search pick this up automatically — nothing else to edit for settings nav.
 
-If yes: open `src/shared/components/Shell.tsx`, find the `SideNavigation`, and add a `SideNavigationItem` for the new page. Use a sensible icon from the existing items as a reference.
+## Step 6 — Add to main navigation (regular pages only)
+
+Skip this for Settings pages — they appear in the settings sidebar automatically via Step 5 Case B.
+
+For a regular page, ask (plain text):
+
+> **Add this page to the main sidebar navigation?** Reply with **yes** or **no**.
+
+If yes, edit `src/shared/components/Shell/ShellSideNavigation.tsx`:
+1. Add one line to the `NAV_ROUTES` map: `'<Nav Label>': '/<page-name>',`
+2. Add a `<SideNavigationItem icon="<icon>" text="<Nav Label>" selected={s('<Nav Label>')} />` in the desired group. Use a sensible icon from an existing item as reference. The `selected` state is derived automatically — no extra props needed.
 
 ## Step 7 — Done
 
 Tell the user:
 
-> **Page created!** Open your prototype and go to `/#/<page-name>` to see it.
+> **Page created!** Open your prototype and go to `/#/<page-name>` (or `/#/settings/<page-name>` for settings) to see it.
 >
 > Edit `src/domains/<domain>/<PageName>.tsx` to build out the content.

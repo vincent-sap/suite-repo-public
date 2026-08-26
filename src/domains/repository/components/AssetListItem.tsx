@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react'
 import { ListItemCustom, Button, CheckBox, Text } from '@ui5/webcomponents-react'
-import { SigChipV2 } from '@signavio/sap-signavio-uixtension'
+import { SigChipV2, SigDomainObject } from '@signavio/sap-signavio-uixtension'
 
 type ColorDesign = 'none' | 'error' | 'information' | 'positive' | 'success' | 'warning' | 'negative'
 export type AssetChip = { value: string; design: ColorDesign; label?: string; leadingIcon?: string; useExplicitDesign?: boolean }
@@ -70,15 +70,30 @@ const dot = (
   <span style={{ margin: '0 3px', color: 'var(--sapContent_LabelColor)', fontSize: 'var(--sapFontSize)', fontFamily: "var(--sapFontFamily,'72',sans-serif)" }}>·</span>
 )
 
+const metaTextStyle = (color = 'var(--sapContent_LabelColor)'): React.CSSProperties => ({
+  fontSize: 'var(--sapFontSize)',
+  color,
+  whiteSpace: 'nowrap',
+  fontFamily: "var(--sapFontFamily,'72',sans-serif)",
+})
+
+function MetaText({ children, link }: { children: React.ReactNode; link?: boolean }) {
+  return (
+    <Text style={{ ...metaTextStyle(link ? 'var(--sapLinkColor,#0064d9)' : undefined), ...(link ? { textDecoration: 'underline', pointerEvents: 'auto', cursor: 'pointer' } : {}) }}>
+      {children}
+    </Text>
+  )
+}
+
 export function AssetListItem({
   id,
   name,
-  objectType: _objectType,
+  objectType,
   typeName,
   description,
-  created: _created,
-  changed: _changed,
-  deleted: _deleted,
+  created,
+  changed,
+  deleted,
   folder,
   chips = [],
   topChip,
@@ -174,27 +189,21 @@ export function AssetListItem({
         style={{
           display: 'flex',
           alignItems: 'flex-start',
-          gap: '12px',
+          gap: '8px',
           padding: '8px 0',
           width: '100%',
           pointerEvents: 'none',
         }}
       >
-        {/* Left: checkbox */}
-        {onSelect && (
-          <div style={{ display: 'flex', alignItems: 'center', height: '26px', flexShrink: 0, pointerEvents: 'auto' }}>
+        {/* Left: checkbox + domain object icon */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', height: '26px', flexShrink: 0, pointerEvents: 'auto' }}>
+          {onSelect && (
             <div onClick={(e) => { e.stopPropagation(); onSelect() }} style={{ display: 'flex', alignItems: 'center' }}>
               <CheckBox checked={isSelected} onChange={() => {}} />
             </div>
-          </div>
-        )}
-
-        {/* Left: domain object icon */}
-        {titleLeadingSlot && (
-          <div style={{ display: 'flex', alignItems: 'flex-start', flexShrink: 0, pointerEvents: 'none' }}>
-            {titleLeadingSlot}
-          </div>
-        )}
+          )}
+          {titleLeadingSlot ?? <SigDomainObject object={objectType} size="XXS" />}
+        </div>
 
         {/* Content */}
         <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: '6px' }}>
@@ -287,13 +296,14 @@ export function AssetListItem({
             </Text>
           )}
 
-          {/* Row 3: folder */}
-          {folder && (
+          {/* Row 3: type · dates · folder */}
+          {typeName && (
             <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'nowrap', overflow: 'hidden', marginTop: '4px' }}>
-              {typeName && <><Text style={{ fontSize: 'var(--sapFontSmallSize)', color: 'var(--sapContent_LabelColor)', whiteSpace: 'nowrap', fontFamily: "var(--sapFontFamily,'72',sans-serif)" }}>{typeName}</Text>{dot}</>}
-              <Text style={{ fontSize: 'var(--sapFontSmallSize)', color: 'var(--sapContent_LabelColor)', whiteSpace: 'nowrap', fontFamily: "var(--sapFontFamily,'72',sans-serif)" }}>
-                {folder.replace(/\//g, '›')}
-              </Text>
+              <MetaText>{typeName}</MetaText>
+              {deleted && <>{dot}<MetaText>Deleted {deleted}</MetaText></>}
+              {created && !deleted && <>{dot}<MetaText>Created {created}</MetaText></>}
+              {changed && !deleted && <>{dot}<MetaText>Changed {changed}</MetaText></>}
+              {folder && <>{dot}<MetaText link>In {folder}</MetaText></>}
             </div>
           )}
         </div>
