@@ -4,6 +4,8 @@ A forkable high-fidelity prototype of the SAP Signavio Suite — built for desig
 
 Built with [UI5 Web Components for React](https://sap.github.io/ui5-webcomponents-react/) and [SAP Signavio UIxtension](https://www.npmjs.com/package/@signavio/sap-signavio-uixtension).
 
+> ⚠️ **This is an AI-generated prototype.** The code was written by AI, is **not production-ready**, and has **not been properly reviewed by humans**. Use it for exploration and design hand-off only — never as a basis for production code.
+
 <div align="center">
   <br>
   <a href="https://pages.github.tools.sap/signavio-experience/suite-replica" target="_blank">

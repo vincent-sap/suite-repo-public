@@ -4,6 +4,10 @@ import { Icon, Text, Button } from '@ui5/webcomponents-react'
 import { SigFilterBar, SigFilter, MultiSelect, SigDomainObject, SigChipV2 } from '@signavio/sap-signavio-uixtension'
 import type { FilterValues } from '@signavio/sap-signavio-uixtension'
 import type { SmartFolder } from '../../contexts/WorkspaceContext'
+import {
+  RECENT_ITEMS, SEARCH_POOL, TYPE_FILTERS, TYPE_OPTIONS, STATUS_OPTIONS,
+  DATE_OPTIONS, VERSION_OPTIONS, type SearchDropdownItem,
+} from '../../data/searchDropdown'
 
 type View = 'suggest' | 'advanced' | 'saved'
 
@@ -17,65 +21,6 @@ interface Props {
   onRemoveHistory: (term: string) => void
   onClose: () => void
 }
-
-const RECENT_ITEMS = [
-  { id: '1', name: 'Order to Cash - End-to-End', type: 'Business Process Diagram (BPMN 2.0)', folder: 'Core Processes' },
-  { id: '2', name: "Bagi's test journey", type: 'Customer Journey', folder: 'My Documents' },
-  { id: '3', name: 'Invoice Processing', type: 'Business Process Diagram (BPMN 2.0)', folder: 'Finance' },
-  { id: '4', name: 'Procurement to Pay Value Chain', type: 'Value Chain', folder: 'Procurement' },
-  { id: '5', name: 'Employee Offboarding', type: 'Business Process Diagram (BPMN 2.0)', folder: 'HR Processes' },
-]
-
-const SEARCH_POOL = [
-  { id: 'r1', name: 'Order to Cash - End-to-End', type: 'Business Process Diagram (BPMN 2.0)', folder: 'Core Processes' },
-  { id: 'r2', name: 'Invoice Processing', type: 'Business Process Diagram (BPMN 2.0)', folder: 'Finance' },
-  { id: 'r3', name: 'Invoice Verification', type: 'Business Process Diagram (BPMN 2.0)', folder: 'Finance' },
-  { id: 'r4', name: 'Customer Invoice Management Dashboard', type: 'Dashboard', folder: 'Finance Analytics' },
-  { id: 'r5', name: 'Invoicing Terms', type: 'Dictionary Item', folder: 'Shared Documents' },
-  { id: 'r6', name: 'Invoice to Cash Process', type: 'Business Process Diagram (BPMN 2.0)', folder: 'Finance' },
-  { id: 'r7', name: 'Customer Onboarding', type: 'Customer Journey', folder: 'Sales' },
-  { id: 'r8', name: 'Procurement to Pay Value Chain', type: 'Value Chain', folder: 'Procurement' },
-  { id: 'r9', name: 'Employee Offboarding', type: 'Business Process Diagram (BPMN 2.0)', folder: 'HR Processes' },
-  { id: 'r10', name: 'Revenue Recognition Process', type: 'Business Process Diagram (BPMN 2.0)', folder: 'Finance' },
-  { id: 'r11', name: 'Order Management Dashboard', type: 'Dashboard', folder: 'Sales' },
-  { id: 'r12', name: 'Accounts Payable Process', type: 'Business Process Diagram (BPMN 2.0)', folder: 'Finance' },
-]
-
-const TYPE_FILTERS = [
-  { value: 'all', label: 'All Types', count: 25 },
-  { value: 'model', label: 'Models', count: 12 },
-  { value: 'dashboard', label: 'Dashboards', count: 6 },
-  { value: 'folder', label: 'Folders', count: 4 },
-  { value: 'insight', label: 'Insights', count: 3 },
-]
-
-const TYPE_OPTIONS = [
-  { value: 'bpmn', label: 'BPMN 2.0 Process' },
-  { value: 'journey', label: 'Customer Journey' },
-  { value: 'value-chain', label: 'Value Chain' },
-  { value: 'dmn', label: 'DMN Decision' },
-  { value: 'navigation', label: 'Navigation Map' },
-  { value: 'folder', label: 'Folder' },
-  { value: 'file', label: 'File' },
-]
-
-const STATUS_OPTIONS = [
-  { value: 'published', label: 'Published' },
-  { value: 'draft', label: 'Draft' },
-  { value: 'approved', label: 'Approved' },
-]
-
-const DATE_OPTIONS = [
-  { value: 'today', label: 'Today' },
-  { value: 'week', label: 'Last 7 days' },
-  { value: 'month', label: 'Last 30 days' },
-  { value: 'quarter', label: 'Last 90 days' },
-]
-
-const VERSION_OPTIONS = [
-  { value: 'latest', label: 'Latest only' },
-  { value: 'all', label: 'All versions' },
-]
 
 const panelBase: React.CSSProperties = {
   position: 'fixed',
@@ -142,6 +87,43 @@ function HighlightedText({ text, query }: { text: string; query: string }) {
       </span>
       {text.slice(idx + query.length)}
     </>
+  )
+}
+
+// Shared row for search result / recently-viewed items (icon + name + type · folder)
+function SearchResultRow({ item, rowStyle, onClick, iconSize = 'XS', query }: {
+  item: SearchDropdownItem
+  rowStyle: React.CSSProperties
+  onClick: () => void
+  iconSize?: 'XS' | 'XXS'
+  query?: string
+}) {
+  return (
+    <div
+      style={rowStyle}
+      onMouseEnter={e => (e.currentTarget.style.background = 'var(--sapList_Hover_Background)')}
+      onMouseLeave={e => (e.currentTarget.style.background = '')}
+      onClick={onClick}
+    >
+      <div style={{ flexShrink: 0 }}>
+        <SigDomainObject object={item.type as never} size={iconSize} />
+      </div>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <span style={{ fontFamily: 'var(--sapFontFamily)', fontWeight: '600', display: 'block', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', fontSize: 'var(--sapFontSize)', color: 'var(--sapList_TextColor, #1d2d3e)' }}>
+          {query ? <HighlightedText text={item.name} query={query} /> : item.name}
+        </span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', marginTop: '0.125rem' }}>
+          <Text style={{ fontSize: 'var(--sapFontSmallSize)', color: 'var(--sapContent_LabelColor)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '160px' }}>
+            {item.type}
+          </Text>
+          <Text style={{ fontSize: 'var(--sapFontSmallSize)', color: 'var(--sapContent_LabelColor)', flexShrink: 0 }}>·</Text>
+          <Icon name="folder" style={{ flexShrink: 0, width: '0.75rem', height: '0.75rem', color: 'var(--sapContent_NonInteractiveIconColor)' }} />
+          <Text style={{ fontSize: 'var(--sapFontSmallSize)', color: 'var(--sapContent_LabelColor)', whiteSpace: 'nowrap' }}>
+            {item.folder}
+          </Text>
+        </div>
+      </div>
+    </div>
   )
 }
 
@@ -245,41 +227,14 @@ export default function SearchDropdown({ open, rect, query, history, savedSearch
                 <Text style={{ color: 'var(--sapContent_LabelColor)' }}>No results found for "{query}"</Text>
               </div>
             ) : searchResults.map((item, i) => (
-              <div
+              <SearchResultRow
                 key={item.id}
-                style={rowStyle(i === searchResults.length - 1)}
-                onMouseEnter={e => (e.currentTarget.style.background = 'var(--sapList_Hover_Background)')}
-                onMouseLeave={e => (e.currentTarget.style.background = '')}
+                item={item}
+                rowStyle={rowStyle(i === searchResults.length - 1)}
                 onClick={() => runSearch(item.name)}
-              >
-                <div style={{ flexShrink: 0 }}>
-                  <SigDomainObject object={item.type as never} size="XS" />
-                </div>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <span style={{
-                    fontFamily: 'var(--sapFontFamily)',
-                    fontWeight: '600',
-                    display: 'block',
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    fontSize: 'var(--sapFontSize)',
-                    color: 'var(--sapList_TextColor, #1d2d3e)',
-                  }}>
-                    <HighlightedText text={item.name} query={query} />
-                  </span>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', marginTop: '0.125rem' }}>
-                    <Text style={{ fontSize: 'var(--sapFontSmallSize)', color: 'var(--sapContent_LabelColor)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '160px' }}>
-                      {item.type}
-                    </Text>
-                    <Text style={{ fontSize: 'var(--sapFontSmallSize)', color: 'var(--sapContent_LabelColor)', flexShrink: 0 }}>·</Text>
-                    <Icon name="folder" style={{ flexShrink: 0, width: '0.75rem', height: '0.75rem', color: 'var(--sapContent_NonInteractiveIconColor)' }} />
-                    <Text style={{ fontSize: 'var(--sapFontSmallSize)', color: 'var(--sapContent_LabelColor)', whiteSpace: 'nowrap' }}>
-                      {item.folder}
-                    </Text>
-                  </div>
-                </div>
-              </div>
+                iconSize="XS"
+                query={query}
+              />
             ))}
           </>
         ) : (
@@ -313,32 +268,13 @@ export default function SearchDropdown({ open, rect, query, history, savedSearch
             {/* Recently Viewed */}
             <SectionHeader>Recently Viewed</SectionHeader>
             {RECENT_ITEMS.map((item, i) => (
-              <div
+              <SearchResultRow
                 key={item.id}
-                style={rowStyle(i === RECENT_ITEMS.length - 1)}
-                onMouseEnter={e => (e.currentTarget.style.background = 'var(--sapList_Hover_Background)')}
-                onMouseLeave={e => (e.currentTarget.style.background = '')}
+                item={item}
+                rowStyle={rowStyle(i === RECENT_ITEMS.length - 1)}
                 onClick={() => runSearch(item.name)}
-              >
-                <div style={{ flexShrink: 0 }}>
-                  <SigDomainObject object={item.type as never} size="XXS" />
-                </div>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <Text style={{ fontWeight: '600', display: 'block', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', fontSize: 'var(--sapFontSize)' }}>
-                    {item.name}
-                  </Text>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', marginTop: '0.125rem' }}>
-                    <Text style={{ fontSize: 'var(--sapFontSmallSize)', color: 'var(--sapContent_LabelColor)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '160px' }}>
-                      {item.type}
-                    </Text>
-                    <Text style={{ fontSize: 'var(--sapFontSmallSize)', color: 'var(--sapContent_LabelColor)', flexShrink: 0 }}>·</Text>
-                    <Icon name="folder" style={{ flexShrink: 0, width: '0.75rem', height: '0.75rem', color: 'var(--sapContent_NonInteractiveIconColor)' }} />
-                    <Text style={{ fontSize: 'var(--sapFontSmallSize)', color: 'var(--sapContent_LabelColor)', whiteSpace: 'nowrap' }}>
-                      {item.folder}
-                    </Text>
-                  </div>
-                </div>
-              </div>
+                iconSize="XXS"
+              />
             ))}
           </>
         )}

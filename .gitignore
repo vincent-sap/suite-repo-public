@@ -25,6 +25,10 @@ temp/
 # Figma skills (downloaded fresh via /setup-mcps)
 .claude/skills/figma-*/
 
+# MCP config (personal — set up locally via /setup-mcps, not committed)
+.mcp.json
+.claude/settings.local.json
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
