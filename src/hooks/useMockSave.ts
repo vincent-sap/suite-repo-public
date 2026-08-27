@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import type { SaveState } from '../shared/components/SaveStateIndicator'
+import type { SaveState } from '../shared/components/feedback/SaveStateIndicator'
 
 /**
  * Mock save handler — simulates a backend save operation.

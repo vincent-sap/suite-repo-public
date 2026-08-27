@@ -7,7 +7,7 @@ import {
 import { SigDomainObject, SigChipV2, SigRightSidePanel, SigRatingIndicator } from '@signavio/sap-signavio-uixtension'
 import { DiagramThumbnail } from './components'
 import ActivityFeed from './ActivityFeed'
-import { CommentsTab } from './CommentsTab'
+import { CommentsTab } from '../../../shared/components/panels/CommentsTab'
 import { RelationsTab } from './RelationsTab'
 import { ASSET_DETAILS, type FileItem, type OngoingApproval, type InfoPanelAttrGroup, type InfoPanelAttr } from './data'
 import type { DictEntry } from './dictionaryData'

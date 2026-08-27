@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Button, CheckBox, Icon, Input, Label, Option, Select, Text } from '@ui5/webcomponents-react'
-import SapSignavioBrand from '../../shared/components/SapSignavioBrand'
-import loginBg from '../../LoginBackground.jpg'
+import SapSignavioBrand from './SapSignavioBrand'
+import loginBg from '../../assets/LoginBackground.jpg'
 import s from './RegisterPage.module.css'
 
 interface RegisterPageProps {

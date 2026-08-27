@@ -18,7 +18,7 @@ import {
 import { OBJECTIVES, INITIATIVES, STATUS_CHIP_DESIGN, type ItemStatus } from '../../data/ptm'
 import { addEntry, getLog } from '../../data/activityLog'
 import { useMockSave } from '../../hooks/useMockSave'
-import CommentsPanel from '../../shared/components/SuiteContextPanel/CommentsPanel'
+import CommentsPanel from '../../shared/components/panels/CommentsPanel'
 
 const STATUS_OPTIONS: ItemStatus[] = ['Planned', 'In Progress', 'On Track', 'At Risk', 'Behind', 'Completed', 'Cancelled']
 const MOCK_AUTHOR = { id: 'jh', name: 'Josephine Holt', initials: 'JH', colorScheme: 'Accent6' }

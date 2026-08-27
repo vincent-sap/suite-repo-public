@@ -4,8 +4,8 @@ import '@ui5/webcomponents-fiori/dist/illustrations/NoEntries.js'
 import { createPortal } from 'react-dom'
 import { SigChipV2, SigDomainObject, SigInlineEdit } from '@signavio/sap-signavio-uixtension'
 import { useNavigate } from 'react-router-dom'
-import DictionaryPanel from '../../shared/components/DictionaryPanel'
-import JouleInput from '../../shared/components/JouleInput'
+import DictionaryPanel from '../../shared/components/panels/DictionaryPanel'
+import JouleInput from '../../shared/components/panels/JouleInput'
 import s from './ModelerApp.module.css'
 
 type Props = {

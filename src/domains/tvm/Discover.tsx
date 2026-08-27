@@ -8,7 +8,7 @@ import {
 import { SigChipV2 } from '@signavio/sap-signavio-uixtension'
 import { usePCA } from '@/contexts/PCAContext'
 import { PCAInputField } from '../modeler/pca/PCAInputField'
-import LoginBackground from '../../LoginBackground.jpg'
+import LoginBackground from '../../assets/LoginBackground.jpg'
 import '@ui5/webcomponents-icons/dist/explorer.js'
 import '@ui5/webcomponents-icons/dist/trend-up.js'
 import '@ui5/webcomponents-icons/dist/arobase.js'
