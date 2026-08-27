@@ -102,16 +102,25 @@ AskUserQuestion({
 
 If "Skip for now", continue to Step 4.
 
-Otherwise install the team's AI security skill directly from GitHub:
+Otherwise install the team's AI security skill directly from GitHub. Pick the command for the user's OS:
 
+**macOS / Linux:**
 ```bash
 rm -rf "$HOME/.claude/skills/install-security-guidelines"
 GH_HOST=github.tools.sap gh repo clone signavio-experience/SKILL-security-guidelines "$HOME/.claude/skills/install-security-guidelines" 2>&1
 ```
 
-If this fails, tell the user:
-> "I couldn't install the security guidelines automatically. You can do it manually later by running:
-> `GH_HOST=github.tools.sap gh repo clone signavio-experience/SKILL-security-guidelines ~/.claude/skills/install-security-guidelines`"
+**Windows (PowerShell):**
+```powershell
+Remove-Item -Recurse -Force "$env:USERPROFILE\.claude\skills\install-security-guidelines" -ErrorAction SilentlyContinue
+$env:GH_HOST="github.tools.sap"; gh repo clone signavio-experience/SKILL-security-guidelines "$env:USERPROFILE\.claude\skills\install-security-guidelines"
+```
+
+If the folder already exists and you just want the latest version, update it instead of re-cloning:
+- **macOS / Linux:** `cd "$HOME/.claude/skills/install-security-guidelines" && git pull`
+- **Windows (PowerShell):** `cd "$env:USERPROFILE\.claude\skills\install-security-guidelines"; git pull`
+
+If this fails, tell the user they can do it manually later with the command above for their OS.
 
 Continue regardless.
 
