@@ -8,7 +8,7 @@ import { AuthProvider, useAuth } from './contexts/AuthContext'
 import { PCAProvider } from './contexts/PCAContext'
 import Shell from './shared/components/Shell'
 import { LoginPage, RegisterPage, WorkspaceSelectionPage } from './domains/auth'
-import { HomeDashboard } from './domains/home'
+import { HomeDashboard, RiskDashboard, SemanticViews } from './domains/home'
 import HomePage from './domains/home/HomePage'
 import { Repository, SearchResults, AllResources, Recent, Favorites, Newsfeed, SmartFolder, TrashPage } from './domains/repository'
 import FactSheet from './domains/repository/FactSheet'
@@ -110,6 +110,8 @@ function AuthGate() {
         <Route path="search" element={<SearchResults />} />
         <Route path="reporting" element={<Reporting />} />
         <Route path="home" element={<HomeDashboard />} />
+        <Route path="risk-dashboard" element={<RiskDashboard />} />
+        <Route path="semantic-views" element={<SemanticViews />} />
         <Route path="all-resources" element={<AllResources />} />
         <Route path="recent" element={<Recent />} />
         <Route path="favorites" element={<Favorites />} />

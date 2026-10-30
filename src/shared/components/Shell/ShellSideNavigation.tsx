@@ -15,6 +15,8 @@ export const NAV_ROUTES: Record<string, string> = {
   'Strategy Execution': '/strategy-execution',
   'Benchmarking Analytics': '/benchmarking-analytics',
   'Insights': '/insights',
+  'Semantic Views': '/semantic-views',
+  'Risk Dashboard': '/risk-dashboard',
   'Improvement Opportunities': '/improvement-opportunities',
   'Recommendations': '/recommendations',
   'Cloud Transformation': '/cloud-transformation',
@@ -56,6 +58,7 @@ export function ShellSideNavigation({ audience, onSelectionChange }: Props) {
         {audience === 'administrators' && <SideNavigationItem icon="overview-chart" text="Strategy Execution" selected={s('Strategy Execution')} />}
         {audience === 'administrators' && <SideNavigationItem icon="compare-2" text="Benchmarking Analytics" selected={s('Benchmarking Analytics')} />}
         <SideNavigationItem icon="lightbulb" text="Insights" selected={s('Insights')} />
+        <SideNavigationItem icon="alert" text="Risk Dashboard" selected={s('Risk Dashboard')} />
         {audience === 'administrators' && <SideNavigationItem icon="money-bills" text="Improvement Opportunities" selected={s('Improvement Opportunities')} />}
         {audience === 'administrators' && <SideNavigationItem icon="accept" text="Recommendations" selected={s('Recommendations')} />}
         {audience === 'administrators' && <SideNavigationItem icon="cloud" text="Cloud Transformation" selected={s('Cloud Transformation')} />}
@@ -66,6 +69,7 @@ export function ShellSideNavigation({ audience, onSelectionChange }: Props) {
           <SideNavigationItem icon="developer-settings" text="Analysis Configuration" />
           <SideNavigationItem icon="SAP-icons-v4/process-intelligence" text="Process Analysis" />
           <SideNavigationItem icon="workflow-tasks" text="Analysis Workflows" />
+          <SideNavigationItem icon="chain-link" text="Semantic Views" selected={s('Semantic Views')} />
         </SideNavigationGroup>
       )}
       <SideNavigationGroup text="Model and Govern" expanded>
