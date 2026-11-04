@@ -23,6 +23,7 @@ const OWNER_COLOR: Record<string, string> = {
 // ── Category pill node ───────────────────────────────────────────────────────
 function CategoryNode({ data }: NodeProps) {
   const isSelected = data.isSelected as boolean | undefined
+  const highlighted = data.highlighted as boolean | undefined
   const zoom = useStore((st: any) => st.transform[2])
   const compact = zoom < 0.4
   const metric = data.metric as string | undefined
@@ -43,9 +44,10 @@ function CategoryNode({ data }: NodeProps) {
       cursor: 'pointer',
       outline: isSelected ? `2.5px solid ${data.color as string}` : '2.5px solid transparent',
       outlineOffset: '2px',
-      transition: 'outline 0.1s',
+      transition: 'outline 0.1s, box-shadow 0.15s',
+      boxShadow: highlighted ? '0 0 0 3px white, 0 4px 20px rgba(0,0,0,0.35)' : undefined,
     }}>
-      <span style={{ visibility: compact ? 'hidden' : 'visible' }}>{data.label as string} ({total})</span>
+      <span style={{ visibility: compact ? 'hidden' : 'visible' }}>{data.label as string} <span style={{ fontWeight: 400 }}>({total})</span></span>
       <Handle type="source" position={Position.Left}
         style={{ opacity: 0, width: 1, height: 1, minWidth: 1, minHeight: 1 }} />
     </div>
@@ -61,6 +63,7 @@ function EventNode({ data }: NodeProps) {
   const compact = zoom < 0.4
   const color = OWNER_COLOR[data.owner as string] ?? '#888'
   const metric = data.metric as string | undefined
+  const highlighted = data.highlighted as boolean | undefined
   const CIR = 10
 
   const dotValue = (d: Dot) =>
@@ -90,6 +93,8 @@ function EventNode({ data }: NodeProps) {
         background: 'white', border: '1px solid #d9d9d9',
         borderRadius: 8, padding: '8px 12px',
         minWidth: 130, whiteSpace: 'nowrap',
+        boxShadow: highlighted ? '0 0 0 2px white, 0 4px 20px rgba(0,0,0,0.35)' : undefined,
+        transition: 'box-shadow 0.15s',
       }}>
         <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--sapTextColor)', marginBottom: dots?.length ? 4 : 0, visibility: compact ? 'hidden' : 'visible' }}>
           {data.label as string}
@@ -150,6 +155,7 @@ function CountEdge({ id, sourceX, sourceY, targetX, targetY, sourcePosition, tar
   const metric      = data?.metric as string | undefined
   const label       = metric === 'cycle' ? cycleTime : metric === 'object' ? objectCount : count
   const dotted    = (data?.dotted ?? false) as boolean
+  const edgeHighlighted = (data?.highlighted ?? false) as boolean
   const sw        = dotted ? 2 : 3.5
   const opacity   = (outerStyle as React.CSSProperties | undefined)?.opacity
 
@@ -174,7 +180,7 @@ function CountEdge({ id, sourceX, sourceY, targetX, targetY, sourcePosition, tar
         path={path}
         markerEnd={`url(#${arrId})`}
         markerStart={dotted ? undefined : `url(#${cirId})`}
-        style={{ stroke: color, strokeWidth: sw, strokeDasharray: dotted ? '5,5' : undefined, fill: 'none', opacity }}
+        style={{ stroke: color, strokeWidth: sw, strokeDasharray: dotted ? '5,5' : undefined, fill: 'none', opacity, filter: edgeHighlighted ? 'drop-shadow(0 2px 8px rgba(0,0,0,0.5))' : undefined }}
       />
       {label != null && (
         <EdgeLabelRenderer>
@@ -199,6 +205,60 @@ function CountEdge({ id, sourceX, sourceY, targetX, targetY, sourcePosition, tar
 
 const nodeTypes = { category: CategoryNode, event: EventNode, terminal: TerminalNode }
 const edgeTypes = { count: CountEdge }
+
+// ── Event ordering: each object type's events in frequency order (most → least) ─
+const EVENT_SEQUENCE: Record<string, string[]> = {
+  incident:      ['incident-created', 'incident-closed', 'incident-under-investigation', 'incident-resolved', 'incident-reopened'],
+  problem:       ['problem-created', 'problem-closed', 'problem-root-cause', 'problem-resolved'],
+  changeRequest: ['cr-created', 'cr-field-changed', 'cr-closed', 'cr-assessment', 'cr-impl-started'],
+  changeTask:    ['ct-created', 'ct-finished', 'ct-assigned', 'ct-status-changed', 'ct-approved'],
+}
+// Map: event node id → 1-based position in its owner's sequence
+const EVENT_SEQ_MAP: Record<string, number> = {}
+Object.values(EVENT_SEQUENCE).forEach(events => {
+  events.forEach((id, idx) => { EVENT_SEQ_MAP[id] = idx + 1 })
+})
+const TERMINAL_IDS: Record<string, string> = {
+  incident: 'term-inc', problem: 'term-prob', changeRequest: 'term-cr', changeTask: 'term-ct',
+}
+
+// ── Cross-object path pool: extra connections revealed by the path slider ─────
+// Paths are ordered most-frequent first within each owner's list.
+// Adjacency rule: INC↔PROB, PROB↔CR, CR↔CT (left-to-right or right-to-left only).
+interface CrossPath {
+  id: string; source: string; sourceHandle: string
+  target: string; targetHandle: string
+  color: string; count: number; cycleTime?: string; objectCount?: number
+}
+const PATH_POOL: Record<string, CrossPath[]> = {
+  incident: [
+    // Within INC column — alternative routes and rework loops
+    { id: 'path-inc-1', source: 'incident-created',              sourceHandle: 'sl', target: 'incident-resolved',            targetHandle: 'tl', color: C.inc, count: 18, cycleTime: '2h',  objectCount: 15 },
+    { id: 'path-inc-2', source: 'incident-closed',               sourceHandle: 'sl', target: 'incident-created',             targetHandle: 'tl', color: C.inc, count: 12, cycleTime: '1h',  objectCount: 10 },
+    { id: 'path-inc-3', source: 'incident-under-investigation',  sourceHandle: 'sl', target: 'incident-closed',              targetHandle: 'tl', color: C.inc, count: 8,  cycleTime: '3d',  objectCount: 7  },
+    { id: 'path-inc-4', source: 'incident-reopened',             sourceHandle: 'sl', target: 'incident-resolved',            targetHandle: 'tl', color: C.inc, count: 5,  cycleTime: '4d',  objectCount: 4  },
+  ],
+  problem: [
+    // Within PROB column
+    { id: 'path-prob-1', source: 'problem-created',    sourceHandle: 'sl', target: 'problem-root-cause', targetHandle: 'tl', color: C.prob, count: 22, cycleTime: '3d', objectCount: 19 },
+    { id: 'path-prob-2', source: 'problem-root-cause', sourceHandle: 'sl', target: 'problem-closed',     targetHandle: 'tl', color: C.prob, count: 14, cycleTime: '2d', objectCount: 12 },
+    { id: 'path-prob-3', source: 'problem-resolved',   sourceHandle: 'sl', target: 'problem-created',    targetHandle: 'tl', color: C.prob, count: 9,  cycleTime: '1h', objectCount: 7  },
+  ],
+  changeRequest: [
+    // Within CR column
+    { id: 'path-cr-1', source: 'cr-created',      sourceHandle: 'sl', target: 'cr-closed',       targetHandle: 'tl', color: C.cr, count: 31, cycleTime: '4h', objectCount: 28 },
+    { id: 'path-cr-2', source: 'cr-field-changed', sourceHandle: 'sl', target: 'cr-closed',       targetHandle: 'tl', color: C.cr, count: 19, cycleTime: '2h', objectCount: 17 },
+    { id: 'path-cr-3', source: 'cr-closed',        sourceHandle: 'sl', target: 'cr-field-changed', targetHandle: 'tl', color: C.cr, count: 11, cycleTime: '1d', objectCount: 9  },
+    { id: 'path-cr-4', source: 'cr-assessment',    sourceHandle: 'sl', target: 'cr-closed',       targetHandle: 'tl', color: C.cr, count: 7,  cycleTime: '6h', objectCount: 6  },
+  ],
+  changeTask: [
+    // Within CT column
+    { id: 'path-ct-1', source: 'ct-created',       sourceHandle: 'sl', target: 'ct-assigned',      targetHandle: 'tl', color: C.ct, count: 45, cycleTime: '2h', objectCount: 41 },
+    { id: 'path-ct-2', source: 'ct-finished',       sourceHandle: 'sl', target: 'ct-created',       targetHandle: 'tl', color: C.ct, count: 28, cycleTime: '1h', objectCount: 24 },
+    { id: 'path-ct-3', source: 'ct-assigned',       sourceHandle: 'sl', target: 'ct-approved',      targetHandle: 'tl', color: C.ct, count: 16, cycleTime: '3d', objectCount: 14 },
+    { id: 'path-ct-4', source: 'ct-status-changed', sourceHandle: 'sl', target: 'ct-finished',      targetHandle: 'tl', color: C.ct, count: 9,  cycleTime: '2d', objectCount: 8  },
+  ],
+}
 
 // ── Graph data ────────────────────────────────────────────────────────────────
 //
@@ -261,11 +321,47 @@ const INITIAL_NODES: Node[] = [
     data: { label: 'Change Request Closed', owner: 'changeRequest',
       dots: [{ color: C.cr, count: 24, objectCount: 38, cycleTime: '18h' }] } },
 
-  // ── Column terminals (y=840) ──────────────────────────────────────────────
-  { id: 'term-inc',  type: 'terminal', position: { x: 130, y: 840 }, data: { color: C.inc,  owner: 'incident'      }, draggable: false },
-  { id: 'term-prob', type: 'terminal', position: { x: 365, y: 840 }, data: { color: C.prob, owner: 'problem'       }, draggable: false },
-  { id: 'term-cr',   type: 'terminal', position: { x: 576, y: 840 }, data: { color: C.cr,   owner: 'changeRequest' }, draggable: false },
-  { id: 'term-ct',   type: 'terminal', position: { x: 882, y: 840 }, data: { color: C.ct,   owner: 'changeTask'    }, draggable: false },
+  // ── Extended events: revealed as the slider is increased ──────────────────
+  // INC extras (seq 3–5)
+  { id: 'incident-under-investigation', type: 'event', position: { x: 60, y: 620 },
+    data: { label: 'Under Investigation', owner: 'incident',
+      dots: [{ color: C.inc, count: 21, objectCount: 18, cycleTime: '5d' }] } },
+  { id: 'incident-resolved', type: 'event', position: { x: 60, y: 740 },
+    data: { label: 'Incident Resolved', owner: 'incident',
+      dots: [{ color: C.inc, count: 14, objectCount: 12, cycleTime: '8d' }] } },
+  { id: 'incident-reopened', type: 'event', position: { x: 60, y: 860 },
+    data: { label: 'Incident Reopened', owner: 'incident',
+      dots: [{ color: C.inc, count: 7, objectCount: 6, cycleTime: '10d' }] } },
+  // PROB extras (seq 3–4)
+  { id: 'problem-root-cause', type: 'event', position: { x: 298, y: 620 },
+    data: { label: 'Root Cause Found', owner: 'problem',
+      dots: [{ color: C.prob, count: 31, objectCount: 28, cycleTime: '9d' }] } },
+  { id: 'problem-resolved', type: 'event', position: { x: 298, y: 740 },
+    data: { label: 'Problem Resolved', owner: 'problem',
+      dots: [{ color: C.prob, count: 22, objectCount: 18, cycleTime: '12d' }] } },
+  // CR extras (seq 4–5)
+  { id: 'cr-assessment', type: 'event', position: { x: 500, y: 810 },
+    data: { label: 'CR Assessment Done', owner: 'changeRequest',
+      dots: [{ color: C.cr, count: 19, objectCount: 21, cycleTime: '1d 3h' }] } },
+  { id: 'cr-impl-started', type: 'event', position: { x: 500, y: 940 },
+    data: { label: 'Implementation Started', owner: 'changeRequest',
+      dots: [{ color: C.cr, count: 12, objectCount: 15, cycleTime: '2d' }] } },
+  // CT extras (seq 3–5)
+  { id: 'ct-assigned', type: 'event', position: { x: 806, y: 620 },
+    data: { label: 'Change Task Assigned', owner: 'changeTask',
+      dots: [{ color: C.ct, count: 84, objectCount: 78, cycleTime: '4d' }] } },
+  { id: 'ct-status-changed', type: 'event', position: { x: 806, y: 740 },
+    data: { label: 'Task Status Changed', owner: 'changeTask',
+      dots: [{ color: C.ct, count: 62, objectCount: 55, cycleTime: '5d' }] } },
+  { id: 'ct-approved', type: 'event', position: { x: 806, y: 860 },
+    data: { label: 'Change Task Approved', owner: 'changeTask',
+      dots: [{ color: C.ct, count: 43, objectCount: 38, cycleTime: '7d' }] } },
+
+  // ── Column terminals (y=1060, shifted down to accommodate extended events) ─
+  { id: 'term-inc',  type: 'terminal', position: { x: 130, y: 1060 }, data: { color: C.inc,  owner: 'incident'      }, draggable: false },
+  { id: 'term-prob', type: 'terminal', position: { x: 365, y: 1060 }, data: { color: C.prob, owner: 'problem'       }, draggable: false },
+  { id: 'term-cr',   type: 'terminal', position: { x: 576, y: 1060 }, data: { color: C.cr,   owner: 'changeRequest' }, draggable: false },
+  { id: 'term-ct',   type: 'terminal', position: { x: 882, y: 1060 }, data: { color: C.ct,   owner: 'changeTask'    }, draggable: false },
 ]
 
 const INITIAL_EDGES: Edge[] = [
@@ -309,19 +405,36 @@ const INITIAL_EDGES: Edge[] = [
     target: 'ct-created', targetHandle: 'tl',
     type: 'count', data: { color: C.cr, count: 100, cycleTime: '1h', objectCount: 88 } },
 
-  // ── Dotted column tails: last event → terminal ────────────────────────────
-  { id: 'tail-inc',  source: 'incident-closed',   target: 'term-inc',
-    type: 'count', data: { color: C.inc,  dotted: true } },
-  { id: 'tail-prob', source: 'problem-closed',    target: 'term-prob',
-    type: 'count', data: { color: C.prob, dotted: true } },
-  { id: 'tail-cr',   source: 'cr-closed',         target: 'term-cr',
-    type: 'count', data: { color: C.cr,   dotted: true } },
-  { id: 'tail-ct',   source: 'ct-finished',       target: 'term-ct',
-    type: 'count', data: { color: C.ct,   dotted: true } },
+  // ── Extended lifecycle edges (connect extra event nodes in each column) ────
+  { id: 'inc-2', source: 'incident-closed',              target: 'incident-under-investigation',
+    type: 'count', data: { color: C.inc, count: 21, cycleTime: '1d',     objectCount: 18 } },
+  { id: 'inc-3', source: 'incident-under-investigation', target: 'incident-resolved',
+    type: 'count', data: { color: C.inc, count: 14, cycleTime: '3d',     objectCount: 12 } },
+  { id: 'inc-4', source: 'incident-resolved',            target: 'incident-reopened',
+    type: 'count', data: { color: C.inc, count: 7,  cycleTime: '2d',     objectCount: 6  } },
+  { id: 'prob-2', source: 'problem-closed',     target: 'problem-root-cause',
+    type: 'count', data: { color: C.prob, count: 31, cycleTime: '2d',    objectCount: 28 } },
+  { id: 'prob-3', source: 'problem-root-cause', target: 'problem-resolved',
+    type: 'count', data: { color: C.prob, count: 22, cycleTime: '3d',    objectCount: 18 } },
+  { id: 'cr-3', source: 'cr-closed',     target: 'cr-assessment',
+    type: 'count', data: { color: C.cr, count: 19, cycleTime: '1d',      objectCount: 21 } },
+  { id: 'cr-4', source: 'cr-assessment', target: 'cr-impl-started',
+    type: 'count', data: { color: C.cr, count: 12, cycleTime: '1d 3h',   objectCount: 15 } },
+  { id: 'ct-2', source: 'ct-finished',       target: 'ct-assigned',
+    type: 'count', data: { color: C.ct, count: 84, cycleTime: '1d',      objectCount: 78 } },
+  { id: 'ct-3', source: 'ct-assigned',       target: 'ct-status-changed',
+    type: 'count', data: { color: C.ct, count: 62, cycleTime: '2d',      objectCount: 55 } },
+  { id: 'ct-4', source: 'ct-status-changed', target: 'ct-approved',
+    type: 'count', data: { color: C.ct, count: 43, cycleTime: '3d',      objectCount: 38 } },
 ]
 
 // ── Auto fit-view when visible objects change ─────────────────────────────────
 type ObjKey = 'changeTask' | 'changeRequest' | 'incident' | 'problem'
+
+interface SliderHighlight {
+  nodeIds: ReadonlySet<string>
+  edgeIds: ReadonlySet<string>
+}
 
 const OBJECT_DEFS: { key: ObjKey; label: string; color: string; x: number }[] = [
   { key: 'incident',      label: 'Incident',       color: C.inc,  x: 82  },
@@ -468,9 +581,39 @@ export default function SemanticViews() {
   const [selectedObj, setSelectedObj] = useState<ObjKey | null>(null)
   const [eventSliders, setEventSliders] = useState<Record<ObjKey, number>>({ changeTask: 2, changeRequest: 4, incident: 4, problem: 3 })
   const [pathSliders,  setPathSliders]  = useState<Record<ObjKey, number>>({ changeTask: 0, changeRequest: 5, incident: 0, problem: 0 })
+  const [sliderHighlight, setSliderHighlight] = useState<SliderHighlight | null>(null)
 
   const toggleObj = (key: ObjKey) =>
     setObjects(prev => ({ ...prev, [key]: !prev[key] }))
+
+  const handleEventSlider = (key: ObjKey, newVal: number) => {
+    const prevVal = eventSliders[key]
+    setEventSliders(prev => ({ ...prev, [key]: newVal }))
+    if (newVal > prevVal) {
+      const seq = EVENT_SEQUENCE[key]
+      const newNodeIds = new Set(seq.slice(prevVal, newVal))
+      const newEdgeIds = new Set([
+        ...INITIAL_EDGES.filter(e => newNodeIds.has(e.target)).map(e => e.id),
+        `tail-${key}`,
+      ])
+      setSliderHighlight({ nodeIds: newNodeIds, edgeIds: newEdgeIds })
+    } else {
+      setSliderHighlight(null)
+    }
+  }
+
+  const handlePathSlider = (key: ObjKey, newVal: number) => {
+    const prevVal = pathSliders[key]
+    setPathSliders(prev => ({ ...prev, [key]: newVal }))
+    if (newVal > prevVal) {
+      const newPaths = PATH_POOL[key].slice(prevVal, newVal)
+      const newEdgeIds = new Set(newPaths.map(p => p.id))
+      const newNodeIds = new Set(newPaths.flatMap(p => [p.source, p.target]))
+      setSliderHighlight({ nodeIds: newNodeIds, edgeIds: newEdgeIds })
+    } else {
+      setSliderHighlight(null)
+    }
+  }
 
   const colorToObj: Record<string, ObjKey> = {
     [C.inc]: 'incident', [C.prob]: 'problem',
@@ -479,31 +622,114 @@ export default function SemanticViews() {
 
   const displayNodes = useMemo(() => nodes.map(node => {
     const owner = node.data.owner as ObjKey | undefined
-    const hidden = owner ? !objects[owner] : false
+    const hiddenByObject = owner ? !objects[owner] : false
+    const seq = EVENT_SEQ_MAP[node.id]
+    const hiddenBySlider = owner !== undefined && seq !== undefined ? seq > eventSliders[owner] : false
+    const hidden = hiddenByObject || hiddenBySlider
     const isSelected = selectedObj !== null && owner === selectedObj
-    const opacity = selectedObj !== null && owner ? (owner === selectedObj ? 1 : 0.3) : undefined
+
+    let opacity: number | undefined
+    let highlighted = false
+
+    if (sliderHighlight !== null) {
+      if (sliderHighlight.nodeIds.has(node.id)) {
+        highlighted = true
+        opacity = 1
+      } else {
+        opacity = 0.3
+      }
+    } else if (selectedObj !== null && owner) {
+      opacity = owner === selectedObj ? 1 : 0.3
+    }
+
     return {
       ...node,
       hidden: hidden !== !!node.hidden ? hidden : node.hidden,
-      data: { ...node.data, isSelected, metric },
+      data: { ...node.data, isSelected, metric, highlighted },
       style: opacity !== undefined ? { opacity } : {},
     }
-  }), [nodes, objects, selectedObj, metric])
+  }), [nodes, objects, selectedObj, metric, eventSliders, sliderHighlight])
 
   const displayEdges = useMemo(() => {
     const hiddenIds = new Set(displayNodes.filter(n => n.hidden).map(n => n.id))
-    return edges.map(edge => {
-      const hidden = hiddenIds.has(edge.source) || hiddenIds.has(edge.target)
-      const edgeOwner = colorToObj[edge.data?.color as string]
-      const opacity = selectedObj !== null && edgeOwner ? (edgeOwner === selectedObj ? 1 : 0.3) : undefined
-      return {
-        ...edge,
-        hidden: hidden !== !!edge.hidden ? hidden : edge.hidden,
-        data: { ...edge.data, metric },
-        style: opacity !== undefined ? { opacity } : {},
-      }
-    })
-  }, [edges, displayNodes, selectedObj, metric])
+
+    // Dynamic tail: connects the last visible event in each active column to its terminal
+    const dynamicTailEdges: Edge[] = Object.entries(EVENT_SEQUENCE)
+      .filter(([key]) => objects[key as ObjKey])
+      .flatMap(([key, ids]) => {
+        const lastVisible = [...ids].reverse().find(id => !hiddenIds.has(id))
+        if (!lastVisible) return []
+        const color = OWNER_COLOR[key]
+        let opacity: number | undefined
+        let highlighted = false
+        if (sliderHighlight !== null) {
+          if (sliderHighlight.edgeIds.has(`tail-${key}`)) { highlighted = true; opacity = 1 }
+          else { opacity = 0.3 }
+        } else if (selectedObj !== null) {
+          opacity = key === selectedObj ? 1 : 0.3
+        }
+        return [{
+          id: `tail-${key}`,
+          source: lastVisible,
+          target: TERMINAL_IDS[key],
+          type: 'count' as const,
+          data: { color, dotted: true, metric, highlighted },
+          style: opacity !== undefined ? { opacity } : {},
+        }]
+      })
+
+    // Dynamic cross-object paths: revealed by each object's path slider
+    const dynamicPathEdges: Edge[] = Object.entries(PATH_POOL)
+      .flatMap(([owner, paths]) => {
+        const sliderVal = pathSliders[owner as ObjKey] ?? 0
+        return paths
+          .slice(0, sliderVal)
+          .filter(p => !hiddenIds.has(p.source) && !hiddenIds.has(p.target))
+          .map(p => {
+            let opacity: number | undefined
+            let highlighted = false
+            if (sliderHighlight !== null) {
+              if (sliderHighlight.edgeIds.has(p.id)) { highlighted = true; opacity = 1 }
+              else { opacity = 0.3 }
+            } else if (selectedObj !== null) {
+              opacity = owner === selectedObj ? 1 : 0.3
+            }
+            return {
+              id: p.id,
+              source: p.source,
+              sourceHandle: p.sourceHandle,
+              target: p.target,
+              targetHandle: p.targetHandle,
+              type: 'count' as const,
+              data: { color: p.color, count: p.count, cycleTime: p.cycleTime, objectCount: p.objectCount, metric, highlighted },
+              style: opacity !== undefined ? { opacity } : {},
+            }
+          })
+      })
+
+    return [
+      ...edges.map(edge => {
+        const hidden = hiddenIds.has(edge.source) || hiddenIds.has(edge.target)
+        const edgeOwner = colorToObj[edge.data?.color as string]
+        let opacity: number | undefined
+        let highlighted = false
+        if (sliderHighlight !== null) {
+          if (sliderHighlight.edgeIds.has(edge.id)) { highlighted = true; opacity = 1 }
+          else { opacity = 0.3 }
+        } else if (selectedObj !== null && edgeOwner) {
+          opacity = edgeOwner === selectedObj ? 1 : 0.3
+        }
+        return {
+          ...edge,
+          hidden: hidden !== !!edge.hidden ? hidden : edge.hidden,
+          data: { ...edge.data, metric, highlighted },
+          style: opacity !== undefined ? { opacity } : {},
+        }
+      }),
+      ...dynamicTailEdges,
+      ...dynamicPathEdges,
+    ]
+  }, [edges, displayNodes, selectedObj, metric, objects, pathSliders, sliderHighlight])
 
   const activeCount = Object.values(objects).filter(Boolean).length
 
@@ -625,11 +851,11 @@ export default function SemanticViews() {
                           <span className={s.eventBadge} style={{ background: obj.color }}>{eventSliders[obj.key]}</span>
                         </div>
                         <input type="range" className={s.eventSlider} min={0} max={10} value={eventSliders[obj.key]}
-                          onChange={e => setEventSliders(prev => ({ ...prev, [obj.key]: Number(e.target.value) }))} />
+                          onChange={e => handleEventSlider(obj.key, Number(e.target.value))} />
                         <div className={s.pathsBlock}>
                           <span className={s.pathsLabel}>Paths</span>
                           <input type="range" className={s.eventSlider} min={0} max={10} value={pathSliders[obj.key]}
-                            onChange={e => setPathSliders(prev => ({ ...prev, [obj.key]: Number(e.target.value) }))} />
+                            onChange={e => handlePathSlider(obj.key, Number(e.target.value))} />
                         </div>
                       </div>
                     ))}
@@ -702,16 +928,18 @@ export default function SemanticViews() {
                 proOptions={{ hideAttribution: true }}
                 nodesDraggable={false}
                 onNodeClick={(_, node) => {
+                  setSliderHighlight(null)
                   if (node.type === 'category') {
                     const owner = (node.data as unknown as { owner: ObjKey }).owner
                     setSelectedObj(prev => prev === owner ? null : owner)
                   }
                 }}
                 onEdgeClick={(_, edge) => {
+                  setSliderHighlight(null)
                   const owner = colorToObj[(edge.data as unknown as { color: string } | undefined)?.color ?? '']
                   if (owner) setSelectedObj(prev => prev === owner ? null : owner)
                 }}
-                onPaneClick={() => setSelectedObj(null)}
+                onPaneClick={() => { setSelectedObj(null); setSliderHighlight(null) }}
               >
                 <Background color="#ccc" gap={20} size={1} style={{ background: '#f4f4f4' }} />
                 <ZoomControls />
