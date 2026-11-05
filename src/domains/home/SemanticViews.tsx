@@ -8,16 +8,43 @@ import {
 import { Button, Icon, Input, Switch, RadioButton, Text, Link } from '@ui5/webcomponents-react'
 import s from './SemanticViews.module.css'
 
-// ── Colors per object type ───────────────────────────────────────────────────
+// ── Colors per object type — SAP chart palette, repeated after 11 ────────────
+// sapChart_1…11: #5899DA #E8743B #19A979 #ED4A7B #945ECF #13A4B4 #525DF4 #BF399E #6C8893 #EE6868 #2F6497
 const C = {
-  ct:   '#5E7A00',  // Change Task   (olive green)
-  cr:   '#C0006B',  // Change Request (hot pink)
-  inc:  '#1473E6',  // Incident       (blue)
-  prob: '#9E6500',  // Problem        (amber)
+  inc:   '#5899DA',  // Incident             (chart 1)
+  prob:  '#E8743B',  // Problem              (chart 2)
+  cr:    '#19A979',  // Change Request       (chart 3)
+  ct:    '#ED4A7B',  // Change Task          (chart 4)
+  cust:  '#945ECF',  // Customer             (chart 5)
+  quot:  '#13A4B4',  // Quotation            (chart 6)
+  contr: '#525DF4',  // Contract             (chart 7)
+  so:    '#BF399E',  // Sales Order          (chart 8)
+  soi:   '#6C8893',  // Sales Order Item     (chart 9)
+  pc:    '#EE6868',  // Pricing Condition    (chart 10)
+  po:    '#2F6497',  // Purchase Order       (chart 11)
+  mat:   '#5899DA',  // Material             (chart 1, repeat)
+  wt:    '#E8743B',  // Warehouse Task       (chart 2, repeat)
+  dlv:   '#19A979',  // Delivery             (chart 3, repeat)
+  gi:    '#ED4A7B',  // Goods Issue          (chart 4, repeat)
+  bill:  '#945ECF',  // Billing Document     (chart 5, repeat)
+  inv:   '#13A4B4',  // Invoice              (chart 6, repeat)
+  svo:   '#525DF4',  // Service Order        (chart 7, repeat)
+  cm:    '#BF399E',  // Credit Memo          (chart 8, repeat)
+  ret:   '#6C8893',  // Return Order         (chart 9, repeat)
+  ar:    '#EE6868',  // Accounts Receivable  (chart 10, repeat)
+  pay:   '#2F6497',  // Payment              (chart 11, repeat)
+  dun:   '#5899DA',  // Dunning Notice       (chart 1, repeat)
+  bank:  '#E8743B',  // Bank Statement       (chart 2, repeat)
 } as const
 
 const OWNER_COLOR: Record<string, string> = {
   incident: C.inc, problem: C.prob, changeRequest: C.cr, changeTask: C.ct,
+  customer: C.cust, quotation: C.quot, contract: C.contr, salesOrder: C.so,
+  salesOrderItem: C.soi, pricingCondition: C.pc, purchaseOrder: C.po,
+  material: C.mat, warehouseTask: C.wt, delivery: C.dlv, goodsIssue: C.gi,
+  billingDoc: C.bill, invoice: C.inv, serviceOrder: C.svo, creditMemo: C.cm,
+  returnOrder: C.ret, accountsReceivable: C.ar, payment: C.pay,
+  dunningNotice: C.dun, bankStatement: C.bank,
 }
 
 // ── Category pill node ───────────────────────────────────────────────────────
@@ -57,19 +84,26 @@ function CategoryNode({ data }: NodeProps) {
 // ── Event node ───────────────────────────────────────────────────────────────
 type Dot = { color: string; count: number; cycleTime?: string; objectCount?: number }
 
-function EventNode({ data }: NodeProps) {
+function EventNode({ data, positionAbsoluteX, positionAbsoluteY }: NodeProps) {
   const dots = data.dots as Dot[] | undefined
-  const zoom = useStore((st: any) => st.transform[2])
+  const [panX, panY, zoom] = useStore((st: any) => st.transform)
   const compact = zoom < 0.4
   const color = OWNER_COLOR[data.owner as string] ?? '#888'
   const metric = data.metric as string | undefined
   const highlighted = data.highlighted as boolean | undefined
+  const isActive = data.isActiveEvent as boolean | undefined
   const CIR = 10
 
   const dotValue = (d: Dot) =>
     metric === 'cycle' ? (d.cycleTime ?? '') :
     metric === 'object' ? (d.objectCount ?? d.count) :
     d.count
+
+  // Screen-space anchor for the zoom-invariant popover.
+  // Card starts at canvas x=(CIR+5) from the node origin with minWidth≈155px;
+  // add 8px fixed screen gap after the card's right edge.
+  const popX = positionAbsoluteX * zoom + panX + (CIR + 5 + 155) * zoom + 8
+  const popY = positionAbsoluteY * zoom + panY + (CIR / 2) * zoom
 
   return (
     // Bounding box = circle only; card floats outside as overflow
@@ -84,39 +118,94 @@ function EventNode({ data }: NodeProps) {
       {/* Circle */}
       <div style={{
         width: CIR, height: CIR, borderRadius: '50%',
-        border: `1.5px solid ${color}`, background: 'white',
+        border: `1.5px solid ${color}`,
+        background: isActive ? color : 'white',
+        transition: 'background 0.1s',
       }} />
 
-      {/* Card floats to the right, vertically centered on circle */}
-      <div style={{
-        position: 'absolute', left: CIR + 5, top: '50%', transform: 'translateY(-50%)',
-        background: 'white', border: '1px solid #d9d9d9',
-        borderRadius: 8, padding: '8px 12px',
-        minWidth: 130, whiteSpace: 'nowrap',
-        boxShadow: highlighted ? '0 0 0 2px white, 0 4px 20px rgba(0,0,0,0.35)' : undefined,
-        transition: 'box-shadow 0.15s',
-      }}>
-        <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--sapTextColor)', marginBottom: dots?.length ? 4 : 0, visibility: compact ? 'hidden' : 'visible' }}>
-          {data.label as string}
+      {/* Card — floats to the right of the circle, scales with zoom */}
+      <div style={{ position: 'absolute', left: CIR + 5, top: '50%', transform: 'translateY(-50%)' }}>
+        <div style={{
+          background: 'white',
+          border: isActive ? `1.5px solid ${color}` : '1px solid #d9d9d9',
+          borderRadius: 8, padding: '8px 12px',
+          minWidth: 130, whiteSpace: 'nowrap',
+          boxShadow: highlighted ? '0 0 0 2px white, 0 4px 20px rgba(0,0,0,0.35)' : undefined,
+          transition: 'box-shadow 0.15s, border-color 0.1s',
+        }}>
+          <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--sapTextColor)', marginBottom: dots?.length ? 4 : 0, visibility: compact ? 'hidden' : 'visible' }}>
+            {data.label as string}
+          </div>
+          {dots && dots.length > 0 && !compact && (
+            <div style={{ display: 'flex', gap: dots.length > 1 ? 8 : 3, flexWrap: 'wrap' }}>
+              {dots.map((d, i) => (
+                <span key={i} style={{ display: 'flex', alignItems: 'center', gap: 2, fontSize: 11 }}>
+                  {dots.length > 1 && <span style={{ width: 5, height: 5, borderRadius: '50%', background: d.color, display: 'inline-block', flexShrink: 0 }} />}
+                  <span style={{ color: 'var(--sapContent_LabelColor)', fontWeight: 500 }}>{dotValue(d)}</span>
+                </span>
+              ))}
+            </div>
+          )}
+          {dots && dots.length > 1 && compact && (
+            <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'flex-start', paddingLeft: 12, gap: 6 }}>
+              {dots.map((d, i) => (
+                <span key={i} style={{ width: 14, height: 14, borderRadius: '50%', background: d.color, display: 'inline-block', flexShrink: 0 }} />
+              ))}
+            </div>
+          )}
         </div>
-        {dots && dots.length > 0 && !compact && (
-          <div style={{ display: 'flex', gap: dots.length > 1 ? 8 : 3, flexWrap: 'wrap' }}>
-            {dots.map((d, i) => (
-              <span key={i} style={{ display: 'flex', alignItems: 'center', gap: 2, fontSize: 11 }}>
-                {dots.length > 1 && <span style={{ width: 5, height: 5, borderRadius: '50%', background: d.color, display: 'inline-block', flexShrink: 0 }} />}
-                <span style={{ color: 'var(--sapContent_LabelColor)', fontWeight: 500 }}>{dotValue(d)}</span>
-              </span>
-            ))}
-          </div>
-        )}
-        {dots && dots.length > 1 && compact && (
-          <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'flex-start', paddingLeft: 12, gap: 6 }}>
-            {dots.map((d, i) => (
-              <span key={i} style={{ width: 14, height: 14, borderRadius: '50%', background: d.color, display: 'inline-block', flexShrink: 0 }} />
-            ))}
-          </div>
-        )}
       </div>
+
+      {/* Popover rendered via EdgeLabelRenderer — outside the viewport transform,
+          so it stays at constant screen size regardless of zoom level */}
+      {isActive && dots && (
+        <EdgeLabelRenderer>
+          <div
+            className="nodrag nopan"
+            style={{
+              position: 'absolute',
+              transform: `translate(${popX}px,${popY}px) translateY(-50%)`,
+              pointerEvents: 'none',
+              background: 'white',
+              border: `1.5px solid ${color}`,
+              borderRadius: 10,
+              padding: '12px 16px',
+              boxShadow: '0 4px 20px rgba(0,0,0,0.18)',
+              minWidth: 200,
+              whiteSpace: 'nowrap',
+              zIndex: 1000,
+            }}
+          >
+            <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--sapTextColor)', marginBottom: 8, paddingBottom: 6, borderBottom: `1.5px solid ${color}` }}>
+              {data.label as string}
+            </div>
+            {dots.map((d, i) => (
+              <div key={i} style={{ marginBottom: i < dots.length - 1 ? 10 : 0 }}>
+                {dots.length > 1 && (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 4 }}>
+                    <span style={{ width: 8, height: 8, borderRadius: '50%', background: d.color, display: 'inline-block', flexShrink: 0 }} />
+                    <span style={{ fontSize: 11, fontWeight: 700, color: d.color }}>Object {i + 1}</span>
+                  </div>
+                )}
+                <div style={{ paddingLeft: dots.length > 1 ? 13 : 0, display: 'flex', flexDirection: 'column', gap: 3 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', gap: 20, fontSize: 11 }}>
+                    <span style={{ color: 'var(--sapContent_LabelColor)' }}>Event Occurrences</span>
+                    <span style={{ fontWeight: 600, color: 'var(--sapTextColor)' }}>{d.count}</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', gap: 20, fontSize: 11 }}>
+                    <span style={{ color: 'var(--sapContent_LabelColor)' }}>Object Occurrences</span>
+                    <span style={{ fontWeight: 600, color: 'var(--sapTextColor)' }}>{d.objectCount ?? '–'}</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', gap: 20, fontSize: 11 }}>
+                    <span style={{ color: 'var(--sapContent_LabelColor)' }}>Cycle Time (Avg)</span>
+                    <span style={{ fontWeight: 600, color: 'var(--sapTextColor)' }}>{d.cycleTime ?? '–'}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </EdgeLabelRenderer>
+      )}
     </div>
   )
 }
@@ -208,10 +297,30 @@ const edgeTypes = { count: CountEdge }
 
 // ── Event ordering: each object type's events in frequency order (most → least) ─
 const EVENT_SEQUENCE: Record<string, string[]> = {
-  incident:      ['incident-created', 'incident-closed', 'incident-under-investigation', 'incident-resolved', 'incident-reopened'],
-  problem:       ['problem-created', 'problem-closed', 'problem-root-cause', 'problem-resolved'],
-  changeRequest: ['cr-created', 'cr-field-changed', 'cr-closed', 'cr-assessment', 'cr-impl-started'],
-  changeTask:    ['ct-created', 'ct-finished', 'ct-assigned', 'ct-status-changed', 'ct-approved'],
+  incident:          ['incident-created', 'incident-closed', 'incident-under-investigation', 'incident-resolved', 'incident-reopened'],
+  problem:           ['problem-created', 'problem-closed', 'problem-root-cause', 'problem-resolved'],
+  changeRequest:     ['cr-created', 'cr-field-changed', 'cr-closed', 'cr-assessment', 'cr-impl-started'],
+  changeTask:        ['ct-created', 'ct-finished', 'ct-assigned', 'ct-status-changed', 'ct-approved'],
+  customer:          ['cust-onboarded', 'cust-credit-checked', 'cust-blocked', 'cust-unblocked'],
+  quotation:         ['quot-created', 'quot-sent', 'quot-won', 'quot-lost'],
+  contract:          ['contr-created', 'contr-activated', 'contr-expired', 'contr-renewed'],
+  salesOrder:        ['so-created', 'so-confirmed', 'so-delivered', 'so-invoiced', 'so-completed'],
+  salesOrderItem:    ['soi-created', 'soi-confirmed', 'soi-delivered'],
+  pricingCondition:  ['pc-created', 'pc-activated', 'pc-updated', 'pc-expired'],
+  purchaseOrder:     ['po-created', 'po-approved', 'po-received', 'po-invoiced'],
+  material:          ['mat-reserved', 'mat-picked', 'mat-issued', 'mat-returned'],
+  warehouseTask:     ['wt-created', 'wt-assigned', 'wt-confirmed', 'wt-cancelled'],
+  delivery:          ['dlv-created', 'dlv-picked', 'dlv-shipped', 'dlv-delivered'],
+  goodsIssue:        ['gi-posted', 'gi-partial', 'gi-reversed'],
+  billingDoc:        ['bill-created', 'bill-released', 'bill-cancelled'],
+  invoice:           ['inv-created', 'inv-sent', 'inv-paid', 'inv-overdue'],
+  serviceOrder:      ['svo-created', 'svo-assigned', 'svo-completed', 'svo-billed'],
+  creditMemo:        ['cm-created', 'cm-approved', 'cm-posted'],
+  returnOrder:       ['ret-created', 'ret-received', 'ret-inspected', 'ret-credited'],
+  accountsReceivable:['ar-open', 'ar-cleared', 'ar-dunned', 'ar-written-off'],
+  payment:           ['pay-received', 'pay-cleared', 'pay-partial', 'pay-reversed'],
+  dunningNotice:     ['dun-created', 'dun-sent', 'dun-escalated'],
+  bankStatement:     ['bank-imported', 'bank-matched', 'bank-unmatched'],
 }
 // Map: event node id → 1-based position in its owner's sequence
 const EVENT_SEQ_MAP: Record<string, number> = {}
@@ -220,6 +329,12 @@ Object.values(EVENT_SEQUENCE).forEach(events => {
 })
 const TERMINAL_IDS: Record<string, string> = {
   incident: 'term-inc', problem: 'term-prob', changeRequest: 'term-cr', changeTask: 'term-ct',
+  customer: 'term-cust', quotation: 'term-quot', contract: 'term-contr', salesOrder: 'term-so',
+  salesOrderItem: 'term-soi', pricingCondition: 'term-pc', purchaseOrder: 'term-po',
+  material: 'term-mat', warehouseTask: 'term-wt', delivery: 'term-dlv', goodsIssue: 'term-gi',
+  billingDoc: 'term-bill', invoice: 'term-inv', serviceOrder: 'term-svo', creditMemo: 'term-cm',
+  returnOrder: 'term-ret', accountsReceivable: 'term-ar', payment: 'term-pay',
+  dunningNotice: 'term-dun', bankStatement: 'term-bank',
 }
 
 // ── Cross-object path pool: extra connections revealed by the path slider ─────
@@ -257,6 +372,86 @@ const PATH_POOL: Record<string, CrossPath[]> = {
     { id: 'path-ct-2', source: 'ct-finished',       sourceHandle: 'sl', target: 'ct-created',       targetHandle: 'tl', color: C.ct, count: 28, cycleTime: '1h', objectCount: 24 },
     { id: 'path-ct-3', source: 'ct-assigned',       sourceHandle: 'sl', target: 'ct-approved',      targetHandle: 'tl', color: C.ct, count: 16, cycleTime: '3d', objectCount: 14 },
     { id: 'path-ct-4', source: 'ct-status-changed', sourceHandle: 'sl', target: 'ct-finished',      targetHandle: 'tl', color: C.ct, count: 9,  cycleTime: '2d', objectCount: 8  },
+  ],
+  customer: [
+    { id: 'path-cust-1', source: 'cust-onboarded',      sourceHandle: 'sl', target: 'cust-credit-checked', targetHandle: 'tl', color: C.cust, count: 42, cycleTime: '2h',  objectCount: 39 },
+    { id: 'path-cust-2', source: 'cust-blocked',         sourceHandle: 'sl', target: 'cust-onboarded',      targetHandle: 'tl', color: C.cust, count: 8,  cycleTime: '1d',  objectCount: 7  },
+  ],
+  quotation: [
+    { id: 'path-quot-1', source: 'quot-created', sourceHandle: 'sl', target: 'quot-won',  targetHandle: 'tl', color: C.quot, count: 52, cycleTime: '3d', objectCount: 49 },
+    { id: 'path-quot-2', source: 'quot-sent',    sourceHandle: 'sl', target: 'quot-lost', targetHandle: 'tl', color: C.quot, count: 19, cycleTime: '2d', objectCount: 17 },
+  ],
+  contract: [
+    { id: 'path-contr-1', source: 'contr-created',  sourceHandle: 'sl', target: 'contr-expired', targetHandle: 'tl', color: C.contr, count: 12, cycleTime: '365d', objectCount: 11 },
+    { id: 'path-contr-2', source: 'contr-activated', sourceHandle: 'sl', target: 'contr-renewed', targetHandle: 'tl', color: C.contr, count: 7,  cycleTime: '5d',   objectCount: 6  },
+  ],
+  salesOrder: [
+    { id: 'path-so-1', source: 'so-created',   sourceHandle: 'sl', target: 'so-completed', targetHandle: 'tl', color: C.so, count: 14, cycleTime: '5d', objectCount: 13 },
+    { id: 'path-so-2', source: 'so-confirmed', sourceHandle: 'sl', target: 'so-created',   targetHandle: 'tl', color: C.so, count: 9,  cycleTime: '1h', objectCount: 8  },
+  ],
+  salesOrderItem: [
+    { id: 'path-soi-1', source: 'soi-created',   sourceHandle: 'sl', target: 'soi-delivered', targetHandle: 'tl', color: C.soi, count: 28, cycleTime: '3d', objectCount: 25 },
+    { id: 'path-soi-2', source: 'soi-confirmed',  sourceHandle: 'sl', target: 'soi-created',   targetHandle: 'tl', color: C.soi, count: 11, cycleTime: '1h', objectCount: 10 },
+  ],
+  pricingCondition: [
+    { id: 'path-pc-1', source: 'pc-created',   sourceHandle: 'sl', target: 'pc-expired',  targetHandle: 'tl', color: C.pc, count: 31, cycleTime: '365d', objectCount: 28 },
+    { id: 'path-pc-2', source: 'pc-activated', sourceHandle: 'sl', target: 'pc-updated',  targetHandle: 'tl', color: C.pc, count: 67, cycleTime: '1d',   objectCount: 62 },
+  ],
+  purchaseOrder: [
+    { id: 'path-po-1', source: 'po-created',  sourceHandle: 'sl', target: 'po-received', targetHandle: 'tl', color: C.po, count: 21, cycleTime: '4d', objectCount: 19 },
+    { id: 'path-po-2', source: 'po-approved', sourceHandle: 'sl', target: 'po-created',  targetHandle: 'tl', color: C.po, count: 8,  cycleTime: '1h', objectCount: 7  },
+  ],
+  material: [
+    { id: 'path-mat-1', source: 'mat-reserved', sourceHandle: 'sl', target: 'mat-issued',   targetHandle: 'tl', color: C.mat, count: 41, cycleTime: '4h', objectCount: 37 },
+    { id: 'path-mat-2', source: 'mat-issued',   sourceHandle: 'sl', target: 'mat-returned', targetHandle: 'tl', color: C.mat, count: 23, cycleTime: '2d', objectCount: 19 },
+  ],
+  warehouseTask: [
+    { id: 'path-wt-1', source: 'wt-created',  sourceHandle: 'sl', target: 'wt-confirmed', targetHandle: 'tl', color: C.wt, count: 34, cycleTime: '3h',  objectCount: 31 },
+    { id: 'path-wt-2', source: 'wt-assigned', sourceHandle: 'sl', target: 'wt-cancelled', targetHandle: 'tl', color: C.wt, count: 14, cycleTime: '2d',  objectCount: 12 },
+  ],
+  delivery: [
+    { id: 'path-dlv-1', source: 'dlv-created', sourceHandle: 'sl', target: 'dlv-shipped',    targetHandle: 'tl', color: C.dlv, count: 28, cycleTime: '1d', objectCount: 26 },
+    { id: 'path-dlv-2', source: 'dlv-picked',  sourceHandle: 'sl', target: 'dlv-delivered',  targetHandle: 'tl', color: C.dlv, count: 17, cycleTime: '2d', objectCount: 15 },
+  ],
+  goodsIssue: [
+    { id: 'path-gi-1', source: 'gi-posted',  sourceHandle: 'sl', target: 'gi-partial',  targetHandle: 'tl', color: C.gi, count: 21, cycleTime: '4h', objectCount: 18 },
+    { id: 'path-gi-2', source: 'gi-partial', sourceHandle: 'sl', target: 'gi-reversed', targetHandle: 'tl', color: C.gi, count: 11, cycleTime: '1d', objectCount: 9  },
+  ],
+  billingDoc: [
+    { id: 'path-bill-1', source: 'bill-created',  sourceHandle: 'sl', target: 'bill-cancelled', targetHandle: 'tl', color: C.bill, count: 9,  cycleTime: '1d', objectCount: 8  },
+    { id: 'path-bill-2', source: 'bill-released', sourceHandle: 'sl', target: 'bill-created',   targetHandle: 'tl', color: C.bill, count: 14, cycleTime: '2h', objectCount: 12 },
+  ],
+  invoice: [
+    { id: 'path-inv-1', source: 'inv-created', sourceHandle: 'sl', target: 'inv-paid',    targetHandle: 'tl', color: C.inv, count: 42, cycleTime: '28d', objectCount: 38 },
+    { id: 'path-inv-2', source: 'inv-sent',    sourceHandle: 'sl', target: 'inv-overdue', targetHandle: 'tl', color: C.inv, count: 28, cycleTime: '35d', objectCount: 22 },
+  ],
+  serviceOrder: [
+    { id: 'path-svo-1', source: 'svo-created',   sourceHandle: 'sl', target: 'svo-completed', targetHandle: 'tl', color: C.svo, count: 18, cycleTime: '2d', objectCount: 16 },
+    { id: 'path-svo-2', source: 'svo-assigned',  sourceHandle: 'sl', target: 'svo-billed',    targetHandle: 'tl', color: C.svo, count: 12, cycleTime: '3d', objectCount: 11 },
+  ],
+  creditMemo: [
+    { id: 'path-cm-1', source: 'cm-created',  sourceHandle: 'sl', target: 'cm-posted',   targetHandle: 'tl', color: C.cm, count: 14, cycleTime: '1d', objectCount: 12 },
+    { id: 'path-cm-2', source: 'cm-approved', sourceHandle: 'sl', target: 'cm-created',  targetHandle: 'tl', color: C.cm, count: 7,  cycleTime: '3h', objectCount: 6  },
+  ],
+  returnOrder: [
+    { id: 'path-ret-1', source: 'ret-created',   sourceHandle: 'sl', target: 'ret-credited',  targetHandle: 'tl', color: C.ret, count: 11, cycleTime: '6d', objectCount: 10 },
+    { id: 'path-ret-2', source: 'ret-inspected', sourceHandle: 'sl', target: 'ret-created',   targetHandle: 'tl', color: C.ret, count: 6,  cycleTime: '1d', objectCount: 5  },
+  ],
+  accountsReceivable: [
+    { id: 'path-ar-1', source: 'ar-open',    sourceHandle: 'sl', target: 'ar-cleared',    targetHandle: 'tl', color: C.ar, count: 131, cycleTime: '28d', objectCount: 96 },
+    { id: 'path-ar-2', source: 'ar-dunned',  sourceHandle: 'sl', target: 'ar-written-off', targetHandle: 'tl', color: C.ar, count: 7,   cycleTime: '90d', objectCount: 5  },
+  ],
+  payment: [
+    { id: 'path-pay-1', source: 'pay-received', sourceHandle: 'sl', target: 'pay-cleared',  targetHandle: 'tl', color: C.pay, count: 38, cycleTime: '2d', objectCount: 35 },
+    { id: 'path-pay-2', source: 'pay-partial',  sourceHandle: 'sl', target: 'pay-reversed', targetHandle: 'tl', color: C.pay, count: 8,  cycleTime: '3d', objectCount: 6  },
+  ],
+  dunningNotice: [
+    { id: 'path-dun-1', source: 'dun-created', sourceHandle: 'sl', target: 'dun-escalated', targetHandle: 'tl', color: C.dun, count: 11, cycleTime: '7d', objectCount: 9  },
+    { id: 'path-dun-2', source: 'dun-sent',    sourceHandle: 'sl', target: 'dun-created',   targetHandle: 'tl', color: C.dun, count: 5,  cycleTime: '1h', objectCount: 4  },
+  ],
+  bankStatement: [
+    { id: 'path-bank-1', source: 'bank-imported', sourceHandle: 'sl', target: 'bank-matched',   targetHandle: 'tl', color: C.bank, count: 128, cycleTime: '1d', objectCount: 94 },
+    { id: 'path-bank-2', source: 'bank-imported', sourceHandle: 'sl', target: 'bank-unmatched', targetHandle: 'tl', color: C.bank, count: 14,  cycleTime: '2d', objectCount: 11 },
   ],
 }
 
@@ -362,6 +557,161 @@ const INITIAL_NODES: Node[] = [
   { id: 'term-prob', type: 'terminal', position: { x: 365, y: 1060 }, data: { color: C.prob, owner: 'problem'       }, draggable: false },
   { id: 'term-cr',   type: 'terminal', position: { x: 576, y: 1060 }, data: { color: C.cr,   owner: 'changeRequest' }, draggable: false },
   { id: 'term-ct',   type: 'terminal', position: { x: 882, y: 1060 }, data: { color: C.ct,   owner: 'changeTask'    }, draggable: false },
+
+  // ── O2C: Customer (base x=1100) ──────────────────────────────────────────
+  { id: 'cat-cust', type: 'category', position: { x: 1100, y: 50 }, data: { label: 'Customer', color: C.cust, owner: 'customer', count: 48, objectCount: 45, cycleTime: '5d' }, draggable: false },
+  { id: 'cust-onboarded',      type: 'event', position: { x: 1080, y: 220 }, data: { label: 'Customer Onboarded',   owner: 'customer', dots: [{ color: C.cust, count: 48, objectCount: 45, cycleTime: '0h'  }] } },
+  { id: 'cust-credit-checked', type: 'event', position: { x: 1080, y: 500 }, data: { label: 'Credit Check Passed',  owner: 'customer', dots: [{ color: C.cust, count: 42, objectCount: 39, cycleTime: '2h'  }] } },
+  { id: 'cust-blocked',        type: 'event', position: { x: 1080, y: 620 }, data: { label: 'Customer Blocked',     owner: 'customer', dots: [{ color: C.cust, count: 8,  objectCount: 7,  cycleTime: '1d'  }] } },
+  { id: 'cust-unblocked',      type: 'event', position: { x: 1080, y: 740 }, data: { label: 'Customer Unblocked',   owner: 'customer', dots: [{ color: C.cust, count: 5,  objectCount: 4,  cycleTime: '2d'  }] } },
+  { id: 'term-cust', type: 'terminal', position: { x: 1145, y: 1060 }, data: { color: C.cust, owner: 'customer'  }, draggable: false },
+
+  // ── O2C: Quotation (base x=1330) ─────────────────────────────────────────
+  { id: 'cat-quot', type: 'category', position: { x: 1330, y: 50 }, data: { label: 'Quotation', color: C.quot, owner: 'quotation', count: 85, objectCount: 80, cycleTime: '4d' }, draggable: false },
+  { id: 'quot-created', type: 'event', position: { x: 1310, y: 220 }, data: { label: 'Quotation Created', owner: 'quotation', dots: [{ color: C.quot, count: 85, objectCount: 80, cycleTime: '0h'  }] } },
+  { id: 'quot-sent',    type: 'event', position: { x: 1310, y: 500 }, data: { label: 'Quotation Sent',    owner: 'quotation', dots: [{ color: C.quot, count: 71, objectCount: 66, cycleTime: '1d'  }] } },
+  { id: 'quot-won',     type: 'event', position: { x: 1310, y: 620 }, data: { label: 'Quotation Won',     owner: 'quotation', dots: [{ color: C.quot, count: 52, objectCount: 49, cycleTime: '3d'  }] } },
+  { id: 'quot-lost',    type: 'event', position: { x: 1310, y: 740 }, data: { label: 'Quotation Lost',    owner: 'quotation', dots: [{ color: C.quot, count: 19, objectCount: 17, cycleTime: '2d'  }] } },
+  { id: 'term-quot', type: 'terminal', position: { x: 1375, y: 1060 }, data: { color: C.quot, owner: 'quotation' }, draggable: false },
+
+  // ── O2C: Contract (base x=1560) ──────────────────────────────────────────
+  { id: 'cat-contr', type: 'category', position: { x: 1560, y: 50 }, data: { label: 'Contract', color: C.contr, owner: 'contract', count: 34, objectCount: 32, cycleTime: '365d' }, draggable: false },
+  { id: 'contr-created',   type: 'event', position: { x: 1540, y: 220 }, data: { label: 'Contract Created',   owner: 'contract', dots: [{ color: C.contr, count: 34, objectCount: 32, cycleTime: '0h'   }] } },
+  { id: 'contr-activated', type: 'event', position: { x: 1540, y: 500 }, data: { label: 'Contract Activated', owner: 'contract', dots: [{ color: C.contr, count: 28, objectCount: 26, cycleTime: '2d'   }] } },
+  { id: 'contr-expired',   type: 'event', position: { x: 1540, y: 620 }, data: { label: 'Contract Expired',   owner: 'contract', dots: [{ color: C.contr, count: 12, objectCount: 11, cycleTime: '365d' }] } },
+  { id: 'contr-renewed',   type: 'event', position: { x: 1540, y: 740 }, data: { label: 'Contract Renewed',   owner: 'contract', dots: [{ color: C.contr, count: 7,  objectCount: 6,  cycleTime: '5d'   }] } },
+  { id: 'term-contr', type: 'terminal', position: { x: 1605, y: 1060 }, data: { color: C.contr, owner: 'contract'  }, draggable: false },
+
+  // ── O2C: Sales Order (base x=1790) ───────────────────────────────────────
+  { id: 'cat-so', type: 'category', position: { x: 1790, y: 50 }, data: { label: 'Sales Order', color: C.so, owner: 'salesOrder', count: 156, objectCount: 148, cycleTime: '7d' }, draggable: false },
+  { id: 'so-created',   type: 'event', position: { x: 1770, y: 220 }, data: { label: 'Sales Order Created',   owner: 'salesOrder', dots: [{ color: C.so, count: 156, objectCount: 148, cycleTime: '0h' }] } },
+  { id: 'so-confirmed', type: 'event', position: { x: 1770, y: 500 }, data: { label: 'Sales Order Confirmed', owner: 'salesOrder', dots: [{ color: C.so, count: 141, objectCount: 134, cycleTime: '4h' }] } },
+  { id: 'so-delivered', type: 'event', position: { x: 1770, y: 620 }, data: { label: 'Sales Order Delivered', owner: 'salesOrder', dots: [{ color: C.so, count: 128, objectCount: 121, cycleTime: '2d' }] } },
+  { id: 'so-invoiced',  type: 'event', position: { x: 1770, y: 740 }, data: { label: 'Sales Order Invoiced',  owner: 'salesOrder', dots: [{ color: C.so, count: 112, objectCount: 106, cycleTime: '3d' }] } },
+  { id: 'so-completed', type: 'event', position: { x: 1770, y: 860 }, data: { label: 'Sales Order Completed', owner: 'salesOrder', dots: [{ color: C.so, count: 98,  objectCount: 93,  cycleTime: '5d' }] } },
+  { id: 'term-so', type: 'terminal', position: { x: 1835, y: 1060 }, data: { color: C.so, owner: 'salesOrder' }, draggable: false },
+
+  // ── O2C: Sales Order Item (base x=2020) ──────────────────────────────────
+  { id: 'cat-soi', type: 'category', position: { x: 2020, y: 50 }, data: { label: 'Sales Order Item', color: C.soi, owner: 'salesOrderItem', count: 312, objectCount: 148, cycleTime: '3d' }, draggable: false },
+  { id: 'soi-created',   type: 'event', position: { x: 2000, y: 220 }, data: { label: 'Item Created',   owner: 'salesOrderItem', dots: [{ color: C.soi, count: 312, objectCount: 148, cycleTime: '0h' }] } },
+  { id: 'soi-confirmed', type: 'event', position: { x: 2000, y: 500 }, data: { label: 'Item Confirmed', owner: 'salesOrderItem', dots: [{ color: C.soi, count: 287, objectCount: 134, cycleTime: '1h' }] } },
+  { id: 'soi-delivered', type: 'event', position: { x: 2000, y: 620 }, data: { label: 'Item Delivered', owner: 'salesOrderItem', dots: [{ color: C.soi, count: 261, objectCount: 121, cycleTime: '3d' }] } },
+  { id: 'term-soi', type: 'terminal', position: { x: 2065, y: 1060 }, data: { color: C.soi, owner: 'salesOrderItem' }, draggable: false },
+
+  // ── O2C: Pricing Condition (base x=2250) ─────────────────────────────────
+  { id: 'cat-pc', type: 'category', position: { x: 2250, y: 50 }, data: { label: 'Pricing Condition', color: C.pc, owner: 'pricingCondition', count: 420, objectCount: 148, cycleTime: '30d' }, draggable: false },
+  { id: 'pc-created',   type: 'event', position: { x: 2230, y: 220 }, data: { label: 'Condition Created',   owner: 'pricingCondition', dots: [{ color: C.pc, count: 420, objectCount: 148, cycleTime: '0h'   }] } },
+  { id: 'pc-activated', type: 'event', position: { x: 2230, y: 500 }, data: { label: 'Condition Activated', owner: 'pricingCondition', dots: [{ color: C.pc, count: 398, objectCount: 140, cycleTime: '30m'  }] } },
+  { id: 'pc-updated',   type: 'event', position: { x: 2230, y: 620 }, data: { label: 'Condition Updated',   owner: 'pricingCondition', dots: [{ color: C.pc, count: 67,  objectCount: 62,  cycleTime: '1d'   }] } },
+  { id: 'pc-expired',   type: 'event', position: { x: 2230, y: 740 }, data: { label: 'Condition Expired',   owner: 'pricingCondition', dots: [{ color: C.pc, count: 31,  objectCount: 28,  cycleTime: '365d' }] } },
+  { id: 'term-pc', type: 'terminal', position: { x: 2295, y: 1060 }, data: { color: C.pc, owner: 'pricingCondition' }, draggable: false },
+
+  // ── O2C: Purchase Order (base x=2480) ────────────────────────────────────
+  { id: 'cat-po', type: 'category', position: { x: 2480, y: 50 }, data: { label: 'Purchase Order', color: C.po, owner: 'purchaseOrder', count: 73, objectCount: 70, cycleTime: '10d' }, draggable: false },
+  { id: 'po-created',  type: 'event', position: { x: 2460, y: 220 }, data: { label: 'PO Created',  owner: 'purchaseOrder', dots: [{ color: C.po, count: 73, objectCount: 70, cycleTime: '0h' }] } },
+  { id: 'po-approved', type: 'event', position: { x: 2460, y: 500 }, data: { label: 'PO Approved', owner: 'purchaseOrder', dots: [{ color: C.po, count: 61, objectCount: 58, cycleTime: '6h' }] } },
+  { id: 'po-received', type: 'event', position: { x: 2460, y: 620 }, data: { label: 'PO Received', owner: 'purchaseOrder', dots: [{ color: C.po, count: 54, objectCount: 51, cycleTime: '4d' }] } },
+  { id: 'po-invoiced', type: 'event', position: { x: 2460, y: 740 }, data: { label: 'PO Invoiced', owner: 'purchaseOrder', dots: [{ color: C.po, count: 48, objectCount: 45, cycleTime: '5d' }] } },
+  { id: 'term-po', type: 'terminal', position: { x: 2525, y: 1060 }, data: { color: C.po, owner: 'purchaseOrder' }, draggable: false },
+
+  // ── O2C: Material (base x=2710) ──────────────────────────────────────────
+  { id: 'cat-mat', type: 'category', position: { x: 2710, y: 50 }, data: { label: 'Material', color: C.mat, owner: 'material', count: 198, objectCount: 89, cycleTime: '1d' }, draggable: false },
+  { id: 'mat-reserved', type: 'event', position: { x: 2690, y: 220 }, data: { label: 'Material Reserved', owner: 'material', dots: [{ color: C.mat, count: 198, objectCount: 89, cycleTime: '0h' }] } },
+  { id: 'mat-picked',   type: 'event', position: { x: 2690, y: 500 }, data: { label: 'Material Picked',   owner: 'material', dots: [{ color: C.mat, count: 184, objectCount: 82, cycleTime: '2h' }] } },
+  { id: 'mat-issued',   type: 'event', position: { x: 2690, y: 620 }, data: { label: 'Material Issued',   owner: 'material', dots: [{ color: C.mat, count: 171, objectCount: 76, cycleTime: '4h' }] } },
+  { id: 'mat-returned', type: 'event', position: { x: 2690, y: 740 }, data: { label: 'Material Returned', owner: 'material', dots: [{ color: C.mat, count: 23,  objectCount: 19, cycleTime: '2d' }] } },
+  { id: 'term-mat', type: 'terminal', position: { x: 2755, y: 1060 }, data: { color: C.mat, owner: 'material' }, draggable: false },
+
+  // ── O2C: Warehouse Task (base x=2940) ────────────────────────────────────
+  { id: 'cat-wt', type: 'category', position: { x: 2940, y: 50 }, data: { label: 'Warehouse Task', color: C.wt, owner: 'warehouseTask', count: 214, objectCount: 98, cycleTime: '4h' }, draggable: false },
+  { id: 'wt-created',   type: 'event', position: { x: 2920, y: 220 }, data: { label: 'Task Created',   owner: 'warehouseTask', dots: [{ color: C.wt, count: 214, objectCount: 98, cycleTime: '0h' }] } },
+  { id: 'wt-assigned',  type: 'event', position: { x: 2920, y: 500 }, data: { label: 'Task Assigned',  owner: 'warehouseTask', dots: [{ color: C.wt, count: 201, objectCount: 92, cycleTime: '1h' }] } },
+  { id: 'wt-confirmed', type: 'event', position: { x: 2920, y: 620 }, data: { label: 'Task Confirmed', owner: 'warehouseTask', dots: [{ color: C.wt, count: 189, objectCount: 86, cycleTime: '3h' }] } },
+  { id: 'wt-cancelled', type: 'event', position: { x: 2920, y: 740 }, data: { label: 'Task Cancelled', owner: 'warehouseTask', dots: [{ color: C.wt, count: 14,  objectCount: 12, cycleTime: '2d' }] } },
+  { id: 'term-wt', type: 'terminal', position: { x: 2985, y: 1060 }, data: { color: C.wt, owner: 'warehouseTask' }, draggable: false },
+
+  // ── O2C: Delivery (base x=3170) ──────────────────────────────────────────
+  { id: 'cat-dlv', type: 'category', position: { x: 3170, y: 50 }, data: { label: 'Delivery', color: C.dlv, owner: 'delivery', count: 128, objectCount: 121, cycleTime: '3d' }, draggable: false },
+  { id: 'dlv-created',   type: 'event', position: { x: 3150, y: 220 }, data: { label: 'Delivery Created',   owner: 'delivery', dots: [{ color: C.dlv, count: 128, objectCount: 121, cycleTime: '0h' }] } },
+  { id: 'dlv-picked',    type: 'event', position: { x: 3150, y: 500 }, data: { label: 'Delivery Picked',    owner: 'delivery', dots: [{ color: C.dlv, count: 121, objectCount: 115, cycleTime: '6h' }] } },
+  { id: 'dlv-shipped',   type: 'event', position: { x: 3150, y: 620 }, data: { label: 'Goods Shipped',      owner: 'delivery', dots: [{ color: C.dlv, count: 118, objectCount: 112, cycleTime: '1d' }] } },
+  { id: 'dlv-delivered', type: 'event', position: { x: 3150, y: 740 }, data: { label: 'Delivery Confirmed', owner: 'delivery', dots: [{ color: C.dlv, count: 112, objectCount: 106, cycleTime: '3d' }] } },
+  { id: 'term-dlv', type: 'terminal', position: { x: 3215, y: 1060 }, data: { color: C.dlv, owner: 'delivery' }, draggable: false },
+
+  // ── O2C: Goods Issue (base x=3400) ───────────────────────────────────────
+  { id: 'cat-gi', type: 'category', position: { x: 3400, y: 50 }, data: { label: 'Goods Issue', color: C.gi, owner: 'goodsIssue', count: 118, objectCount: 112, cycleTime: '1h' }, draggable: false },
+  { id: 'gi-posted',   type: 'event', position: { x: 3380, y: 220 }, data: { label: 'Goods Issue Posted',   owner: 'goodsIssue', dots: [{ color: C.gi, count: 118, objectCount: 112, cycleTime: '0h' }] } },
+  { id: 'gi-partial',  type: 'event', position: { x: 3380, y: 500 }, data: { label: 'Partial Goods Issue',  owner: 'goodsIssue', dots: [{ color: C.gi, count: 21,  objectCount: 18,  cycleTime: '4h' }] } },
+  { id: 'gi-reversed', type: 'event', position: { x: 3380, y: 620 }, data: { label: 'Goods Issue Reversed', owner: 'goodsIssue', dots: [{ color: C.gi, count: 11,  objectCount: 9,   cycleTime: '1d' }] } },
+  { id: 'term-gi', type: 'terminal', position: { x: 3445, y: 1060 }, data: { color: C.gi, owner: 'goodsIssue' }, draggable: false },
+
+  // ── O2C: Billing Document (base x=3630) ──────────────────────────────────
+  { id: 'cat-bill', type: 'category', position: { x: 3630, y: 50 }, data: { label: 'Billing Document', color: C.bill, owner: 'billingDoc', count: 145, objectCount: 112, cycleTime: '2d' }, draggable: false },
+  { id: 'bill-created',   type: 'event', position: { x: 3610, y: 220 }, data: { label: 'Billing Doc Created',   owner: 'billingDoc', dots: [{ color: C.bill, count: 145, objectCount: 112, cycleTime: '0h' }] } },
+  { id: 'bill-released',  type: 'event', position: { x: 3610, y: 500 }, data: { label: 'Billing Doc Released',  owner: 'billingDoc', dots: [{ color: C.bill, count: 138, objectCount: 106, cycleTime: '2h' }] } },
+  { id: 'bill-cancelled', type: 'event', position: { x: 3610, y: 620 }, data: { label: 'Billing Doc Cancelled', owner: 'billingDoc', dots: [{ color: C.bill, count: 9,   objectCount: 8,   cycleTime: '1d' }] } },
+  { id: 'term-bill', type: 'terminal', position: { x: 3675, y: 1060 }, data: { color: C.bill, owner: 'billingDoc' }, draggable: false },
+
+  // ── O2C: Invoice (base x=3860) ───────────────────────────────────────────
+  { id: 'cat-inv', type: 'category', position: { x: 3860, y: 50 }, data: { label: 'Invoice', color: C.inv, owner: 'invoice', count: 152, objectCount: 112, cycleTime: '30d' }, draggable: false },
+  { id: 'inv-created', type: 'event', position: { x: 3840, y: 220 }, data: { label: 'Invoice Created', owner: 'invoice', dots: [{ color: C.inv, count: 152, objectCount: 112, cycleTime: '0h'  }] } },
+  { id: 'inv-sent',    type: 'event', position: { x: 3840, y: 500 }, data: { label: 'Invoice Sent',    owner: 'invoice', dots: [{ color: C.inv, count: 147, objectCount: 108, cycleTime: '1h'  }] } },
+  { id: 'inv-paid',    type: 'event', position: { x: 3840, y: 620 }, data: { label: 'Invoice Paid',    owner: 'invoice', dots: [{ color: C.inv, count: 131, objectCount: 96,  cycleTime: '28d' }] } },
+  { id: 'inv-overdue', type: 'event', position: { x: 3840, y: 740 }, data: { label: 'Invoice Overdue', owner: 'invoice', dots: [{ color: C.inv, count: 28,  objectCount: 22,  cycleTime: '35d' }] } },
+  { id: 'term-inv', type: 'terminal', position: { x: 3905, y: 1060 }, data: { color: C.inv, owner: 'invoice' }, draggable: false },
+
+  // ── O2C: Service Order (base x=4090) ─────────────────────────────────────
+  { id: 'cat-svo', type: 'category', position: { x: 4090, y: 50 }, data: { label: 'Service Order', color: C.svo, owner: 'serviceOrder', count: 44, objectCount: 42, cycleTime: '5d' }, draggable: false },
+  { id: 'svo-created',   type: 'event', position: { x: 4070, y: 220 }, data: { label: 'Service Order Created',   owner: 'serviceOrder', dots: [{ color: C.svo, count: 44, objectCount: 42, cycleTime: '0h' }] } },
+  { id: 'svo-assigned',  type: 'event', position: { x: 4070, y: 500 }, data: { label: 'Service Order Assigned',  owner: 'serviceOrder', dots: [{ color: C.svo, count: 38, objectCount: 36, cycleTime: '4h' }] } },
+  { id: 'svo-completed', type: 'event', position: { x: 4070, y: 620 }, data: { label: 'Service Order Completed', owner: 'serviceOrder', dots: [{ color: C.svo, count: 32, objectCount: 30, cycleTime: '2d' }] } },
+  { id: 'svo-billed',    type: 'event', position: { x: 4070, y: 740 }, data: { label: 'Service Order Billed',    owner: 'serviceOrder', dots: [{ color: C.svo, count: 28, objectCount: 26, cycleTime: '3d' }] } },
+  { id: 'term-svo', type: 'terminal', position: { x: 4135, y: 1060 }, data: { color: C.svo, owner: 'serviceOrder' }, draggable: false },
+
+  // ── O2C: Credit Memo (base x=4320) ───────────────────────────────────────
+  { id: 'cat-cm', type: 'category', position: { x: 4320, y: 50 }, data: { label: 'Credit Memo', color: C.cm, owner: 'creditMemo', count: 31, objectCount: 28, cycleTime: '2d' }, draggable: false },
+  { id: 'cm-created',  type: 'event', position: { x: 4300, y: 220 }, data: { label: 'Credit Memo Created',  owner: 'creditMemo', dots: [{ color: C.cm, count: 31, objectCount: 28, cycleTime: '0h' }] } },
+  { id: 'cm-approved', type: 'event', position: { x: 4300, y: 500 }, data: { label: 'Credit Memo Approved', owner: 'creditMemo', dots: [{ color: C.cm, count: 27, objectCount: 24, cycleTime: '6h' }] } },
+  { id: 'cm-posted',   type: 'event', position: { x: 4300, y: 620 }, data: { label: 'Credit Memo Posted',   owner: 'creditMemo', dots: [{ color: C.cm, count: 24, objectCount: 21, cycleTime: '1d' }] } },
+  { id: 'term-cm', type: 'terminal', position: { x: 4365, y: 1060 }, data: { color: C.cm, owner: 'creditMemo' }, draggable: false },
+
+  // ── O2C: Return Order (base x=4550) ──────────────────────────────────────
+  { id: 'cat-ret', type: 'category', position: { x: 4550, y: 50 }, data: { label: 'Return Order', color: C.ret, owner: 'returnOrder', count: 19, objectCount: 18, cycleTime: '8d' }, draggable: false },
+  { id: 'ret-created',   type: 'event', position: { x: 4530, y: 220 }, data: { label: 'Return Created',   owner: 'returnOrder', dots: [{ color: C.ret, count: 19, objectCount: 18, cycleTime: '0h' }] } },
+  { id: 'ret-received',  type: 'event', position: { x: 4530, y: 500 }, data: { label: 'Return Received',  owner: 'returnOrder', dots: [{ color: C.ret, count: 16, objectCount: 15, cycleTime: '3d' }] } },
+  { id: 'ret-inspected', type: 'event', position: { x: 4530, y: 620 }, data: { label: 'Return Inspected', owner: 'returnOrder', dots: [{ color: C.ret, count: 14, objectCount: 13, cycleTime: '4d' }] } },
+  { id: 'ret-credited',  type: 'event', position: { x: 4530, y: 740 }, data: { label: 'Return Credited',  owner: 'returnOrder', dots: [{ color: C.ret, count: 11, objectCount: 10, cycleTime: '6d' }] } },
+  { id: 'term-ret', type: 'terminal', position: { x: 4595, y: 1060 }, data: { color: C.ret, owner: 'returnOrder' }, draggable: false },
+
+  // ── O2C: Accounts Receivable (base x=4780) ───────────────────────────────
+  { id: 'cat-ar', type: 'category', position: { x: 4780, y: 50 }, data: { label: 'Accounts Receivable', color: C.ar, owner: 'accountsReceivable', count: 147, objectCount: 108, cycleTime: '30d' }, draggable: false },
+  { id: 'ar-open',       type: 'event', position: { x: 4760, y: 220 }, data: { label: 'AR Item Opened',     owner: 'accountsReceivable', dots: [{ color: C.ar, count: 147, objectCount: 108, cycleTime: '0h'  }] } },
+  { id: 'ar-cleared',    type: 'event', position: { x: 4760, y: 500 }, data: { label: 'AR Item Cleared',    owner: 'accountsReceivable', dots: [{ color: C.ar, count: 131, objectCount: 96,  cycleTime: '28d' }] } },
+  { id: 'ar-dunned',     type: 'event', position: { x: 4760, y: 620 }, data: { label: 'AR Item Dunned',     owner: 'accountsReceivable', dots: [{ color: C.ar, count: 28,  objectCount: 22,  cycleTime: '35d' }] } },
+  { id: 'ar-written-off',type: 'event', position: { x: 4760, y: 740 }, data: { label: 'AR Written Off',     owner: 'accountsReceivable', dots: [{ color: C.ar, count: 7,   objectCount: 5,   cycleTime: '90d' }] } },
+  { id: 'term-ar', type: 'terminal', position: { x: 4825, y: 1060 }, data: { color: C.ar, owner: 'accountsReceivable' }, draggable: false },
+
+  // ── O2C: Payment (base x=5010) ───────────────────────────────────────────
+  { id: 'cat-pay', type: 'category', position: { x: 5010, y: 50 }, data: { label: 'Payment', color: C.pay, owner: 'payment', count: 131, objectCount: 96, cycleTime: '3d' }, draggable: false },
+  { id: 'pay-received', type: 'event', position: { x: 4990, y: 220 }, data: { label: 'Payment Received', owner: 'payment', dots: [{ color: C.pay, count: 131, objectCount: 96, cycleTime: '0h' }] } },
+  { id: 'pay-cleared',  type: 'event', position: { x: 4990, y: 500 }, data: { label: 'Payment Cleared',  owner: 'payment', dots: [{ color: C.pay, count: 128, objectCount: 94, cycleTime: '2d' }] } },
+  { id: 'pay-partial',  type: 'event', position: { x: 4990, y: 620 }, data: { label: 'Partial Payment',  owner: 'payment', dots: [{ color: C.pay, count: 22,  objectCount: 18, cycleTime: '14d'}] } },
+  { id: 'pay-reversed', type: 'event', position: { x: 4990, y: 740 }, data: { label: 'Payment Reversed', owner: 'payment', dots: [{ color: C.pay, count: 8,   objectCount: 6,  cycleTime: '3d' }] } },
+  { id: 'term-pay', type: 'terminal', position: { x: 5055, y: 1060 }, data: { color: C.pay, owner: 'payment' }, draggable: false },
+
+  // ── O2C: Dunning Notice (base x=5240) ────────────────────────────────────
+  { id: 'cat-dun', type: 'category', position: { x: 5240, y: 50 }, data: { label: 'Dunning Notice', color: C.dun, owner: 'dunningNotice', count: 28, objectCount: 22, cycleTime: '7d' }, draggable: false },
+  { id: 'dun-created',   type: 'event', position: { x: 5220, y: 220 }, data: { label: 'Dunning Created',   owner: 'dunningNotice', dots: [{ color: C.dun, count: 28, objectCount: 22, cycleTime: '0h' }] } },
+  { id: 'dun-sent',      type: 'event', position: { x: 5220, y: 500 }, data: { label: 'Dunning Sent',      owner: 'dunningNotice', dots: [{ color: C.dun, count: 25, objectCount: 20, cycleTime: '1d' }] } },
+  { id: 'dun-escalated', type: 'event', position: { x: 5220, y: 620 }, data: { label: 'Dunning Escalated', owner: 'dunningNotice', dots: [{ color: C.dun, count: 11, objectCount: 9,  cycleTime: '7d' }] } },
+  { id: 'term-dun', type: 'terminal', position: { x: 5285, y: 1060 }, data: { color: C.dun, owner: 'dunningNotice' }, draggable: false },
+
+  // ── O2C: Bank Statement (base x=5470) ────────────────────────────────────
+  { id: 'cat-bank', type: 'category', position: { x: 5470, y: 50 }, data: { label: 'Bank Statement', color: C.bank, owner: 'bankStatement', count: 42, objectCount: 38, cycleTime: '1d' }, draggable: false },
+  { id: 'bank-imported',  type: 'event', position: { x: 5450, y: 220 }, data: { label: 'Statement Imported',  owner: 'bankStatement', dots: [{ color: C.bank, count: 42,  objectCount: 38, cycleTime: '0h' }] } },
+  { id: 'bank-matched',   type: 'event', position: { x: 5450, y: 500 }, data: { label: 'Statement Matched',   owner: 'bankStatement', dots: [{ color: C.bank, count: 128, objectCount: 94, cycleTime: '1d' }] } },
+  { id: 'bank-unmatched', type: 'event', position: { x: 5450, y: 620 }, data: { label: 'Statement Unmatched', owner: 'bankStatement', dots: [{ color: C.bank, count: 14,  objectCount: 11, cycleTime: '2d' }] } },
+  { id: 'term-bank', type: 'terminal', position: { x: 5515, y: 1060 }, data: { color: C.bank, owner: 'bankStatement' }, draggable: false },
 ]
 
 const INITIAL_EDGES: Edge[] = [
@@ -426,10 +776,113 @@ const INITIAL_EDGES: Edge[] = [
     type: 'count', data: { color: C.ct, count: 62, cycleTime: '2d',      objectCount: 55 } },
   { id: 'ct-4', source: 'ct-status-changed', target: 'ct-approved',
     type: 'count', data: { color: C.ct, count: 43, cycleTime: '3d',      objectCount: 38 } },
+
+  // ── O2C trace edges (pill → first event) ──────────────────────────────────
+  { id: 'trace-cust',  source: 'cat-cust',  target: 'cust-onboarded',  type: 'count', data: { color: C.cust,  dotted: true, count: 48,  cycleTime: '5d',   objectCount: 45  } },
+  { id: 'trace-quot',  source: 'cat-quot',  target: 'quot-created',    type: 'count', data: { color: C.quot,  dotted: true, count: 85,  cycleTime: '4d',   objectCount: 80  } },
+  { id: 'trace-contr', source: 'cat-contr', target: 'contr-created',   type: 'count', data: { color: C.contr, dotted: true, count: 34,  cycleTime: '365d', objectCount: 32  } },
+  { id: 'trace-so',    source: 'cat-so',    target: 'so-created',      type: 'count', data: { color: C.so,    dotted: true, count: 156, cycleTime: '7d',   objectCount: 148 } },
+  { id: 'trace-soi',   source: 'cat-soi',   target: 'soi-created',     type: 'count', data: { color: C.soi,   dotted: true, count: 312, cycleTime: '3d',   objectCount: 148 } },
+  { id: 'trace-pc',    source: 'cat-pc',    target: 'pc-created',      type: 'count', data: { color: C.pc,    dotted: true, count: 420, cycleTime: '30d',  objectCount: 148 } },
+  { id: 'trace-po',    source: 'cat-po',    target: 'po-created',      type: 'count', data: { color: C.po,    dotted: true, count: 73,  cycleTime: '10d',  objectCount: 70  } },
+  { id: 'trace-mat',   source: 'cat-mat',   target: 'mat-reserved',    type: 'count', data: { color: C.mat,   dotted: true, count: 198, cycleTime: '1d',   objectCount: 89  } },
+  { id: 'trace-wt',    source: 'cat-wt',    target: 'wt-created',      type: 'count', data: { color: C.wt,    dotted: true, count: 214, cycleTime: '4h',   objectCount: 98  } },
+  { id: 'trace-dlv',   source: 'cat-dlv',   target: 'dlv-created',     type: 'count', data: { color: C.dlv,   dotted: true, count: 128, cycleTime: '3d',   objectCount: 121 } },
+  { id: 'trace-gi',    source: 'cat-gi',    target: 'gi-posted',       type: 'count', data: { color: C.gi,    dotted: true, count: 118, cycleTime: '1h',   objectCount: 112 } },
+  { id: 'trace-bill',  source: 'cat-bill',  target: 'bill-created',    type: 'count', data: { color: C.bill,  dotted: true, count: 145, cycleTime: '2d',   objectCount: 112 } },
+  { id: 'trace-inv',   source: 'cat-inv',   target: 'inv-created',     type: 'count', data: { color: C.inv,   dotted: true, count: 152, cycleTime: '30d',  objectCount: 112 } },
+  { id: 'trace-svo',   source: 'cat-svo',   target: 'svo-created',     type: 'count', data: { color: C.svo,   dotted: true, count: 44,  cycleTime: '5d',   objectCount: 42  } },
+  { id: 'trace-cm',    source: 'cat-cm',    target: 'cm-created',      type: 'count', data: { color: C.cm,    dotted: true, count: 31,  cycleTime: '2d',   objectCount: 28  } },
+  { id: 'trace-ret',   source: 'cat-ret',   target: 'ret-created',     type: 'count', data: { color: C.ret,   dotted: true, count: 19,  cycleTime: '8d',   objectCount: 18  } },
+  { id: 'trace-ar',    source: 'cat-ar',    target: 'ar-open',         type: 'count', data: { color: C.ar,    dotted: true, count: 147, cycleTime: '30d',  objectCount: 108 } },
+  { id: 'trace-pay',   source: 'cat-pay',   target: 'pay-received',    type: 'count', data: { color: C.pay,   dotted: true, count: 131, cycleTime: '3d',   objectCount: 96  } },
+  { id: 'trace-dun',   source: 'cat-dun',   target: 'dun-created',     type: 'count', data: { color: C.dun,   dotted: true, count: 28,  cycleTime: '7d',   objectCount: 22  } },
+  { id: 'trace-bank',  source: 'cat-bank',  target: 'bank-imported',   type: 'count', data: { color: C.bank,  dotted: true, count: 42,  cycleTime: '1d',   objectCount: 38  } },
+
+  // ── O2C lifecycle edges ────────────────────────────────────────────────────
+  { id: 'cust-1',  source: 'cust-onboarded',      target: 'cust-credit-checked', type: 'count', data: { color: C.cust,  count: 42,  cycleTime: '2h',   objectCount: 39  } },
+  { id: 'cust-2',  source: 'cust-credit-checked', target: 'cust-blocked',        type: 'count', data: { color: C.cust,  count: 8,   cycleTime: '1d',   objectCount: 7   } },
+  { id: 'cust-3',  source: 'cust-blocked',        target: 'cust-unblocked',      type: 'count', data: { color: C.cust,  count: 5,   cycleTime: '2d',   objectCount: 4   } },
+  { id: 'quot-1',  source: 'quot-created',         target: 'quot-sent',           type: 'count', data: { color: C.quot,  count: 71,  cycleTime: '1d',   objectCount: 66  } },
+  { id: 'quot-2',  source: 'quot-sent',            target: 'quot-won',            type: 'count', data: { color: C.quot,  count: 52,  cycleTime: '3d',   objectCount: 49  } },
+  { id: 'quot-3',  source: 'quot-won',             target: 'quot-lost',           type: 'count', data: { color: C.quot,  count: 19,  cycleTime: '2d',   objectCount: 17  } },
+  { id: 'contr-1', source: 'contr-created',        target: 'contr-activated',     type: 'count', data: { color: C.contr, count: 28,  cycleTime: '2d',   objectCount: 26  } },
+  { id: 'contr-2', source: 'contr-activated',      target: 'contr-expired',       type: 'count', data: { color: C.contr, count: 12,  cycleTime: '365d', objectCount: 11  } },
+  { id: 'contr-3', source: 'contr-expired',        target: 'contr-renewed',       type: 'count', data: { color: C.contr, count: 7,   cycleTime: '5d',   objectCount: 6   } },
+  { id: 'so-1',    source: 'so-created',           target: 'so-confirmed',        type: 'count', data: { color: C.so,    count: 141, cycleTime: '4h',   objectCount: 134 } },
+  { id: 'so-2',    source: 'so-confirmed',         target: 'so-delivered',        type: 'count', data: { color: C.so,    count: 128, cycleTime: '2d',   objectCount: 121 } },
+  { id: 'so-3',    source: 'so-delivered',         target: 'so-invoiced',         type: 'count', data: { color: C.so,    count: 112, cycleTime: '3d',   objectCount: 106 } },
+  { id: 'so-4',    source: 'so-invoiced',          target: 'so-completed',        type: 'count', data: { color: C.so,    count: 98,  cycleTime: '5d',   objectCount: 93  } },
+  { id: 'soi-1',   source: 'soi-created',          target: 'soi-confirmed',       type: 'count', data: { color: C.soi,   count: 287, cycleTime: '1h',   objectCount: 134 } },
+  { id: 'soi-2',   source: 'soi-confirmed',        target: 'soi-delivered',       type: 'count', data: { color: C.soi,   count: 261, cycleTime: '3d',   objectCount: 121 } },
+  { id: 'pc-1',    source: 'pc-created',           target: 'pc-activated',        type: 'count', data: { color: C.pc,    count: 398, cycleTime: '30m',  objectCount: 140 } },
+  { id: 'pc-2',    source: 'pc-activated',         target: 'pc-updated',          type: 'count', data: { color: C.pc,    count: 67,  cycleTime: '1d',   objectCount: 62  } },
+  { id: 'pc-3',    source: 'pc-updated',           target: 'pc-expired',          type: 'count', data: { color: C.pc,    count: 31,  cycleTime: '365d', objectCount: 28  } },
+  { id: 'po-1',    source: 'po-created',           target: 'po-approved',         type: 'count', data: { color: C.po,    count: 61,  cycleTime: '6h',   objectCount: 58  } },
+  { id: 'po-2',    source: 'po-approved',          target: 'po-received',         type: 'count', data: { color: C.po,    count: 54,  cycleTime: '4d',   objectCount: 51  } },
+  { id: 'po-3',    source: 'po-received',          target: 'po-invoiced',         type: 'count', data: { color: C.po,    count: 48,  cycleTime: '5d',   objectCount: 45  } },
+  { id: 'mat-1',   source: 'mat-reserved',         target: 'mat-picked',          type: 'count', data: { color: C.mat,   count: 184, cycleTime: '2h',   objectCount: 82  } },
+  { id: 'mat-2',   source: 'mat-picked',           target: 'mat-issued',          type: 'count', data: { color: C.mat,   count: 171, cycleTime: '4h',   objectCount: 76  } },
+  { id: 'mat-3',   source: 'mat-issued',           target: 'mat-returned',        type: 'count', data: { color: C.mat,   count: 23,  cycleTime: '2d',   objectCount: 19  } },
+  { id: 'wt-1',    source: 'wt-created',           target: 'wt-assigned',         type: 'count', data: { color: C.wt,    count: 201, cycleTime: '1h',   objectCount: 92  } },
+  { id: 'wt-2',    source: 'wt-assigned',          target: 'wt-confirmed',        type: 'count', data: { color: C.wt,    count: 189, cycleTime: '3h',   objectCount: 86  } },
+  { id: 'wt-3',    source: 'wt-confirmed',         target: 'wt-cancelled',        type: 'count', data: { color: C.wt,    count: 14,  cycleTime: '2d',   objectCount: 12  } },
+  { id: 'dlv-1',   source: 'dlv-created',          target: 'dlv-picked',          type: 'count', data: { color: C.dlv,   count: 121, cycleTime: '6h',   objectCount: 115 } },
+  { id: 'dlv-2',   source: 'dlv-picked',           target: 'dlv-shipped',         type: 'count', data: { color: C.dlv,   count: 118, cycleTime: '1d',   objectCount: 112 } },
+  { id: 'dlv-3',   source: 'dlv-shipped',          target: 'dlv-delivered',       type: 'count', data: { color: C.dlv,   count: 112, cycleTime: '3d',   objectCount: 106 } },
+  { id: 'gi-1',    source: 'gi-posted',            target: 'gi-partial',          type: 'count', data: { color: C.gi,    count: 21,  cycleTime: '4h',   objectCount: 18  } },
+  { id: 'gi-2',    source: 'gi-partial',           target: 'gi-reversed',         type: 'count', data: { color: C.gi,    count: 11,  cycleTime: '1d',   objectCount: 9   } },
+  { id: 'bill-1',  source: 'bill-created',         target: 'bill-released',       type: 'count', data: { color: C.bill,  count: 138, cycleTime: '2h',   objectCount: 106 } },
+  { id: 'bill-2',  source: 'bill-released',        target: 'bill-cancelled',      type: 'count', data: { color: C.bill,  count: 9,   cycleTime: '1d',   objectCount: 8   } },
+  { id: 'inv-1',   source: 'inv-created',          target: 'inv-sent',            type: 'count', data: { color: C.inv,   count: 147, cycleTime: '1h',   objectCount: 108 } },
+  { id: 'inv-2',   source: 'inv-sent',             target: 'inv-paid',            type: 'count', data: { color: C.inv,   count: 131, cycleTime: '28d',  objectCount: 96  } },
+  { id: 'inv-3',   source: 'inv-paid',             target: 'inv-overdue',         type: 'count', data: { color: C.inv,   count: 28,  cycleTime: '35d',  objectCount: 22  } },
+  { id: 'svo-1',   source: 'svo-created',          target: 'svo-assigned',        type: 'count', data: { color: C.svo,   count: 38,  cycleTime: '4h',   objectCount: 36  } },
+  { id: 'svo-2',   source: 'svo-assigned',         target: 'svo-completed',       type: 'count', data: { color: C.svo,   count: 32,  cycleTime: '2d',   objectCount: 30  } },
+  { id: 'svo-3',   source: 'svo-completed',        target: 'svo-billed',          type: 'count', data: { color: C.svo,   count: 28,  cycleTime: '3d',   objectCount: 26  } },
+  { id: 'cm-1',    source: 'cm-created',           target: 'cm-approved',         type: 'count', data: { color: C.cm,    count: 27,  cycleTime: '6h',   objectCount: 24  } },
+  { id: 'cm-2',    source: 'cm-approved',          target: 'cm-posted',           type: 'count', data: { color: C.cm,    count: 24,  cycleTime: '1d',   objectCount: 21  } },
+  { id: 'ret-1',   source: 'ret-created',          target: 'ret-received',        type: 'count', data: { color: C.ret,   count: 16,  cycleTime: '3d',   objectCount: 15  } },
+  { id: 'ret-2',   source: 'ret-received',         target: 'ret-inspected',       type: 'count', data: { color: C.ret,   count: 14,  cycleTime: '4d',   objectCount: 13  } },
+  { id: 'ret-3',   source: 'ret-inspected',        target: 'ret-credited',        type: 'count', data: { color: C.ret,   count: 11,  cycleTime: '6d',   objectCount: 10  } },
+  { id: 'ar-1',    source: 'ar-open',              target: 'ar-cleared',          type: 'count', data: { color: C.ar,    count: 131, cycleTime: '28d',  objectCount: 96  } },
+  { id: 'ar-2',    source: 'ar-cleared',           target: 'ar-dunned',           type: 'count', data: { color: C.ar,    count: 28,  cycleTime: '35d',  objectCount: 22  } },
+  { id: 'ar-3',    source: 'ar-dunned',            target: 'ar-written-off',      type: 'count', data: { color: C.ar,    count: 7,   cycleTime: '90d',  objectCount: 5   } },
+  { id: 'pay-1',   source: 'pay-received',         target: 'pay-cleared',         type: 'count', data: { color: C.pay,   count: 128, cycleTime: '2d',   objectCount: 94  } },
+  { id: 'pay-2',   source: 'pay-cleared',          target: 'pay-partial',         type: 'count', data: { color: C.pay,   count: 22,  cycleTime: '14d',  objectCount: 18  } },
+  { id: 'pay-3',   source: 'pay-partial',          target: 'pay-reversed',        type: 'count', data: { color: C.pay,   count: 8,   cycleTime: '3d',   objectCount: 6   } },
+  { id: 'dun-1',   source: 'dun-created',          target: 'dun-sent',            type: 'count', data: { color: C.dun,   count: 25,  cycleTime: '1d',   objectCount: 20  } },
+  { id: 'dun-2',   source: 'dun-sent',             target: 'dun-escalated',       type: 'count', data: { color: C.dun,   count: 11,  cycleTime: '7d',   objectCount: 9   } },
+  { id: 'bank-1',  source: 'bank-imported',        target: 'bank-matched',        type: 'count', data: { color: C.bank,  count: 128, cycleTime: '1d',   objectCount: 94  } },
+  { id: 'bank-2',  source: 'bank-matched',         target: 'bank-unmatched',      type: 'count', data: { color: C.bank,  count: 14,  cycleTime: '2d',   objectCount: 11  } },
+
+  // ── O2C cross-object connections (main process flow, left-to-right) ───────
+  { id: 'cross-cust-so',   source: 'cust-credit-checked', sourceHandle: 'sr', target: 'so-created',   targetHandle: 'tl', type: 'count', data: { color: C.cust,  count: 42,  cycleTime: '2h',  objectCount: 39  } },
+  { id: 'cross-quot-so',   source: 'quot-won',            sourceHandle: 'sr', target: 'so-created',   targetHandle: 'tl', type: 'count', data: { color: C.quot,  count: 52,  cycleTime: '3d',  objectCount: 49  } },
+  { id: 'cross-contr-so',  source: 'contr-activated',     sourceHandle: 'sr', target: 'so-created',   targetHandle: 'tl', type: 'count', data: { color: C.contr, count: 28,  cycleTime: '1h',  objectCount: 26  } },
+  { id: 'cross-so-soi',    source: 'so-created',          sourceHandle: 'sr', target: 'soi-created',  targetHandle: 'tl', type: 'count', data: { color: C.so,    count: 312, cycleTime: '30m', objectCount: 148 } },
+  { id: 'cross-po-mat',    source: 'po-approved',         sourceHandle: 'sr', target: 'mat-reserved', targetHandle: 'tl', type: 'count', data: { color: C.po,    count: 61,  cycleTime: '6h',  objectCount: 58  } },
+  { id: 'cross-mat-wt',    source: 'mat-picked',          sourceHandle: 'sr', target: 'wt-created',   targetHandle: 'tl', type: 'count', data: { color: C.mat,   count: 184, cycleTime: '2h',  objectCount: 82  } },
+  { id: 'cross-wt-dlv',    source: 'wt-confirmed',        sourceHandle: 'sr', target: 'dlv-created',  targetHandle: 'tl', type: 'count', data: { color: C.wt,    count: 189, cycleTime: '3h',  objectCount: 86  } },
+  { id: 'cross-dlv-gi',    source: 'dlv-shipped',         sourceHandle: 'sr', target: 'gi-posted',    targetHandle: 'tl', type: 'count', data: { color: C.dlv,   count: 118, cycleTime: '1d',  objectCount: 112 } },
+  { id: 'cross-gi-bill',   source: 'gi-posted',           sourceHandle: 'sr', target: 'bill-created', targetHandle: 'tl', type: 'count', data: { color: C.gi,    count: 118, cycleTime: '1h',  objectCount: 112 } },
+  { id: 'cross-bill-inv',  source: 'bill-released',       sourceHandle: 'sr', target: 'inv-created',  targetHandle: 'tl', type: 'count', data: { color: C.bill,  count: 138, cycleTime: '2h',  objectCount: 106 } },
+  { id: 'cross-svo-inv',   source: 'svo-billed',          sourceHandle: 'sr', target: 'inv-created',  targetHandle: 'tl', type: 'count', data: { color: C.svo,   count: 28,  cycleTime: '1h',  objectCount: 26  } },
+  { id: 'cross-inv-cm',    source: 'inv-sent',            sourceHandle: 'sr', target: 'cm-created',   targetHandle: 'tl', type: 'count', data: { color: C.inv,   count: 31,  cycleTime: '2h',  objectCount: 28  } },
+  { id: 'cross-ret-cm',    source: 'ret-received',        sourceHandle: 'sr', target: 'cm-created',   targetHandle: 'tl', type: 'count', data: { color: C.ret,   count: 16,  cycleTime: '3d',  objectCount: 15  } },
+  { id: 'cross-inv-ar',    source: 'inv-sent',            sourceHandle: 'sr', target: 'ar-open',      targetHandle: 'tl', type: 'count', data: { color: C.inv,   count: 147, cycleTime: '1h',  objectCount: 108 } },
+  { id: 'cross-ar-pay',    source: 'ar-open',             sourceHandle: 'sr', target: 'pay-received', targetHandle: 'tl', type: 'count', data: { color: C.ar,    count: 131, cycleTime: '28d', objectCount: 96  } },
+  { id: 'cross-ar-dun',    source: 'ar-dunned',           sourceHandle: 'sr', target: 'dun-created',  targetHandle: 'tl', type: 'count', data: { color: C.ar,    count: 28,  cycleTime: '1d',  objectCount: 22  } },
+  { id: 'cross-pay-bank',  source: 'pay-cleared',         sourceHandle: 'sr', target: 'bank-imported',targetHandle: 'tl', type: 'count', data: { color: C.pay,   count: 128, cycleTime: '1d',  objectCount: 94  } },
 ]
 
 // ── Auto fit-view when visible objects change ─────────────────────────────────
 type ObjKey = 'changeTask' | 'changeRequest' | 'incident' | 'problem'
+  | 'customer' | 'quotation' | 'contract' | 'salesOrder' | 'salesOrderItem'
+  | 'pricingCondition' | 'purchaseOrder' | 'material' | 'warehouseTask'
+  | 'delivery' | 'goodsIssue' | 'billingDoc' | 'invoice' | 'serviceOrder'
+  | 'creditMemo' | 'returnOrder' | 'accountsReceivable' | 'payment'
+  | 'dunningNotice' | 'bankStatement'
 
 interface SliderHighlight {
   nodeIds: ReadonlySet<string>
@@ -437,11 +890,59 @@ interface SliderHighlight {
 }
 
 const OBJECT_DEFS: { key: ObjKey; label: string; color: string; x: number }[] = [
-  { key: 'incident',      label: 'Incident',       color: C.inc,  x: 82  },
-  { key: 'problem',       label: 'Problem',        color: C.prob, x: 318 },
-  { key: 'changeRequest', label: 'Change Request', color: C.cr,   x: 556 },
-  { key: 'changeTask',    label: 'Change Task',    color: C.ct,   x: 832 },
+  { key: 'incident',           label: 'Incident',             color: C.inc,   x: 82   },
+  { key: 'problem',            label: 'Problem',              color: C.prob,  x: 318  },
+  { key: 'changeRequest',      label: 'Change Request',       color: C.cr,    x: 556  },
+  { key: 'changeTask',         label: 'Change Task',          color: C.ct,    x: 832  },
+  { key: 'customer',           label: 'Customer',             color: C.cust,  x: 1100 },
+  { key: 'quotation',          label: 'Quotation',            color: C.quot,  x: 1330 },
+  { key: 'contract',           label: 'Contract',             color: C.contr, x: 1560 },
+  { key: 'salesOrder',         label: 'Sales Order',          color: C.so,    x: 1790 },
+  { key: 'salesOrderItem',     label: 'Sales Order Item',     color: C.soi,   x: 2020 },
+  { key: 'pricingCondition',   label: 'Pricing Condition',    color: C.pc,    x: 2250 },
+  { key: 'purchaseOrder',      label: 'Purchase Order',       color: C.po,    x: 2480 },
+  { key: 'material',           label: 'Material',             color: C.mat,   x: 2710 },
+  { key: 'warehouseTask',      label: 'Warehouse Task',       color: C.wt,    x: 2940 },
+  { key: 'delivery',           label: 'Delivery',             color: C.dlv,   x: 3170 },
+  { key: 'goodsIssue',         label: 'Goods Issue',          color: C.gi,    x: 3400 },
+  { key: 'billingDoc',         label: 'Billing Document',     color: C.bill,  x: 3630 },
+  { key: 'invoice',            label: 'Invoice',              color: C.inv,   x: 3860 },
+  { key: 'serviceOrder',       label: 'Service Order',        color: C.svo,   x: 4090 },
+  { key: 'creditMemo',         label: 'Credit Memo',          color: C.cm,    x: 4320 },
+  { key: 'returnOrder',        label: 'Return Order',         color: C.ret,   x: 4550 },
+  { key: 'accountsReceivable', label: 'Accounts Receivable',  color: C.ar,    x: 4780 },
+  { key: 'payment',            label: 'Payment',              color: C.pay,   x: 5010 },
+  { key: 'dunningNotice',      label: 'Dunning Notice',       color: C.dun,   x: 5240 },
+  { key: 'bankStatement',      label: 'Bank Statement',       color: C.bank,  x: 5470 },
 ]
+
+type AttrIcon = 'T' | '#' | '⏱'
+const OBJECT_ATTRS: Record<ObjKey, { label: string; icon: AttrIcon }[]> = {
+  incident:           [{ label: 'Category',         icon: 'T' }, { label: 'Impact',          icon: 'T'  }, { label: 'Priority',         icon: 'T' }, { label: 'Processor',       icon: 'T' }],
+  problem:            [{ label: 'Category',         icon: 'T' }, { label: 'Priority',         icon: 'T'  }, { label: 'Root Cause',       icon: 'T' }],
+  changeRequest:      [{ label: 'Category',         icon: 'T' }, { label: 'Priority',         icon: 'T'  }, { label: 'Risk',             icon: 'T' }, { label: 'Urgency',         icon: 'T' }],
+  changeTask:         [{ label: 'Category',         icon: 'T' }, { label: 'Due Date',         icon: '⏱' }, { label: 'Processor',        icon: 'T' }],
+  customer:           [{ label: 'Account Group',    icon: 'T' }, { label: 'Company Code',     icon: '#'  }, { label: 'Country',          icon: 'T' }, { label: 'Credit Limit',    icon: '#' }],
+  quotation:          [{ label: 'Company Code',     icon: '#' }, { label: 'Currency',         icon: 'T'  }, { label: 'Net Value',        icon: '#' }, { label: 'Sales Org',       icon: '#' }, { label: 'Valid Until', icon: '⏱' }],
+  contract:           [{ label: 'Company Code',     icon: '#' }, { label: 'Currency',         icon: 'T'  }, { label: 'End Date',         icon: '⏱' }, { label: 'Net Value',       icon: '#' }, { label: 'Sales Org',   icon: '#' }],
+  salesOrder:         [{ label: 'Company Code',     icon: '#' }, { label: 'Currency',         icon: 'T'  }, { label: 'Customer',         icon: '#' }, { label: 'Document Type',   icon: 'T' }, { label: 'Net Value',   icon: '#' }, { label: 'Sales Org', icon: '#' }],
+  salesOrderItem:     [{ label: 'Item Category',    icon: 'T' }, { label: 'Material',         icon: '#'  }, { label: 'Net Price',        icon: '#' }, { label: 'Plant',           icon: '#' }, { label: 'Quantity',    icon: '#' }, { label: 'Unit', icon: 'T' }],
+  pricingCondition:   [{ label: 'Condition Type',   icon: 'T' }, { label: 'Currency',         icon: 'T'  }, { label: 'Rate',             icon: '#' }, { label: 'Valid From',      icon: '⏱' }, { label: 'Valid To',    icon: '⏱' }],
+  purchaseOrder:      [{ label: 'Company Code',     icon: '#' }, { label: 'Currency',         icon: 'T'  }, { label: 'Plant',            icon: '#' }, { label: 'Purchase Org',    icon: '#' }, { label: 'Vendor',      icon: '#' }],
+  material:           [{ label: 'Base Unit',        icon: 'T' }, { label: 'Material Group',   icon: 'T'  }, { label: 'Material Type',    icon: 'T' }, { label: 'Plant',           icon: '#' }, { label: 'Stock Qty',   icon: '#' }],
+  warehouseTask:      [{ label: 'Destination Bin',  icon: '#' }, { label: 'Product',          icon: '#'  }, { label: 'Quantity',         icon: '#' }, { label: 'Source Bin',      icon: '#' }, { label: 'Warehouse',   icon: '#' }],
+  delivery:           [{ label: 'Category',         icon: 'T' }, { label: 'Company Code',     icon: '#'  }, { label: 'Cost Amount',      icon: '#' }, { label: 'Country',         icon: 'T' }, { label: 'Material',    icon: '#' }, { label: 'Plant', icon: '#' }, { label: 'Quantity', icon: '#' }],
+  goodsIssue:         [{ label: 'Company Code',     icon: '#' }, { label: 'Material',         icon: '#'  }, { label: 'Plant',            icon: '#' }, { label: 'Posting Date',    icon: '⏱' }, { label: 'Quantity',    icon: '#' }],
+  billingDoc:         [{ label: 'Billing Type',     icon: 'T' }, { label: 'Company Code',     icon: '#'  }, { label: 'Currency',         icon: 'T' }, { label: 'Net Value',       icon: '#' }, { label: 'Payer',       icon: '#' }],
+  invoice:            [{ label: 'Company Code',     icon: '#' }, { label: 'Currency',         icon: 'T'  }, { label: 'Document Type',    icon: 'T' }, { label: 'Due Date',        icon: '⏱' }, { label: 'Net Amount',  icon: '#' }, { label: 'Tax Amount', icon: '#' }],
+  serviceOrder:       [{ label: 'Company Code',     icon: '#' }, { label: 'Customer',         icon: '#'  }, { label: 'Priority',         icon: 'T' }, { label: 'Service Type',    icon: 'T' }],
+  creditMemo:         [{ label: 'Amount',           icon: '#' }, { label: 'Company Code',     icon: '#'  }, { label: 'Currency',         icon: 'T' }, { label: 'Reason',          icon: 'T' }],
+  returnOrder:        [{ label: 'Company Code',     icon: '#' }, { label: 'Currency',         icon: 'T'  }, { label: 'Material',         icon: '#' }, { label: 'Quantity',        icon: '#' }, { label: 'Return Reason', icon: 'T' }],
+  accountsReceivable: [{ label: 'Company Code',     icon: '#' }, { label: 'Currency',         icon: 'T'  }, { label: 'Customer',         icon: '#' }, { label: 'Due Date',        icon: '⏱' }, { label: 'Open Amount', icon: '#' }],
+  payment:            [{ label: 'Amount',           icon: '#' }, { label: 'Bank Account',     icon: '#'  }, { label: 'Company Code',     icon: '#' }, { label: 'Currency',        icon: 'T' }, { label: 'Payment Method', icon: 'T' }],
+  dunningNotice:      [{ label: 'Company Code',     icon: '#' }, { label: 'Customer',         icon: '#'  }, { label: 'Dunning Level',    icon: '#' }, { label: 'Outstanding Amt', icon: '#' }],
+  bankStatement:      [{ label: 'Account',          icon: '#' }, { label: 'Amount',           icon: '#'  }, { label: 'Bank',             icon: 'T' }, { label: 'Currency',        icon: 'T' }, { label: 'Transaction Date', icon: '⏱' }],
+}
 
 function FitViewOnChange({ trigger }: { trigger: unknown }) {
   const { fitView } = useReactFlow()
@@ -530,6 +1031,7 @@ function StickyObjectBar({ objects, selectedObj, onSelect }: {
           background: obj.color, color: 'white',
           padding: '4px 12px', borderRadius: '14px',
           fontSize: 12, fontWeight: 700, cursor: 'pointer', whiteSpace: 'nowrap',
+          border: '3px solid rgba(244,244,244,0.92)',
           outline: selectedObj === obj.key ? `2.5px solid ${obj.color}` : '2.5px solid transparent',
           outlineOffset: '2px',
         }}>
@@ -567,20 +1069,50 @@ export default function SemanticViews() {
   const [edges, , onEdgesChange] = useEdgesState(INITIAL_EDGES)
 
   const [objects, setObjects] = useState<Record<ObjKey, boolean>>({
-    changeTask:    true,
-    changeRequest: true,
-    incident:      true,
-    problem:       true,
+    incident: true, problem: true, changeRequest: true, changeTask: true,
+    customer: true, quotation: true, contract: true, salesOrder: true,
+    salesOrderItem: false, pricingCondition: false, purchaseOrder: false,
+    material: false, warehouseTask: false, delivery: false, goodsIssue: false,
+    billingDoc: false, invoice: false, serviceOrder: false, creditMemo: false,
+    returnOrder: false, accountsReceivable: false, payment: false,
+    dunningNotice: false, bankStatement: false,
   })
   const [metric, setMetric] = useState<'count' | 'cycle' | 'object'>('count')
   const [filterText, setFilterText] = useState('')
+  const [filterView, setFilterView] = useState<'empty' | 'create'>('empty')
+  const [filterAttrSearch, setFilterAttrSearch] = useState('')
+  const [expandedFilterObjs, setExpandedFilterObjs] = useState<Set<string>>(new Set())
+  const [filterObjSearches, setFilterObjSearches] = useState<Record<string, string>>({})
+  const toggleFilterObj = (key: string) => setExpandedFilterObjs(prev => {
+    const next = new Set(prev); if (next.has(key)) next.delete(key); else next.add(key); return next
+  })
   const [stickyBarVisible, setStickyBarVisible] = useState(false)
   const [activePanel, setActivePanel] = useState<'controls' | 'filter' | 'settings' | null>('controls')
   const togglePanel = (panel: 'controls' | 'filter' | 'settings') =>
     setActivePanel(p => p === panel ? null : panel)
+  useEffect(() => {
+    if (activePanel !== 'filter') { setFilterView('empty'); setFilterAttrSearch('') }
+  }, [activePanel])
   const [selectedObj, setSelectedObj] = useState<ObjKey | null>(null)
-  const [eventSliders, setEventSliders] = useState<Record<ObjKey, number>>({ changeTask: 2, changeRequest: 4, incident: 4, problem: 3 })
-  const [pathSliders,  setPathSliders]  = useState<Record<ObjKey, number>>({ changeTask: 0, changeRequest: 5, incident: 0, problem: 0 })
+  const [activeEventId, setActiveEventId] = useState<string | null>(null)
+  const [eventSliders, setEventSliders] = useState<Record<ObjKey, number>>({
+    changeTask: 2, changeRequest: 4, incident: 4, problem: 3,
+    customer: 2, quotation: 2, contract: 2, salesOrder: 2,
+    salesOrderItem: 2, pricingCondition: 2, purchaseOrder: 2,
+    material: 2, warehouseTask: 2, delivery: 2, goodsIssue: 2,
+    billingDoc: 2, invoice: 2, serviceOrder: 2, creditMemo: 2,
+    returnOrder: 2, accountsReceivable: 2, payment: 2,
+    dunningNotice: 2, bankStatement: 2,
+  })
+  const [pathSliders, setPathSliders] = useState<Record<ObjKey, number>>({
+    changeTask: 0, changeRequest: 5, incident: 0, problem: 0,
+    customer: 0, quotation: 0, contract: 0, salesOrder: 0,
+    salesOrderItem: 0, pricingCondition: 0, purchaseOrder: 0,
+    material: 0, warehouseTask: 0, delivery: 0, goodsIssue: 0,
+    billingDoc: 0, invoice: 0, serviceOrder: 0, creditMemo: 0,
+    returnOrder: 0, accountsReceivable: 0, payment: 0,
+    dunningNotice: 0, bankStatement: 0,
+  })
   const [sliderHighlight, setSliderHighlight] = useState<SliderHighlight | null>(null)
 
   const toggleObj = (key: ObjKey) =>
@@ -615,10 +1147,11 @@ export default function SemanticViews() {
     }
   }
 
-  const colorToObj: Record<string, ObjKey> = {
-    [C.inc]: 'incident', [C.prob]: 'problem',
-    [C.cr]: 'changeRequest', [C.ct]: 'changeTask',
-  }
+  // Map node id → its owner ObjKey (colors repeat, so we use nodes not colors)
+  const nodeOwner = useMemo(() =>
+    new Map<string, ObjKey>(
+      nodes.flatMap(n => n.data.owner ? [[n.id, n.data.owner as ObjKey]] : [])
+    ), [nodes])
 
   const displayNodes = useMemo(() => nodes.map(node => {
     const owner = node.data.owner as ObjKey | undefined
@@ -645,10 +1178,10 @@ export default function SemanticViews() {
     return {
       ...node,
       hidden: hidden !== !!node.hidden ? hidden : node.hidden,
-      data: { ...node.data, isSelected, metric, highlighted },
+      data: { ...node.data, isSelected, metric, highlighted, isActiveEvent: node.id === activeEventId },
       style: opacity !== undefined ? { opacity } : {},
     }
-  }), [nodes, objects, selectedObj, metric, eventSliders, sliderHighlight])
+  }), [nodes, objects, selectedObj, metric, eventSliders, sliderHighlight, activeEventId])
 
   const displayEdges = useMemo(() => {
     const hiddenIds = new Set(displayNodes.filter(n => n.hidden).map(n => n.id))
@@ -710,7 +1243,7 @@ export default function SemanticViews() {
     return [
       ...edges.map(edge => {
         const hidden = hiddenIds.has(edge.source) || hiddenIds.has(edge.target)
-        const edgeOwner = colorToObj[edge.data?.color as string]
+        const edgeOwner = nodeOwner.get(edge.source) ?? nodeOwner.get(edge.target)
         let opacity: number | undefined
         let highlighted = false
         if (sliderHighlight !== null) {
@@ -729,7 +1262,7 @@ export default function SemanticViews() {
       ...dynamicTailEdges,
       ...dynamicPathEdges,
     ]
-  }, [edges, displayNodes, selectedObj, metric, objects, pathSliders, sliderHighlight])
+  }, [edges, displayNodes, selectedObj, metric, objects, pathSliders, sliderHighlight, nodeOwner])
 
   const activeCount = Object.values(objects).filter(Boolean).length
 
@@ -816,16 +1349,11 @@ export default function SemanticViews() {
                   />
                 </div>
                 <div className={s.mapPanelBody}>
-                  <Section title="Objects" badge={`${activeCount}/4`}>
+                  <Section title="Objects" badge={`${activeCount}/${OBJECT_DEFS.length}`}>
                     <p className={s.sectionDesc}>
-                      Sorted by number of creation events. Toggle objects on or off to customize your view.
+                      Toggle objects on or off to customize your view.
                     </p>
-                    {([
-                      { key: 'changeTask',    label: 'Change Task',    color: C.ct   },
-                      { key: 'changeRequest', label: 'Change Request', color: C.cr   },
-                      { key: 'incident',      label: 'Incident',       color: C.inc  },
-                      { key: 'problem',       label: 'Problem',        color: C.prob },
-                    ] as { key: ObjKey; label: string; color: string }[])
+                    {OBJECT_DEFS
                       .filter(obj => obj.label.toLowerCase().includes(filterText.toLowerCase()))
                       .map(obj => (
                       <div key={obj.key} className={s.objectRow}>
@@ -837,14 +1365,11 @@ export default function SemanticViews() {
                       </div>
                     ))}
                   </Section>
-                  <Section title="Events" badge={`${Math.round(Object.values(eventSliders).reduce((a, b) => a + b, 0) / (4 * 10) * 100)}%`}>
+                  <Section title="Events" badge={`${Math.round(Object.values(eventSliders).reduce((a, b) => a + b, 0) / (OBJECT_DEFS.length * 10) * 100)}%`}>
                     <p className={s.sectionDesc}>Add or remove events and paths. Most frequent items appear first.</p>
-                    {([
-                      { key: 'changeTask'    as ObjKey, label: 'Change Task',    color: C.ct   },
-                      { key: 'changeRequest' as ObjKey, label: 'Change Request', color: C.cr   },
-                      { key: 'incident'      as ObjKey, label: 'Incident',       color: C.inc  },
-                      { key: 'problem'       as ObjKey, label: 'Problem',        color: C.prob },
-                    ]).filter(obj => objects[obj.key]).map(obj => (
+                    {OBJECT_DEFS
+                      .filter(obj => objects[obj.key] && obj.label.toLowerCase().includes(filterText.toLowerCase()))
+                      .map(obj => (
                       <div key={obj.key} className={s.eventSliderBlock}>
                         <div className={s.eventSliderRow}>
                           <span className={s.eventSliderLabel}>Events for <strong>{obj.label}</strong></span>
@@ -860,18 +1385,26 @@ export default function SemanticViews() {
                       </div>
                     ))}
                   </Section>
-                  <Section title="Metrics">
-                    <p className={s.sectionDesc}>View how often events occur or how long they take.</p>
-                    <div className={s.radioRow}>
-                      <RadioButton name="metric" text="Event Occurrences" checked={metric === 'count'} onChange={() => setMetric('count')} />
-                    </div>
-                    <div className={s.radioRow}>
-                      <RadioButton name="metric" text="Object Occurrences" checked={metric === 'object'} onChange={() => setMetric('object')} />
-                    </div>
-                    <div className={s.radioRow}>
-                      <RadioButton name="metric" text="Cycle Time (Average)" checked={metric === 'cycle'} onChange={() => setMetric('cycle')} />
-                    </div>
-                  </Section>
+                  {(() => {
+                    const q = filterText.toLowerCase()
+                    const metricOptions = [
+                      { value: 'count'  as const, text: 'Event Occurrences' },
+                      { value: 'object' as const, text: 'Object Occurrences' },
+                      { value: 'cycle'  as const, text: 'Cycle Time (Average)' },
+                    ]
+                    const filtered = q ? metricOptions.filter(o => o.text.toLowerCase().includes(q)) : metricOptions
+                    if (filtered.length === 0) return null
+                    return (
+                      <Section title="Metrics">
+                        <p className={s.sectionDesc}>View how often events occur or how long they take.</p>
+                        {filtered.map(o => (
+                          <div key={o.value} className={s.radioRow}>
+                            <RadioButton name="metric" text={o.text} checked={metric === o.value} onChange={() => setMetric(o.value)} />
+                          </div>
+                        ))}
+                      </Section>
+                    )
+                  })()}
                 </div>
                 <div className={s.learnMore}><Link href="#">Learn More</Link></div>
               </div>
@@ -880,14 +1413,89 @@ export default function SemanticViews() {
             {/* Filter panel */}
             {activePanel === 'filter' && (
               <div className={s.mapPanel} style={{ marginTop: stickyBarVisible ? 40 : 0, transition: 'margin-top 0.15s' }}>
-                <div className={s.mapPanelHeader}>Filter</div>
-                <div className={s.filterEmpty}>
-                  <div className={s.filterEmptyIllustration}>
-                    <Icon name="filter" style={{ fontSize: 40, color: '#fff' }} />
-                  </div>
-                  <div className={s.filterEmptyTitle}>No Filters Applied Yet</div>
-                  <Button design="Emphasized" onClick={() => {}}>Create New Filter</Button>
-                </div>
+                {filterView === 'empty' ? (
+                  <>
+                    <div className={s.mapPanelHeader}>Filter</div>
+                    <div className={s.filterEmpty}>
+                      <div className={s.filterEmptyIllustration}>
+                        <Icon name="filter" style={{ fontSize: 40, color: '#fff' }} />
+                      </div>
+                      <div className={s.filterEmptyTitle}>No Filters Applied Yet</div>
+                      <Button design="Emphasized" onClick={() => setFilterView('create')}>Create New Filter</Button>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className={s.mapPanelHeader}>Create Filter</div>
+                    <div className={s.mapPanelBody}>
+                      <Section title="Object Specific">
+                        <p className={s.sectionDesc}>These attributes are different for every object and can only be filtered object specifically.</p>
+                        {OBJECT_DEFS.filter(o => objects[o.key]).map(obj => {
+                          const isExpanded = expandedFilterObjs.has(obj.key)
+                          const objSearch = filterObjSearches[obj.key] ?? ''
+                          const attrs = OBJECT_ATTRS[obj.key] ?? []
+                          const visibleAttrs = objSearch ? attrs.filter(a => a.label.toLowerCase().includes(objSearch.toLowerCase())) : attrs
+                          return (
+                            <div key={obj.key}>
+                              <div className={s.filterObjRow} onClick={() => toggleFilterObj(obj.key)}>
+                                <Icon name={isExpanded ? 'navigation-down-arrow' : 'navigation-right-arrow'} style={{ fontSize: '0.7rem', color: 'var(--sapContent_LabelColor)', flexShrink: 0 }} />
+                                <span className={s.objectDot} style={{ background: obj.color }} />
+                                <span style={{ fontSize: 'var(--sapFontSize)', fontWeight: 600, color: 'var(--sapTextColor)' }}>{obj.label}</span>
+                              </div>
+                              {isExpanded && (
+                                <div className={s.filterObjExpanded}>
+                                  <div style={{ marginBottom: '0.5rem' }}>
+                                    <Input type="Search" placeholder="Search..." value={objSearch}
+                                      onInput={(e: any) => setFilterObjSearches(prev => ({ ...prev, [obj.key]: (e.target as any).value ?? '' }))}
+                                      style={{ width: '100%' }} />
+                                  </div>
+                                  {visibleAttrs.map(attr => (
+                                    <div key={attr.label} className={s.filterAttrRow}>
+                                      <span className={s.filterTypeIcon}>{attr.icon}</span>
+                                      <span style={{ fontSize: 'var(--sapFontSize)', color: 'var(--sapTextColor)' }}>{attr.label}</span>
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          )
+                        })}
+                      </Section>
+                      <Section title="All Events">
+                        <p className={s.sectionDesc}>These attributes are shared across all events of all objects and affect the whole data set.</p>
+                        <div style={{ marginBottom: '0.5rem' }}>
+                          <Input
+                            type="Search"
+                            placeholder="Search..."
+                            value={filterAttrSearch}
+                            onInput={(e: any) => setFilterAttrSearch((e.target as any).value ?? '')}
+                            style={{ width: '100%' }}
+                          />
+                        </div>
+                        {([
+                          { label: 'Event Name', icon: 'T' },
+                          { label: 'Event ID',   icon: '#' },
+                          { label: 'End Time',   icon: '⏱' },
+                          { label: 'Client',     icon: 'T' },
+                        ] as { label: string; icon: string }[])
+                          .filter(a => a.label.toLowerCase().includes(filterAttrSearch.toLowerCase()))
+                          .map(attr => (
+                            <div key={attr.label} className={s.filterAttrRow}>
+                              <span className={s.filterTypeIcon}>{attr.icon}</span>
+                              <span style={{ fontSize: 'var(--sapFontSize)', color: 'var(--sapTextColor)' }}>{attr.label}</span>
+                            </div>
+                          ))}
+                      </Section>
+                    </div>
+                    <div className={s.filterCreateFooter}>
+                      <Link href="#">Learn More</Link>
+                      <div style={{ display: 'flex', gap: '0.5rem' }}>
+                        <Button design="Emphasized" onClick={() => setFilterView('empty')}>Apply</Button>
+                        <Button onClick={() => setFilterView('empty')}>Cancel</Button>
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
             )}
 
@@ -930,16 +1538,20 @@ export default function SemanticViews() {
                 onNodeClick={(_, node) => {
                   setSliderHighlight(null)
                   if (node.type === 'category') {
+                    setActiveEventId(null)
                     const owner = (node.data as unknown as { owner: ObjKey }).owner
                     setSelectedObj(prev => prev === owner ? null : owner)
+                  } else if (node.type === 'event') {
+                    setActiveEventId(prev => prev === node.id ? null : node.id)
                   }
                 }}
                 onEdgeClick={(_, edge) => {
                   setSliderHighlight(null)
-                  const owner = colorToObj[(edge.data as unknown as { color: string } | undefined)?.color ?? '']
+                  setActiveEventId(null)
+                  const owner = nodeOwner.get(edge.source) ?? nodeOwner.get(edge.target)
                   if (owner) setSelectedObj(prev => prev === owner ? null : owner)
                 }}
-                onPaneClick={() => { setSelectedObj(null); setSliderHighlight(null) }}
+                onPaneClick={() => { setSelectedObj(null); setSliderHighlight(null); setActiveEventId(null) }}
               >
                 <Background color="#ccc" gap={20} size={1} style={{ background: '#f4f4f4' }} />
                 <ZoomControls />

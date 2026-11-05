@@ -322,7 +322,65 @@
   font-size: var(--sapFontSmallSize);
 }
 
-/* ── Placeholder tab content ── */
+/* ── Filter create view ── */
+.filterObjRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.25rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.filterObjRow:hover {
+  background: var(--sapList_Hover_Background);
+}
+
+.filterObjExpanded {
+  padding: 0.25rem 0.75rem 0.5rem 1.5rem;
+  background: var(--sapList_AlternatingBackground, #fafafa);
+  border-bottom: 1px solid var(--sapGroup_ContentBorderColor);
+}
+
+.filterAttrRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--sapGroup_ContentBorderColor);
+  cursor: pointer;
+}
+
+.filterAttrRow:last-child {
+  border-bottom: none;
+}
+
+.filterAttrRow:hover {
+  background: var(--sapList_Hover_Background);
+}
+
+.filterTypeIcon {
+  width: 20px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--sapContent_LabelColor);
+  flex-shrink: 0;
+  border: 1px solid var(--sapGroup_ContentBorderColor);
+  border-radius: 3px;
+}
+
+.filterCreateFooter {
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--sapGroup_ContentBorderColor);
+  flex-shrink: 0;
+}
 .tabPlaceholder {
   flex: 1;
   display: flex;
