@@ -11,30 +11,30 @@ import s from './SemanticViews.module.css'
 // ── Colors per object type — SAP chart palette, repeated after 11 ────────────
 // sapChart_1…11: #5899DA #E8743B #19A979 #ED4A7B #945ECF #13A4B4 #525DF4 #BF399E #6C8893 #EE6868 #2F6497
 const C = {
-  inc:   '#5899DA',  // Incident             (chart 1)
-  prob:  '#E8743B',  // Problem              (chart 2)
-  cr:    '#19A979',  // Change Request       (chart 3)
-  ct:    '#ED4A7B',  // Change Task          (chart 4)
-  cust:  '#945ECF',  // Customer             (chart 5)
-  quot:  '#13A4B4',  // Quotation            (chart 6)
-  contr: '#525DF4',  // Contract             (chart 7)
-  so:    '#BF399E',  // Sales Order          (chart 8)
-  soi:   '#6C8893',  // Sales Order Item     (chart 9)
-  pc:    '#EE6868',  // Pricing Condition    (chart 10)
-  po:    '#2F6497',  // Purchase Order       (chart 11)
-  mat:   '#5899DA',  // Material             (chart 1, repeat)
-  wt:    '#E8743B',  // Warehouse Task       (chart 2, repeat)
-  dlv:   '#19A979',  // Delivery             (chart 3, repeat)
-  gi:    '#ED4A7B',  // Goods Issue          (chart 4, repeat)
-  bill:  '#945ECF',  // Billing Document     (chart 5, repeat)
-  inv:   '#13A4B4',  // Invoice              (chart 6, repeat)
-  svo:   '#525DF4',  // Service Order        (chart 7, repeat)
-  cm:    '#BF399E',  // Credit Memo          (chart 8, repeat)
-  ret:   '#6C8893',  // Return Order         (chart 9, repeat)
-  ar:    '#EE6868',  // Accounts Receivable  (chart 10, repeat)
-  pay:   '#2F6497',  // Payment              (chart 11, repeat)
-  dun:   '#5899DA',  // Dunning Notice       (chart 1, repeat)
-  bank:  '#E8743B',  // Bank Statement       (chart 2, repeat)
+  inc:   'var(--sapChart_OrderedColor_1)',   // Incident
+  prob:  'var(--sapChart_OrderedColor_2)',   // Problem
+  cr:    'var(--sapChart_OrderedColor_3)',   // Change Request
+  ct:    'var(--sapChart_OrderedColor_4)',   // Change Task
+  cust:  'var(--sapChart_OrderedColor_5)',   // Customer
+  quot:  'var(--sapChart_OrderedColor_6)',   // Quotation
+  contr: 'var(--sapChart_OrderedColor_7)',   // Contract
+  so:    'var(--sapChart_OrderedColor_8)',   // Sales Order
+  soi:   'var(--sapChart_OrderedColor_9)',   // Sales Order Item
+  pc:    'var(--sapChart_OrderedColor_10)',  // Pricing Condition
+  po:    'var(--sapChart_OrderedColor_11)',  // Purchase Order
+  mat:   'var(--sapChart_OrderedColor_1)',   // Material             (repeat)
+  wt:    'var(--sapChart_OrderedColor_2)',   // Warehouse Task       (repeat)
+  dlv:   'var(--sapChart_OrderedColor_3)',   // Delivery             (repeat)
+  gi:    'var(--sapChart_OrderedColor_4)',   // Goods Issue          (repeat)
+  bill:  'var(--sapChart_OrderedColor_5)',   // Billing Document     (repeat)
+  inv:   'var(--sapChart_OrderedColor_6)',   // Invoice              (repeat)
+  svo:   'var(--sapChart_OrderedColor_7)',   // Service Order        (repeat)
+  cm:    'var(--sapChart_OrderedColor_8)',   // Credit Memo          (repeat)
+  ret:   'var(--sapChart_OrderedColor_9)',   // Return Order         (repeat)
+  ar:    'var(--sapChart_OrderedColor_10)',  // Accounts Receivable  (repeat)
+  pay:   'var(--sapChart_OrderedColor_11)',  // Payment              (repeat)
+  dun:   'var(--sapChart_OrderedColor_1)',   // Dunning Notice       (repeat)
+  bank:  'var(--sapChart_OrderedColor_2)',   // Bank Statement       (repeat)
 } as const
 
 const OWNER_COLOR: Record<string, string> = {
