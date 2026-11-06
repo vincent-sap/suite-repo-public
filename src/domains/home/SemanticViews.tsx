@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react'
 import '@xyflow/react/dist/style.css'
 import {
-  ReactFlow, Background, ReactFlowProvider, useNodesState, useEdgesState, useReactFlow, useStore,
+  ReactFlow, Background, useNodesState, useEdgesState, useReactFlow, useStore,
   Handle, Position, EdgeLabelRenderer, BaseEdge, getSmoothStepPath,
   type Node, type Edge, type NodeProps, type EdgeProps,
 } from '@xyflow/react'
@@ -965,7 +965,7 @@ function ZoomControls() {
   }
   return (
     <div style={{
-      position: 'absolute', bottom: 16, right: 16, zIndex: 20,
+      position: 'fixed', bottom: 16, right: 16, zIndex: 9999,
       display: 'flex', alignItems: 'center',
       background: 'var(--sapList_Background, #fff)',
       border: '1px solid var(--sapGroup_ContentBorderColor)',
@@ -1520,7 +1520,6 @@ export default function SemanticViews() {
             )}
 
             <div className={s.canvasArea} style={{ fontFamily: 'var(--sapFontFamily)' }}>
-              <ReactFlowProvider>
               <ReactFlow
                 nodes={displayNodes}
                 edges={displayEdges}
@@ -1553,6 +1552,7 @@ export default function SemanticViews() {
                 onPaneClick={() => { setSelectedObj(null); setSliderHighlight(null); setActiveEventId(null) }}
               >
                 <Background color="#ccc" gap={20} size={1} style={{ background: '#f4f4f4' }} />
+                <ZoomControls />
                 <FitViewOnChange trigger={objects} />
                 <StickyBarVisibility onChange={setStickyBarVisible} />
                 <StickyObjectBar
@@ -1561,8 +1561,6 @@ export default function SemanticViews() {
                   onSelect={(key) => setSelectedObj(prev => prev === key ? null : key)}
                 />
               </ReactFlow>
-              <ZoomControls />
-              </ReactFlowProvider>
             </div>
           </>
         )}
