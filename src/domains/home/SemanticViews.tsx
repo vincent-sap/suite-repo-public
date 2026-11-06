@@ -1028,7 +1028,7 @@ function StickyObjectBar({ objects, selectedObj, onSelect }: {
           background: obj.color, color: 'white',
           padding: '4px 12px', borderRadius: '14px',
           fontSize: 12, fontWeight: 700, cursor: 'pointer', whiteSpace: 'nowrap',
-          border: 'none',
+          border: '3px solid #f4f4f4',
           outline: selectedObj === obj.key ? `2.5px solid ${obj.color}` : '2.5px solid transparent',
           outlineOffset: '2px',
           zIndex: selectedObj === obj.key ? 2 : 1,
