@@ -8,33 +8,34 @@ import {
 import { Button, Icon, Input, Switch, RadioButton, Text, Link } from '@ui5/webcomponents-react'
 import s from './SemanticViews.module.css'
 
-// ── Colors per object type — SAP chart palette, repeated after 11 ────────────
-// sapChart_1…11: #5899DA #E8743B #19A979 #ED4A7B #945ECF #13A4B4 #525DF4 #BF399E #6C8893 #EE6868 #2F6497
+// ── Colors per object type — SAP Horizon sapChart_OrderedColor_1…12, repeating ─
+// _1:#168eff _2:#c87b00 _3:#75980b _4:#df1278 _5:#8b47d7 _6:#049f9a
+// _7:#0070f2 _8:#cc00dc _9:#798c77 _10:#da6c6c _11:#5d36ff _12:#a68a5b
 const C = {
-  inc:   '#5899DA',  // Incident             (chart 1)
-  prob:  '#E8743B',  // Problem              (chart 2)
-  cr:    '#19A979',  // Change Request       (chart 3)
-  ct:    '#ED4A7B',  // Change Task          (chart 4)
-  cust:  '#945ECF',  // Customer             (chart 5)
-  quot:  '#13A4B4',  // Quotation            (chart 6)
-  contr: '#525DF4',  // Contract             (chart 7)
-  so:    '#BF399E',  // Sales Order          (chart 8)
-  soi:   '#6C8893',  // Sales Order Item     (chart 9)
-  pc:    '#EE6868',  // Pricing Condition    (chart 10)
-  po:    '#2F6497',  // Purchase Order       (chart 11)
-  mat:   '#5899DA',  // Material             (chart 1, repeat)
-  wt:    '#E8743B',  // Warehouse Task       (chart 2, repeat)
-  dlv:   '#19A979',  // Delivery             (chart 3, repeat)
-  gi:    '#ED4A7B',  // Goods Issue          (chart 4, repeat)
-  bill:  '#945ECF',  // Billing Document     (chart 5, repeat)
-  inv:   '#13A4B4',  // Invoice              (chart 6, repeat)
-  svo:   '#525DF4',  // Service Order        (chart 7, repeat)
-  cm:    '#BF399E',  // Credit Memo          (chart 8, repeat)
-  ret:   '#6C8893',  // Return Order         (chart 9, repeat)
-  ar:    '#EE6868',  // Accounts Receivable  (chart 10, repeat)
-  pay:   '#2F6497',  // Payment              (chart 11, repeat)
-  dun:   '#5899DA',  // Dunning Notice       (chart 1, repeat)
-  bank:  '#E8743B',  // Bank Statement       (chart 2, repeat)
+  inc:   '#168eff',  // Incident             (chart 1)
+  prob:  '#c87b00',  // Problem              (chart 2)
+  cr:    '#75980b',  // Change Request       (chart 3)
+  ct:    '#df1278',  // Change Task          (chart 4)
+  cust:  '#8b47d7',  // Customer             (chart 5)
+  quot:  '#049f9a',  // Quotation            (chart 6)
+  contr: '#0070f2',  // Contract             (chart 7)
+  so:    '#cc00dc',  // Sales Order          (chart 8)
+  soi:   '#798c77',  // Sales Order Item     (chart 9)
+  pc:    '#da6c6c',  // Pricing Condition    (chart 10)
+  po:    '#5d36ff',  // Purchase Order       (chart 11)
+  mat:   '#a68a5b',  // Material             (chart 12)
+  wt:    '#168eff',  // Warehouse Task       (chart 1, repeat)
+  dlv:   '#c87b00',  // Delivery             (chart 2, repeat)
+  gi:    '#75980b',  // Goods Issue          (chart 3, repeat)
+  bill:  '#df1278',  // Billing Document     (chart 4, repeat)
+  inv:   '#8b47d7',  // Invoice              (chart 5, repeat)
+  svo:   '#049f9a',  // Service Order        (chart 6, repeat)
+  cm:    '#0070f2',  // Credit Memo          (chart 7, repeat)
+  ret:   '#cc00dc',  // Return Order         (chart 8, repeat)
+  ar:    '#798c77',  // Accounts Receivable  (chart 9, repeat)
+  pay:   '#da6c6c',  // Payment              (chart 10, repeat)
+  dun:   '#5d36ff',  // Dunning Notice       (chart 11, repeat)
+  bank:  '#a68a5b',  // Bank Statement       (chart 12, repeat)
 } as const
 
 const OWNER_COLOR: Record<string, string> = {
@@ -157,8 +158,8 @@ function EventNode({ data, positionAbsoluteX, positionAbsoluteY }: NodeProps) {
       </div>
 
       {/* Popover rendered via EdgeLabelRenderer — outside the viewport transform,
-          so it stays at constant screen size regardless of zoom level */}
-      {isActive && dots && (
+          always rendered at 100% screen size regardless of map zoom level */}
+      {isActive && (
         <EdgeLabelRenderer>
           <div
             className="nodrag nopan"
@@ -176,10 +177,10 @@ function EventNode({ data, positionAbsoluteX, positionAbsoluteY }: NodeProps) {
               zIndex: 1000,
             }}
           >
-            <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--sapTextColor)', marginBottom: 8, paddingBottom: 6, borderBottom: `1.5px solid ${color}` }}>
+            <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--sapTextColor)', marginBottom: dots && dots.length > 0 ? 8 : 0, paddingBottom: dots && dots.length > 0 ? 6 : 0, borderBottom: dots && dots.length > 0 ? `1.5px solid ${color}` : undefined }}>
               {data.label as string}
             </div>
-            {dots.map((d, i) => (
+            {dots && dots.map((d, i) => (
               <div key={i} style={{ marginBottom: i < dots.length - 1 ? 10 : 0 }}>
                 {dots.length > 1 && (
                   <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 4 }}>
@@ -1014,6 +1015,16 @@ function StickyObjectBar({ objects, selectedObj, onSelect }: {
   const [tx, ty, zoom] = useStore((st: any) => st.transform as [number, number, number])
   // Category pills are at y=50 in graph space; screen Y ≈ 50*zoom + ty
   if (50 * zoom + ty > 0) return null
+
+  const activePills = OBJECT_DEFS.filter(o => objects[o.key])
+  // Estimated pill width: padding (24px) + ~8px per character at font-size 12
+  const hasOverlap = activePills.some((obj, i) => {
+    if (i === 0) return false
+    const prev = activePills[i - 1]
+    const prevWidth = 24 + prev.label.length * 8
+    return (obj.x - prev.x) * zoom < prevWidth
+  })
+
   return (
     <div style={{
       position: 'absolute', top: 0, left: 0, right: 0, height: 40, zIndex: 10,
@@ -1022,7 +1033,7 @@ function StickyObjectBar({ objects, selectedObj, onSelect }: {
       backdropFilter: 'blur(6px)',
       borderBottom: '1px solid var(--sapGroup_ContentBorderColor)',
     }}>
-      {OBJECT_DEFS.filter(o => objects[o.key]).map(obj => (
+      {activePills.map(obj => (
         <div key={obj.key} onClick={() => onSelect(obj.key)} style={{
           position: 'absolute',
           left: obj.x * zoom + tx,
@@ -1031,7 +1042,7 @@ function StickyObjectBar({ objects, selectedObj, onSelect }: {
           background: obj.color, color: 'white',
           padding: '4px 12px', borderRadius: '14px',
           fontSize: 12, fontWeight: 700, cursor: 'pointer', whiteSpace: 'nowrap',
-          border: '3px solid rgba(244,244,244,0.92)',
+          border: hasOverlap ? '3px solid rgba(244,244,244,0.92)' : 'none',
           outline: selectedObj === obj.key ? `2.5px solid ${obj.color}` : '2.5px solid transparent',
           outlineOffset: '2px',
         }}>
@@ -1087,8 +1098,8 @@ export default function SemanticViews() {
     const next = new Set(prev); if (next.has(key)) next.delete(key); else next.add(key); return next
   })
   const [stickyBarVisible, setStickyBarVisible] = useState(false)
-  const [activePanel, setActivePanel] = useState<'controls' | 'filter' | 'settings' | null>('controls')
-  const togglePanel = (panel: 'controls' | 'filter' | 'settings') =>
+  const [activePanel, setActivePanel] = useState<'controls' | 'filter' | 'legend' | 'settings' | null>('controls')
+  const togglePanel = (panel: 'controls' | 'filter' | 'legend' | 'settings') =>
     setActivePanel(p => p === panel ? null : panel)
   useEffect(() => {
     if (activePanel !== 'filter') { setFilterView('empty'); setFilterAttrSearch('') }
@@ -1328,6 +1339,13 @@ export default function SemanticViews() {
               />
               <Button
                 design="Transparent"
+                icon="legend"
+                tooltip="Legend"
+                style={{ width: 32, height: 32, padding: 0, background: activePanel === 'legend' ? 'var(--sapButton_Selected_Background, #e8f0fe)' : undefined, color: activePanel === 'legend' ? 'var(--sapButton_Selected_TextColor)' : undefined }}
+                onClick={() => togglePanel('legend')}
+              />
+              <Button
+                design="Transparent"
                 icon="action-settings"
                 tooltip="Settings"
                 style={{ width: 32, height: 32, padding: 0, background: activePanel === 'settings' ? 'var(--sapButton_Selected_Background, #e8f0fe)' : undefined, color: activePanel === 'settings' ? 'var(--sapButton_Selected_TextColor)' : undefined }}
@@ -1496,6 +1514,68 @@ export default function SemanticViews() {
                     </div>
                   </>
                 )}
+              </div>
+            )}
+
+            {/* Legend panel */}
+            {activePanel === 'legend' && (
+              <div className={s.mapPanel} style={{ marginTop: stickyBarVisible ? 40 : 0, transition: 'margin-top 0.15s' }}>
+                <div className={s.mapPanelHeader}>Legend</div>
+                <div className={s.mapPanelBody} style={{ padding: '0.75rem 1.25rem' }}>
+                  {([
+                    {
+                      label: 'Object',
+                      icon: <div style={{ width: 40, height: 20, background: '#758CA4', borderRadius: 10 }} />,
+                    },
+                    {
+                      label: 'Event',
+                      icon: <div style={{ width: 40, height: 20, border: '1.5px solid #c0c8d0', borderRadius: 6, background: 'white' }} />,
+                    },
+                    {
+                      label: 'Event Node',
+                      icon: <div style={{ width: 18, height: 18, borderRadius: '50%', border: '2px solid #758CA4', background: 'white', marginLeft: 11 }} />,
+                    },
+                    {
+                      label: 'Path',
+                      icon: (
+                        <div style={{ width: 18, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1, marginLeft: 11 }}>
+                          <div style={{ width: 2, height: 12, background: '#758CA4' }} />
+                          <div style={{ width: 0, height: 0, borderLeft: '5px solid transparent', borderRight: '5px solid transparent', borderTop: '7px solid #788fa6' }} />
+                        </div>
+                      ),
+                    },
+                    {
+                      label: 'Start/End Path',
+                      icon: (
+                        <div style={{ width: 18, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, marginLeft: 11 }}>
+                          <div style={{ width: 2, height: 5, borderLeft: '2px dashed #788fa6' }} />
+                          <div style={{ width: 2, height: 5, borderLeft: '2px dashed #788fa6' }} />
+                          <div style={{ width: 0, height: 0, borderLeft: '5px solid transparent', borderRight: '5px solid transparent', borderTop: '7px solid #788fa6' }} />
+                        </div>
+                      ),
+                    },
+                    {
+                      label: 'Metric',
+                      icon: <span style={{ fontSize: 12, fontWeight: 600, color: '#758CA4', marginLeft: 8, width: 28, textAlign: 'center' }}>10k</span>,
+                    },
+                    {
+                      label: 'End Point',
+                      icon: (
+                        <div style={{ width: 20, height: 20, borderRadius: '50%', background: '#758CA4', display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: 10 }}>
+                          <div style={{ width: 8, height: 8, background: 'white', borderRadius: 2 }} />
+                        </div>
+                      ),
+                    },
+                  ] as { label: string; icon: React.ReactNode }[]).map(({ label, icon }) => (
+                    <div key={label} style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '0.6rem 0', borderBottom: '1px solid var(--sapGroup_ContentBorderColor)' }}>
+                      <div style={{ width: 44, display: 'flex', alignItems: 'center', justifyContent: 'flex-start', flexShrink: 0 }}>
+                        {icon}
+                      </div>
+                      <span style={{ fontSize: 'var(--sapFontSize)', color: 'var(--sapTextColor)' }}>{label}</span>
+                    </div>
+                  ))}
+                </div>
+                <div className={s.learnMore}><Link href="#">Learn More</Link></div>
               </div>
             )}
 
