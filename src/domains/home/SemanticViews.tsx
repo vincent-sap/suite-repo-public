@@ -1085,8 +1085,8 @@ export default function SemanticViews() {
     const next = new Set(prev); if (next.has(key)) next.delete(key); else next.add(key); return next
   })
   const [stickyBarVisible, setStickyBarVisible] = useState(false)
-  const [activePanel, setActivePanel] = useState<'controls' | 'filter' | 'settings' | null>('controls')
-  const togglePanel = (panel: 'controls' | 'filter' | 'settings') =>
+  const [activePanel, setActivePanel] = useState<'controls' | 'filter' | 'legend' | 'settings' | null>('controls')
+  const togglePanel = (panel: 'controls' | 'filter' | 'legend' | 'settings') =>
     setActivePanel(p => p === panel ? null : panel)
   useEffect(() => {
     if (activePanel !== 'filter') { setFilterView('empty'); setFilterAttrSearch('') }
@@ -1326,6 +1326,13 @@ export default function SemanticViews() {
               />
               <Button
                 design="Transparent"
+                icon="legend"
+                tooltip="Legend"
+                style={{ width: 32, height: 32, padding: 0, background: activePanel === 'legend' ? 'var(--sapButton_Selected_Background, #e8f0fe)' : undefined, color: activePanel === 'legend' ? 'var(--sapButton_Selected_TextColor)' : undefined }}
+                onClick={() => togglePanel('legend')}
+              />
+              <Button
+                design="Transparent"
                 icon="action-settings"
                 tooltip="Settings"
                 style={{ width: 32, height: 32, padding: 0, background: activePanel === 'settings' ? 'var(--sapButton_Selected_Background, #e8f0fe)' : undefined, color: activePanel === 'settings' ? 'var(--sapButton_Selected_TextColor)' : undefined }}
@@ -1494,6 +1501,68 @@ export default function SemanticViews() {
                     </div>
                   </>
                 )}
+              </div>
+            )}
+
+            {/* Legend panel */}
+            {activePanel === 'legend' && (
+              <div className={s.mapPanel} style={{ marginTop: stickyBarVisible ? 40 : 0, transition: 'margin-top 0.15s' }}>
+                <div className={s.mapPanelHeader}>Legend</div>
+                <div className={s.mapPanelBody} style={{ padding: '0.75rem 1.25rem' }}>
+                  {([
+                    {
+                      label: 'Object',
+                      icon: <div style={{ width: 40, height: 20, background: '#758CA4', borderRadius: 10 }} />,
+                    },
+                    {
+                      label: 'Event',
+                      icon: <div style={{ width: 40, height: 20, border: '1.5px solid #c0c8d0', borderRadius: 6, background: 'white' }} />,
+                    },
+                    {
+                      label: 'Event Node',
+                      icon: <div style={{ width: 18, height: 18, borderRadius: '50%', border: '2px solid #758CA4', background: 'white', marginLeft: 11 }} />,
+                    },
+                    {
+                      label: 'Path',
+                      icon: (
+                        <div style={{ width: 18, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1, marginLeft: 11 }}>
+                          <div style={{ width: 2, height: 12, background: '#758CA4' }} />
+                          <div style={{ width: 0, height: 0, borderLeft: '5px solid transparent', borderRight: '5px solid transparent', borderTop: '7px solid #788fa6' }} />
+                        </div>
+                      ),
+                    },
+                    {
+                      label: 'Start/End Path',
+                      icon: (
+                        <div style={{ width: 18, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, marginLeft: 11 }}>
+                          <div style={{ width: 2, height: 5, borderLeft: '2px dashed #788fa6' }} />
+                          <div style={{ width: 2, height: 5, borderLeft: '2px dashed #788fa6' }} />
+                          <div style={{ width: 0, height: 0, borderLeft: '5px solid transparent', borderRight: '5px solid transparent', borderTop: '7px solid #788fa6' }} />
+                        </div>
+                      ),
+                    },
+                    {
+                      label: 'Metric',
+                      icon: <span style={{ fontSize: 12, fontWeight: 600, color: '#758CA4', marginLeft: 8, width: 28, textAlign: 'center' }}>10k</span>,
+                    },
+                    {
+                      label: 'End Point',
+                      icon: (
+                        <div style={{ width: 20, height: 20, borderRadius: '50%', background: '#758CA4', display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: 10 }}>
+                          <div style={{ width: 8, height: 8, background: 'white', borderRadius: 2 }} />
+                        </div>
+                      ),
+                    },
+                  ] as { label: string; icon: React.ReactNode }[]).map(({ label, icon }) => (
+                    <div key={label} style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '0.6rem 0', borderBottom: '1px solid var(--sapGroup_ContentBorderColor)' }}>
+                      <div style={{ width: 44, display: 'flex', alignItems: 'center', justifyContent: 'flex-start', flexShrink: 0 }}>
+                        {icon}
+                      </div>
+                      <span style={{ fontSize: 'var(--sapFontSize)', color: 'var(--sapTextColor)' }}>{label}</span>
+                    </div>
+                  ))}
+                </div>
+                <div className={s.learnMore}><Link href="#">Learn More</Link></div>
               </div>
             )}
 
