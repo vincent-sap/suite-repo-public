@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react'
 import '@xyflow/react/dist/style.css'
 import {
-  ReactFlow, Background, Panel, useNodesState, useEdgesState, useReactFlow, useStore,
+  ReactFlow, Background, ReactFlowProvider, useNodesState, useEdgesState, useReactFlow, useStore,
   Handle, Position, EdgeLabelRenderer, BaseEdge, getSmoothStepPath,
   type Node, type Edge, type NodeProps, type EdgeProps,
 } from '@xyflow/react'
@@ -964,16 +964,15 @@ function ZoomControls() {
     width: 1, height: 20, background: 'var(--sapGroup_ContentBorderColor)', flexShrink: 0,
   }
   return (
-    <Panel position="bottom-right">
-      <div style={{
-        display: 'flex', alignItems: 'center',
-        background: 'var(--sapList_Background, #fff)',
-        border: '1px solid var(--sapGroup_ContentBorderColor)',
-        borderRadius: 8,
-        boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
-        overflow: 'hidden',
-        marginBottom: 8, marginRight: 8,
-      }}>
+    <div style={{
+      position: 'absolute', bottom: 16, right: 16, zIndex: 20,
+      display: 'flex', alignItems: 'center',
+      background: 'var(--sapList_Background, #fff)',
+      border: '1px solid var(--sapGroup_ContentBorderColor)',
+      borderRadius: 8,
+      boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
+      overflow: 'hidden',
+    }}>
         <div style={{ display: 'flex', alignItems: 'center', padding: '4px 6px', gap: 2 }}>
           <Button design="Transparent" icon="full-screen" tooltip="Fit view"
             style={btn} onClick={() => fitView({ duration: 300, padding: 0.15 })} />
@@ -992,7 +991,6 @@ function ZoomControls() {
             style={btn} onClick={() => zoomIn({ duration: 200 })} />
         </div>
       </div>
-    </Panel>
   )
 }
 
@@ -1033,6 +1031,7 @@ function StickyObjectBar({ objects, selectedObj, onSelect }: {
           border: '3px solid rgba(244,244,244,0.92)',
           outline: selectedObj === obj.key ? `2.5px solid ${obj.color}` : '2.5px solid transparent',
           outlineOffset: '2px',
+          zIndex: selectedObj === obj.key ? 2 : 1,
         }}>
           {obj.label}
         </div>
@@ -1521,6 +1520,7 @@ export default function SemanticViews() {
             )}
 
             <div className={s.canvasArea} style={{ fontFamily: 'var(--sapFontFamily)' }}>
+              <ReactFlowProvider>
               <ReactFlow
                 nodes={displayNodes}
                 edges={displayEdges}
@@ -1553,7 +1553,6 @@ export default function SemanticViews() {
                 onPaneClick={() => { setSelectedObj(null); setSliderHighlight(null); setActiveEventId(null) }}
               >
                 <Background color="#ccc" gap={20} size={1} style={{ background: '#f4f4f4' }} />
-                <ZoomControls />
                 <FitViewOnChange trigger={objects} />
                 <StickyBarVisibility onChange={setStickyBarVisible} />
                 <StickyObjectBar
@@ -1562,6 +1561,8 @@ export default function SemanticViews() {
                   onSelect={(key) => setSelectedObj(prev => prev === key ? null : key)}
                 />
               </ReactFlow>
+              <ZoomControls />
+              </ReactFlowProvider>
             </div>
           </>
         )}
