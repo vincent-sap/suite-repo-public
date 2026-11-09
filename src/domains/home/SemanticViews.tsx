@@ -1008,8 +1008,9 @@ function StickyObjectBar({ objects, selectedObj, onSelect }: {
   onSelect: (key: ObjKey) => void
 }) {
   const [tx, ty, zoom] = useStore((st: any) => st.transform as [number, number, number])
+  const [hoveredObj, setHoveredObj] = useState<ObjKey | null>(null)
   // Category pills are at y=50 in graph space; screen Y ≈ 50*zoom + ty
-  
+
   if (50 * zoom + ty > 0) return null
   return (
     <div style={{
@@ -1020,7 +1021,10 @@ function StickyObjectBar({ objects, selectedObj, onSelect }: {
       borderBottom: '1px solid var(--sapGroup_ContentBorderColor)',
     }}>
       {OBJECT_DEFS.filter(o => objects[o.key]).map(obj => (
-        <div key={obj.key} onClick={() => onSelect(obj.key)} style={{
+        <div key={obj.key} onClick={() => onSelect(obj.key)}
+          onMouseEnter={() => setHoveredObj(obj.key)}
+          onMouseLeave={() => setHoveredObj(null)}
+          style={{
           position: 'absolute',
           left: obj.x * zoom + tx,
           top: '50%',
@@ -1031,7 +1035,7 @@ function StickyObjectBar({ objects, selectedObj, onSelect }: {
           border: '3px solid #f4f4f4',
           outline: selectedObj === obj.key ? `2.5px solid ${obj.color}` : '2.5px solid transparent',
           outlineOffset: '2px',
-          zIndex: selectedObj === obj.key ? 2 : 1,
+          zIndex: selectedObj === obj.key ? 3 : hoveredObj === obj.key ? 2 : 1,
         }}>
           {obj.label}
         </div>
