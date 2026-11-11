@@ -1416,7 +1416,7 @@ export default function SemanticViews() {
                   </div>
                 </div>
                 <div className={s.mapPanelBody}>
-                  <Section title="Objects" badge={`${activeCount}/${OBJECT_DEFS.length}`}>
+                  <Section title="Objects" badge={filterText ? undefined : `${activeCount}/${OBJECT_DEFS.length}`}>
                     <p className={s.sectionDesc}>
                       Toggle objects on or off to customize your view.
                     </p>
@@ -1432,7 +1432,7 @@ export default function SemanticViews() {
                       </div>
                     ))}
                   </Section>
-                  <Section title="Events" badge={`${Math.round(Object.values(eventSliders).reduce((a, b) => a + b, 0) / (OBJECT_DEFS.length * 10) * 100)}%`}>
+                  <Section title="Events" badge={filterText ? undefined : `${Math.round(Object.values(eventSliders).reduce((a, b) => a + b, 0) / (OBJECT_DEFS.length * 10) * 100)}%`}>
                     <p className={s.sectionDesc}>Add or remove events and paths. Most frequent items appear first.</p>
                     {OBJECT_DEFS
                       .filter(obj => objects[obj.key] && obj.label.toLowerCase().includes(filterText.toLowerCase()))
