@@ -1417,42 +1417,52 @@ export default function SemanticViews() {
                   </div>
                 </div>
                 <div className={s.mapPanelBody}>
-                  <Section title="Objects" badge={filterText ? undefined : `${activeCount}/${OBJECT_DEFS.length}`} forceOpen={!!filterText}>
-                    <p className={s.sectionDesc}>
-                      Toggle objects on or off to customize your view.
-                    </p>
-                    {OBJECT_DEFS
-                      .filter(obj => obj.label.toLowerCase().includes(filterText.toLowerCase()))
-                      .map(obj => (
-                      <div key={obj.key} className={s.objectRow}>
-                        <span className={s.objectLabel}>
-                          <span className={s.objectDot} style={{ background: obj.color }} />
-                          {obj.label}
-                        </span>
-                        <Switch checked={objects[obj.key]} onChange={() => toggleObj(obj.key)} accessibleName={obj.label} />
-                      </div>
-                    ))}
-                  </Section>
-                  <Section title="Events" badge={filterText ? undefined : `${Math.round(Object.values(eventSliders).reduce((a, b) => a + b, 0) / (OBJECT_DEFS.length * 10) * 100)}%`} forceOpen={!!filterText}>
-                    <p className={s.sectionDesc}>Add or remove events and paths. Most frequent items appear first.</p>
-                    {OBJECT_DEFS
-                      .filter(obj => objects[obj.key] && obj.label.toLowerCase().includes(filterText.toLowerCase()))
-                      .map(obj => (
-                      <div key={obj.key} className={s.eventSliderBlock}>
-                        <div className={s.eventSliderRow}>
-                          <span className={s.eventSliderLabel}>Events for <strong>{obj.label}</strong></span>
-                          <span className={s.eventBadge} style={{ background: obj.color }}>{eventSliders[obj.key]}</span>
-                        </div>
-                        <input type="range" className={s.eventSlider} min={0} max={10} value={eventSliders[obj.key]}
-                          onChange={e => handleEventSlider(obj.key, Number(e.target.value))} />
-                        <div className={s.pathsBlock}>
-                          <span className={s.pathsLabel}>Paths</span>
-                          <input type="range" className={s.eventSlider} min={0} max={10} value={pathSliders[obj.key]}
-                            onChange={e => handlePathSlider(obj.key, Number(e.target.value))} />
-                        </div>
-                      </div>
-                    ))}
-                  </Section>
+                  {(() => {
+                    const filteredObjects = OBJECT_DEFS.filter(obj => obj.label.toLowerCase().includes(filterText.toLowerCase()))
+                    return filterText && filteredObjects.length === 0
+                      ? <p className={s.sectionDesc} style={{ padding: '8px 12px' }}>No results found</p>
+                      : (
+                        <Section title="Objects" badge={filterText ? undefined : `${activeCount}/${OBJECT_DEFS.length}`} forceOpen={!!filterText}>
+                          <p className={s.sectionDesc}>
+                            Toggle objects on or off to customize your view.
+                          </p>
+                          {filteredObjects.map(obj => (
+                            <div key={obj.key} className={s.objectRow}>
+                              <span className={s.objectLabel}>
+                                <span className={s.objectDot} style={{ background: obj.color }} />
+                                {obj.label}
+                              </span>
+                              <Switch checked={objects[obj.key]} onChange={() => toggleObj(obj.key)} accessibleName={obj.label} />
+                            </div>
+                          ))}
+                        </Section>
+                      )
+                  })()}
+                  {(() => {
+                    const filteredEvents = OBJECT_DEFS.filter(obj => objects[obj.key] && obj.label.toLowerCase().includes(filterText.toLowerCase()))
+                    return filterText && filteredEvents.length === 0
+                      ? <p className={s.sectionDesc} style={{ padding: '8px 12px' }}>No results found</p>
+                      : (
+                        <Section title="Events" badge={filterText ? undefined : `${Math.round(Object.values(eventSliders).reduce((a, b) => a + b, 0) / (OBJECT_DEFS.length * 10) * 100)}%`} forceOpen={!!filterText}>
+                          <p className={s.sectionDesc}>Add or remove events and paths. Most frequent items appear first.</p>
+                          {filteredEvents.map(obj => (
+                            <div key={obj.key} className={s.eventSliderBlock}>
+                              <div className={s.eventSliderRow}>
+                                <span className={s.eventSliderLabel}>Events for <strong>{obj.label}</strong></span>
+                                <span className={s.eventBadge} style={{ background: obj.color }}>{eventSliders[obj.key]}</span>
+                              </div>
+                              <input type="range" className={s.eventSlider} min={0} max={10} value={eventSliders[obj.key]}
+                                onChange={e => handleEventSlider(obj.key, Number(e.target.value))} />
+                              <div className={s.pathsBlock}>
+                                <span className={s.pathsLabel}>Paths</span>
+                                <input type="range" className={s.eventSlider} min={0} max={10} value={pathSliders[obj.key]}
+                                  onChange={e => handlePathSlider(obj.key, Number(e.target.value))} />
+                              </div>
+                            </div>
+                          ))}
+                        </Section>
+                      )
+                  })()}
                   {(() => {
                     const q = filterText.toLowerCase()
                     const metricOptions = [
