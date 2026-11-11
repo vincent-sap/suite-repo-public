@@ -941,7 +941,7 @@ const OBJECT_ATTRS: Record<ObjKey, { label: string; icon: AttrIcon }[]> = {
 function FitViewOnChange({ trigger }: { trigger: unknown }) {
   const { fitView } = useReactFlow()
   useEffect(() => {
-    const t = setTimeout(() => fitView({ duration: 400, padding: 0.15 }), 60)
+    const t = setTimeout(() => fitView({ duration: 400, padding: 0.15 }), 150)
     return () => clearTimeout(t)
   }, [trigger, fitView])
   return null
@@ -1658,7 +1658,7 @@ export default function SemanticViews() {
                 onEdgesChange={onEdgesChange}
                 nodeTypes={nodeTypes}
                 edgeTypes={edgeTypes}
-                onInit={(rf) => { rfRef.current = rf; rf.fitView({ padding: 0.15 }) }}
+                onInit={(rf) => { rfRef.current = rf }}
                 minZoom={0.2}
                 maxZoom={2}
                 proOptions={{ hideAttribution: true }}
