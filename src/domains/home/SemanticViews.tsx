@@ -1079,6 +1079,10 @@ export default function SemanticViews() {
   const [filterHighlightIdx, setFilterHighlightIdx] = useState(-1)
   const rfRef = useRef<any>(null)
 
+  useEffect(() => {
+    if (!filterText) setSelectedObj(null)
+  }, [filterText])
+
   const focusObject = (key: ObjKey) => {
     setObjects(prev => prev[key] ? prev : { ...prev, [key]: true })
     setSelectedObj(key)
