@@ -1075,6 +1075,8 @@ export default function SemanticViews() {
   })
   const [metric, setMetric] = useState<'count' | 'cycle' | 'object'>('count')
   const [filterText, setFilterText] = useState('')
+  const [filterSuggestionsOpen, setFilterSuggestionsOpen] = useState(false)
+  const [filterHighlightIdx, setFilterHighlightIdx] = useState(-1)
   const [filterView, setFilterView] = useState<'empty' | 'create'>('empty')
   const [filterAttrSearch, setFilterAttrSearch] = useState('')
   const [expandedFilterObjs, setExpandedFilterObjs] = useState<Set<string>>(new Set())
@@ -1343,13 +1345,57 @@ export default function SemanticViews() {
               <div className={s.mapPanel} style={{ marginTop: stickyBarVisible ? 40 : 0, transition: 'margin-top 0.15s' }}>
                 <div className={s.mapPanelHeader}>Map Controls</div>
                 <div className={s.mapPanelSearch}>
-                  <Input
-                    placeholder="Search for objects"
-                    value={filterText}
-                    showClearIcon
-                    onInput={(e: any) => setFilterText((e.target as any).value ?? '')}
-                    style={{ width: '100%' }}
-                  />
+                  <div style={{ position: 'relative' }}>
+                    <Input
+                      placeholder="Search for objects"
+                      value={filterText}
+                      showClearIcon
+                      onInput={(e: any) => { setFilterText((e.target as any).value ?? ''); setFilterSuggestionsOpen(true); setFilterHighlightIdx(-1) }}
+                      onFocus={() => {}}
+                      onKeyDown={(e: any) => {
+                        const suggestions = OBJECT_DEFS.filter(o => o.label.toLowerCase().includes(filterText.toLowerCase()))
+                        if (e.key === 'ArrowDown') { e.preventDefault(); setFilterHighlightIdx(i => Math.min(i + 1, suggestions.length - 1)) }
+                        else if (e.key === 'ArrowUp') { e.preventDefault(); setFilterHighlightIdx(i => Math.max(i - 1, 0)) }
+                        else if (e.key === 'Enter' && filterHighlightIdx >= 0) { setFilterText(suggestions[filterHighlightIdx].label); setFilterSuggestionsOpen(false); setFilterHighlightIdx(-1) }
+                        else if (e.key === 'Escape') { setFilterSuggestionsOpen(false); setFilterHighlightIdx(-1) }
+                      }}
+                      style={{ width: '100%' }}
+                      />
+                    {filterText && filterSuggestionsOpen && (() => {
+                      const suggestions = OBJECT_DEFS.filter(o =>
+                        o.label.toLowerCase().includes(filterText.toLowerCase())
+                      )
+                      return suggestions.length > 0 ? (
+                        <div style={{
+                          position: 'absolute', top: '100%', left: 0, right: 0, zIndex: 100,
+                          background: 'var(--sapGroup_ContentBackground)',
+                          border: '1px solid var(--sapList_BorderColor)',
+                          borderRadius: 4,
+                          boxShadow: '0 4px 12px rgba(0,0,0,0.12)',
+                          overflow: 'hidden', marginTop: 0,
+                        }}>
+                          <div style={{ padding: '8px 12px 4px', fontSize: 12, fontWeight: 700, color: 'var(--sapTextColor)' }}>
+                            Objects
+                          </div>
+                          {suggestions.map((o, i) => (
+                            <div key={o.key}
+                              onMouseDown={() => { setFilterText(o.label); setFilterSuggestionsOpen(false); setFilterHighlightIdx(-1) }}
+                              onMouseEnter={() => setFilterHighlightIdx(i)}
+                              onMouseLeave={() => setFilterHighlightIdx(-1)}
+                              style={{
+                                padding: '8px 12px', cursor: 'pointer', fontSize: 13,
+                                color: 'var(--sapTextColor)',
+                                borderTop: '1px solid var(--sapList_BorderColor)',
+                                background: filterHighlightIdx === i ? 'var(--sapList_Hover_Background)' : '',
+                              }}
+                            >
+                              {o.label}
+                            </div>
+                          ))}
+                        </div>
+                      ) : null
+                    })()}
+                  </div>
                 </div>
                 <div className={s.mapPanelBody}>
                   <Section title="Objects" badge={`${activeCount}/${OBJECT_DEFS.length}`}>
