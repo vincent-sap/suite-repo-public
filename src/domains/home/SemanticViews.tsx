@@ -176,29 +176,23 @@ function EventNode({ data, positionAbsoluteX, positionAbsoluteY }: NodeProps) {
               zIndex: 1000,
             }}
           >
-            <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--sapTextColor)', marginBottom: 8, paddingBottom: 6, borderBottom: `1.5px solid ${color}` }}>
+            <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--sapTextColor)', marginBottom: 12 }}>
               {data.label as string}
             </div>
             {dots.map((d, i) => (
-              <div key={i} style={{ marginBottom: i < dots.length - 1 ? 10 : 0 }}>
+              <div key={i} style={{ marginBottom: i < dots.length - 1 ? 14 : 0 }}>
                 {dots.length > 1 && (
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 4 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 6 }}>
                     <span style={{ width: 8, height: 8, borderRadius: '50%', background: d.color, display: 'inline-block', flexShrink: 0 }} />
                     <span style={{ fontSize: 11, fontWeight: 700, color: d.color }}>Object {i + 1}</span>
                   </div>
                 )}
-                <div style={{ paddingLeft: dots.length > 1 ? 13 : 0, display: 'flex', flexDirection: 'column', gap: 3 }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', gap: 20, fontSize: 11 }}>
-                    <span style={{ color: 'var(--sapContent_LabelColor)' }}>Event Occurrences</span>
-                    <span style={{ fontWeight: 600, color: 'var(--sapTextColor)' }}>{d.count}</span>
+                <div style={{ paddingLeft: dots.length > 1 ? 13 : 0 }}>
+                  <div style={{ fontSize: 12, color: 'var(--sapContent_LabelColor)', marginBottom: 2 }}>
+                    {metric === 'cycle' ? 'Cycle Time (Avg):' : metric === 'object' ? 'Object Occurrences:' : 'Total Event Occurrences:'}
                   </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', gap: 20, fontSize: 11 }}>
-                    <span style={{ color: 'var(--sapContent_LabelColor)' }}>Object Occurrences</span>
-                    <span style={{ fontWeight: 600, color: 'var(--sapTextColor)' }}>{d.objectCount ?? '–'}</span>
-                  </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', gap: 20, fontSize: 11 }}>
-                    <span style={{ color: 'var(--sapContent_LabelColor)' }}>Cycle Time (Avg)</span>
-                    <span style={{ fontWeight: 600, color: 'var(--sapTextColor)' }}>{d.cycleTime ?? '–'}</span>
+                  <div style={{ fontSize: 22, fontWeight: 700, color: 'var(--sapTextColor)' }}>
+                    {dotValue(d)}
                   </div>
                 </div>
               </div>
@@ -1350,7 +1344,7 @@ export default function SemanticViews() {
                 <div className={s.mapPanelHeader}>Map Controls</div>
                 <div className={s.mapPanelSearch}>
                   <Input
-                    placeholder="Search objects and events…"
+                    placeholder="Search for objects"
                     value={filterText}
                     showClearIcon
                     onInput={(e: any) => setFilterText((e.target as any).value ?? '')}
@@ -1600,8 +1594,7 @@ export default function SemanticViews() {
                 onEdgesChange={onEdgesChange}
                 nodeTypes={nodeTypes}
                 edgeTypes={edgeTypes}
-                fitView
-                fitViewOptions={{ padding: 0.15 }}
+                onInit={(rf) => rf.fitView({ padding: 0.15 })}
                 minZoom={0.2}
                 maxZoom={2}
                 proOptions={{ hideAttribution: true }}
