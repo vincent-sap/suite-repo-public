@@ -1040,11 +1040,12 @@ function StickyObjectBar({ objects, selectedObj, onSelect }: {
 
 // ── Collapsible section ───────────────────────────────────────────────────────
 function Section({
-  title, badge, defaultOpen = true, children,
+  title, badge, defaultOpen = true, forceOpen, children,
 }: {
-  title: string; badge?: string; defaultOpen?: boolean; children: React.ReactNode
+  title: string; badge?: string; defaultOpen?: boolean; forceOpen?: boolean; children: React.ReactNode
 }) {
   const [open, setOpen] = useState(defaultOpen)
+  useEffect(() => { if (forceOpen) setOpen(true) }, [forceOpen])
   return (
     <div className={s.section}>
       <div className={s.sectionHeader} onClick={() => setOpen(o => !o)}>
@@ -1416,7 +1417,7 @@ export default function SemanticViews() {
                   </div>
                 </div>
                 <div className={s.mapPanelBody}>
-                  <Section title="Objects" badge={filterText ? undefined : `${activeCount}/${OBJECT_DEFS.length}`}>
+                  <Section title="Objects" badge={filterText ? undefined : `${activeCount}/${OBJECT_DEFS.length}`} forceOpen={!!filterText}>
                     <p className={s.sectionDesc}>
                       Toggle objects on or off to customize your view.
                     </p>
@@ -1432,7 +1433,7 @@ export default function SemanticViews() {
                       </div>
                     ))}
                   </Section>
-                  <Section title="Events" badge={filterText ? undefined : `${Math.round(Object.values(eventSliders).reduce((a, b) => a + b, 0) / (OBJECT_DEFS.length * 10) * 100)}%`}>
+                  <Section title="Events" badge={filterText ? undefined : `${Math.round(Object.values(eventSliders).reduce((a, b) => a + b, 0) / (OBJECT_DEFS.length * 10) * 100)}%`} forceOpen={!!filterText}>
                     <p className={s.sectionDesc}>Add or remove events and paths. Most frequent items appear first.</p>
                     {OBJECT_DEFS
                       .filter(obj => objects[obj.key] && obj.label.toLowerCase().includes(filterText.toLowerCase()))
