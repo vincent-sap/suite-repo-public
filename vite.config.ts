@@ -12,7 +12,7 @@ export default defineConfig({
       closeBundle() { fs.writeFileSync('docs/.nojekyll', '') },
     },
   ],
-  base: '/D062098/suite-replica-vinc/',
+  base: './',
   build: {
     outDir: 'docs',
     rollupOptions: {
