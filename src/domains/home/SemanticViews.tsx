@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react'
+import React, { useState, useMemo, useEffect, useRef } from 'react'
 import '@xyflow/react/dist/style.css'
 import {
   ReactFlow, Background, useNodesState, useEdgesState, useReactFlow, useStore,
@@ -1077,6 +1077,20 @@ export default function SemanticViews() {
   const [filterText, setFilterText] = useState('')
   const [filterSuggestionsOpen, setFilterSuggestionsOpen] = useState(false)
   const [filterHighlightIdx, setFilterHighlightIdx] = useState(-1)
+  const rfRef = useRef<any>(null)
+
+  const focusObject = (key: ObjKey) => {
+    setObjects(prev => prev[key] ? prev : { ...prev, [key]: true })
+    setSelectedObj(key)
+    setFilterSuggestionsOpen(false)
+    setFilterHighlightIdx(-1)
+    setTimeout(() => {
+      const ownedNodeIds = nodes
+        .filter(n => (n.data as any).owner === key)
+        .map(n => ({ id: n.id }))
+      rfRef.current?.fitView({ nodes: ownedNodeIds, padding: 0.5, duration: 400 })
+    }, 50)
+  }
   const [filterView, setFilterView] = useState<'empty' | 'create'>('empty')
   const [filterAttrSearch, setFilterAttrSearch] = useState('')
   const [expandedFilterObjs, setExpandedFilterObjs] = useState<Set<string>>(new Set())
@@ -1356,7 +1370,7 @@ export default function SemanticViews() {
                         const suggestions = OBJECT_DEFS.filter(o => o.label.toLowerCase().includes(filterText.toLowerCase()))
                         if (e.key === 'ArrowDown') { e.preventDefault(); setFilterHighlightIdx(i => Math.min(i + 1, suggestions.length - 1)) }
                         else if (e.key === 'ArrowUp') { e.preventDefault(); setFilterHighlightIdx(i => Math.max(i - 1, 0)) }
-                        else if (e.key === 'Enter' && filterHighlightIdx >= 0) { setFilterText(suggestions[filterHighlightIdx].label); setFilterSuggestionsOpen(false); setFilterHighlightIdx(-1) }
+                        else if (e.key === 'Enter' && filterHighlightIdx >= 0) { setFilterText(suggestions[filterHighlightIdx].label); focusObject(suggestions[filterHighlightIdx].key) }
                         else if (e.key === 'Escape') { setFilterSuggestionsOpen(false); setFilterHighlightIdx(-1) }
                       }}
                       style={{ width: '100%' }}
@@ -1379,7 +1393,7 @@ export default function SemanticViews() {
                           </div>
                           {suggestions.map((o, i) => (
                             <div key={o.key}
-                              onMouseDown={() => { setFilterText(o.label); setFilterSuggestionsOpen(false); setFilterHighlightIdx(-1) }}
+                              onMouseDown={() => { setFilterText(o.label); focusObject(o.key) }}
                               onMouseEnter={() => setFilterHighlightIdx(i)}
                               onMouseLeave={() => setFilterHighlightIdx(-1)}
                               style={{
@@ -1640,7 +1654,7 @@ export default function SemanticViews() {
                 onEdgesChange={onEdgesChange}
                 nodeTypes={nodeTypes}
                 edgeTypes={edgeTypes}
-                onInit={(rf) => rf.fitView({ padding: 0.15 })}
+                onInit={(rf) => { rfRef.current = rf; rf.fitView({ padding: 0.15 }) }}
                 minZoom={0.2}
                 maxZoom={2}
                 proOptions={{ hideAttribution: true }}
